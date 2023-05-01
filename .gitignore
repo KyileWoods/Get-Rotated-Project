@@ -5,9 +5,11 @@ debug/
 # Include specific files
 !main.c
 !config.cfg
+!README.md
 
 # Include the include directory and its contents
 !include/
 !drivers/
+!Outsider creations
+!OG creations
 !README resources/
-!README.md
