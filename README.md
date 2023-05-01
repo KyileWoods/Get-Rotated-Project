@@ -5,7 +5,7 @@
 If you are reading this README on your computer, not the internet, then it means you have already imported this repo. That means you only need to import a specific example project alongside it!
 This repo was constructed by importing the example project from  the TIRTOS/reources example shown below:
 
-![Importing include paths](./README-resources/FreshProj.PNG "Get your project from here, and import it into the same folder as your github repo")
+![Importing include paths](./READMEResources/FreshProj.PNG "Get your project from here, and import it into the same folder as your github repo")
 
 Yours will probably be located in the same place as mine:
 C:\ti\tirtos_tivac_2_16_01_14\resources\ek_tm4C1294XLEvaluationKit\driverExamples\tiDriverExamples
@@ -27,14 +27,14 @@ If you are happy to create your own work environment or have one set up already,
 
 So, you can import these settings as described below, but then if the project doesn't build perfectly, that means you will simply have to change where THOSE resources are, such as on your D:/ drive
 
-![Importing include paths](./README-resources/Importing-Include-Paths.PNG "How to import settings which MOSTLY will work, even on D-drive")
+![Importing include paths](./READMEResources/Importing-Include-Paths.PNG "How to import settings which MOSTLY will work, even on D-drive")
 
 
-![Find A premade file of includes](./README resources/Location of Include Paths XML.PNG "Here is where the xml is on this git repo")
+![Find A premade file of includes](./READMEResources/Location of Include Paths XML.PNG "Here is where the xml is on this git repo")
 
 ## How are we looking?
 
-![Environment as it started](./README-resources/FirstEnvironment.PNG "After you are ready, and after you have debugged once, your environment might look like mine, which is shown here as it was when I did the first commit.")
+![Environment as it started](./READMEResources/FirstEnvironment.PNG "After you are ready, and after you have debugged once, your environment might look like mine, which is shown here as it was when I did the first commit.")
 
 
 # TOPIC: The .gitignore.
@@ -44,5 +44,5 @@ For now, I have created the .gitignore to ignore EVERYTHING by default, and you 
 
 
 Here is an example, with an exclusion for main, and a folder. Apply your exceptions just like that
-![Importing include paths](./README-resources/Altering-the-gitignore.PNG "Basic idea of altering which files are shared, to avoid screwing up other peoples environments.")
+![Importing include paths](./READMEResources/Altering-the-gitignore.PNG "Basic idea of altering which files are shared, to avoid screwing up other peoples environments.")
 
