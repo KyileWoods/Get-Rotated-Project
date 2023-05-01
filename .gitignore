@@ -8,8 +8,11 @@ debug/*
 !README.md
 
 ## DO Include these directories and their contents
-
+!drivers/
 !drivers/*
+!OutsiderCreations/
 !OutsiderCreations/*
+!OGcreations/
 !OGcreations/*
+!READMEResources/
 !READMEResources/*

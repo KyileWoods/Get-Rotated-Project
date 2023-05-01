@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdtprojectproperties>
+  <section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
+    <language id="com.ti.ccstudio.core.TIGPPLanguage" name="C++ Source File">
+      <includepath>Debug/${COM_TI_RTSC_TIRTOSTIVAC_INCLUDE_PATH}</includepath>
+      <includepath workspace_path="true">/${ProjName}/drivers</includepath>
+      <includepath workspace_path="true">/${ProjName}</includepath>
+      <includepath>C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b</includepath>
+      <includepath>C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/posix</includepath>
+      <includepath>C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include</includepath>
+      <includepath>C:/Users/Delluser/Desktop/Projects go in here/Get Rotated Project</includepath>
+    </language>
+    <language id="com.ti.ccstudio.core.TIASMLanguage" name="Assembly Source File">
+      <includepath>Debug/${COM_TI_RTSC_TIRTOSTIVAC_INCLUDE_PATH}</includepath>
+      <includepath workspace_path="true">/${ProjName}/drivers</includepath>
+      <includepath workspace_path="true">/${ProjName}</includepath>
+      <includepath>C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b</includepath>
+      <includepath>C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/posix</includepath>
+      <includepath>C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include</includepath>
+      <includepath>C:/Users/Delluser/Desktop/Projects go in here/Get Rotated Project</includepath>
+    </language>
+    <language id="com.ti.ccstudio.core.TIGCCLanguage" name="C Source File">
+      <includepath>Debug/${COM_TI_RTSC_TIRTOSTIVAC_INCLUDE_PATH}</includepath>
+      <includepath workspace_path="true">/${ProjName}/drivers</includepath>
+      <includepath workspace_path="true">/${ProjName}</includepath>
+      <includepath>C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b</includepath>
+      <includepath>C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/posix</includepath>
+      <includepath>C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include</includepath>
+      <includepath>C:/Users/Delluser/Desktop/Projects go in here/Get Rotated Project</includepath>
+    </language>
+    <language id="com.ti.ccstudio.core.TIASMLanguage" name="Assembly Source File">
+      <includepath>Debug/${COM_TI_RTSC_TIRTOSTIVAC_INCLUDE_PATH}</includepath>
+      <includepath workspace_path="true">/${ProjName}/drivers</includepath>
+      <includepath workspace_path="true">/${ProjName}</includepath>
+      <includepath>C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b</includepath>
+      <includepath>C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/posix</includepath>
+      <includepath>C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include</includepath>
+      <includepath>C:/Users/Delluser/Desktop/Projects go in here/Get Rotated Project</includepath>
+    </language>
+    <language id="com.ti.ccstudio.core.TICMDLanguage" name="Linker Command File"/>
+    <language id="com.ti.ccstudio.core.TICMDLanguage" name="Linker Command File"/>
+    <language id="com.ti.ccstudio.core.TICMDLanguage" name="Linker Command File"/>
+  </section>
+  <section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.Macros">
+    <language id="com.ti.ccstudio.core.TIGPPLanguage" name="C++ Source File">
+      <macro>
+        <name>${COM_TI_RTSC_TIRTOSTIVAC_SYMBOLS}</name>
+        <value/>
+      </macro>
+      <macro>
+        <name>ccs</name>
+        <value/>
+      </macro>
+      <macro>
+        <name>PART_TM4C1294NCPDT</name>
+        <value/>
+      </macro>
+      <macro>
+        <name>TIVAWARE</name>
+        <value/>
+      </macro>
+    </language>
+    <language id="com.ti.ccstudio.core.TIASMLanguage" name="Assembly Source File">
+      <macro>
+        <name>${COM_TI_RTSC_TIRTOSTIVAC_SYMBOLS}</name>
+        <value/>
+      </macro>
+      <macro>
+        <name>ccs</name>
+        <value/>
+      </macro>
+      <macro>
+        <name>PART_TM4C1294NCPDT</name>
+        <value/>
+      </macro>
+      <macro>
+        <name>TIVAWARE</name>
+        <value/>
+      </macro>
+    </language>
+    <language id="com.ti.ccstudio.core.TIGCCLanguage" name="C Source File">
+      <macro>
+        <name>${COM_TI_RTSC_TIRTOSTIVAC_SYMBOLS}</name>
+        <value/>
+      </macro>
+      <macro>
+        <name>ccs</name>
+        <value/>
+      </macro>
+      <macro>
+        <name>PART_TM4C1294NCPDT</name>
+        <value/>
+      </macro>
+      <macro>
+        <name>TIVAWARE</name>
+        <value/>
+      </macro>
+    </language>
+    <language id="com.ti.ccstudio.core.TIASMLanguage" name="Assembly Source File">
+      <macro>
+        <name>${COM_TI_RTSC_TIRTOSTIVAC_SYMBOLS}</name>
+        <value/>
+      </macro>
+      <macro>
+        <name>ccs</name>
+        <value/>
+      </macro>
+      <macro>
+        <name>PART_TM4C1294NCPDT</name>
+        <value/>
+      </macro>
+      <macro>
+        <name>TIVAWARE</name>
+        <value/>
+      </macro>
+    </language>
+    <language id="com.ti.ccstudio.core.TICMDLanguage" name="Linker Command File"/>
+    <language id="com.ti.ccstudio.core.TICMDLanguage" name="Linker Command File"/>
+    <language id="com.ti.ccstudio.core.TICMDLanguage" name="Linker Command File"/>
+  </section>
+</cdtprojectproperties>
