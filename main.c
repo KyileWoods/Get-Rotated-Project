@@ -156,8 +156,6 @@ Void opt3001ReadFxn(UArg arg0, UArg arg1) {
  */
 int main(void)
 {
-
-
     Task_Params taskParams;
 
     // Initialize I2C peripheral
