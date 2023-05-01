@@ -1,6 +1,6 @@
 # Ignore all files and directories
 *
-debug/
+debug/*
 
 # Include specific files
 !main.c
@@ -9,7 +9,7 @@ debug/
 
 ## Include the include directory and its contents
 
-!drivers/ 
-!Outsider creations/
-!OG creations/
-!README resources/
+!drivers/* 
+!Outsider creations/*
+!OG creations/*
+!README resources/*
