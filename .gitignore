@@ -8,6 +8,7 @@ debug/*
 !README.md
 
 ## DO Include these directories and their contents
+# MUST except the folder, and then except the contents
 !drivers/
 !drivers/*
 !OutsiderCreations/
