@@ -43,6 +43,6 @@ I am not sure if we can safely put any of our existing files, like main.c, into 
 For now, I have created the .gitignore to ignore EVERYTHING by default, and you have to explicitly allow exceptional files (I know all your files will be exceptional, because we are a smart crew).
 
 
-Here is an example, with an exclusion for main, and a fodler. Apply your exceptions just like that
+Here is an example, with an exclusion for main, and a folder. Apply your exceptions just like that
 ![Importing include paths](./README resources/Altering the gitignore.PNG "Basic idea of altering which files are shared, to avoid screwing up other peoples environments.")
 

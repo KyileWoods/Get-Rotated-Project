@@ -7,9 +7,9 @@ debug/*
 !config.cfg
 !README.md
 
-## Include the include directory and its contents
+## DO Include these directories and their contents
 
-!drivers/
-!Outsider creations/*
-!OG creations/*
-!README resources/*
+!drivers/*
+!OutsiderCreations/*
+!OGcreations/*
+!READMEResources/*
