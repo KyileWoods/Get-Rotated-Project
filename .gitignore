@@ -1,5 +1,6 @@
 # Ignore all files and directories
 *
+debug/
 
 # Include specific files
 !main.c
