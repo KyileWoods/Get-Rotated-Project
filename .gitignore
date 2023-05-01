@@ -9,7 +9,7 @@ debug/*
 
 ## Include the include directory and its contents
 
-!drivers/* 
+!drivers/
 !Outsider creations/*
 !OG creations/*
 !README resources/*
