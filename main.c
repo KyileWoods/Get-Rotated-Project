@@ -194,8 +194,6 @@ int main(void)
      * */
     sensorOpt3001Enable(true);
 
-
-
     /* Construct heartBeat0 Task  thread */
     Task_Params_init(&taskParams);
     taskParams.arg0 = 300;

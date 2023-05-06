@@ -6,11 +6,17 @@
 
 // START ----------------------- MEMORY STRUCTURES -------------------------
 
+typedef struct MsgObj {
+    Queue_Elem elem; /* first field for Queue
+    */
+    int id; /* writer task id */
+    char data; /* message value */
+} MsgObj;
+
 typedef struct EGH456_data_t {
 
     // Semaphores
     sem_t Test1_semaphore   ; // 32 bytes 
-    
 
 
 
@@ -21,16 +27,16 @@ typedef struct EGH456_data_t {
 
 
 
-// END ------------------------- MEMORY STRUCTURES -------------------------
-
-// memory handle - as per CAB403
+/* END ------------------------- MEMORY STRUCTURES -------------------------
+*/
+// memory handle - as per CAB403 systems programming
 typedef struct shared_mem {
 
     const char* name;
 
     int fd;
 
-    shared_struct_t* data;
+    EGH456_data_t* data;
 
-}
+} shared_mem_t;
 
