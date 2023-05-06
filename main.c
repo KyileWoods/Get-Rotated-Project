@@ -41,7 +41,6 @@
 #include <ti/sysbios/BIOS.h>
 #include <ti/sysbios/knl/Task.h>
 
-#define Test_variable_commit;
 
 
 
