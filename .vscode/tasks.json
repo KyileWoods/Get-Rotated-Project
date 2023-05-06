@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl.exe",
+            "args": [
+                "-o",
+                "${workspaceFolder}/AssignmentProgramCompiled.out",
+                "${workspaceFolder}/main.c",
+                "-I", "C:/ti/tirtos_tivac_2_16_01_14",
+                "-I", "C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages",
+                "-I", "C:/ti/xdctools_3_32_00_06_core/packages",
+                "-I", "C:/ti/xdctools_3_32_00_06_core/packages/xdc",
+                "-I", "C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios",
+                "-I", "C:/ti/TivaWare_C_Series-2.2.0.295/inc",
+                "-I", "C:/ti/TivaWare_C_Series-2.2.0.295/driverlib",
+                "-I", "C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
+        }
+    ]
+}

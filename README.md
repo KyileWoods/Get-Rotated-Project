@@ -17,7 +17,7 @@ C:\ti\tirtos_tivac_2_16_01_14\resources\ek_tm4C1294XLEvaluationKit\driverExample
 
 Make sure to use the github version of any files which are in conflict. This will mean deleting "Empty_min_ek_tm4C1294XL_ti".
 
-I actually haven't gone through those steps I jsut described, but it seems reasonable. If it isn't working, just give me a message on Discord. 
+I actually haven't gone through those steps I just described, but it seems reasonable. If it isn't working, just give me a message on Discord. Phoenix is better than me at this stuff too, so I hope you aren't Phoenix AND having trouble, because then we are really stuck.
 
 ### Your project will not be compiling and running yet; that is OK.
 
@@ -45,4 +45,19 @@ For now, I have created the .gitignore to ignore EVERYTHING by default, and you 
 
 Here is an example, with an exclusion for main, and a folder. Apply your exceptions just like that
 ![Importing include paths](./READMEResources/Altering-the-gitignore.PNG "Basic idea of altering which files are shared, to avoid screwing up other peoples environments.")
+
+# TOPIC: LiveShare
+https://code.visualstudio.com/learn/collaboration/live-share
+
+Liveshare has to be initiated like a livestream, 
+so there is a host, who starts it, but you can actually mess around with the code on my screen. You don't even need to have the git repo on your computer for it to work (anymore than you would need Fortnite to get that livestreamed toy our phone).
+
+You do need a github account, though. So go get that real quick and come back.
+
+### You do NOT need to do anything special in VSCode to open and edit a CCS file. You open the .c, edit it, and it is instantly updated in C.C.S., so you can isntantly compile and run/debug
+
+## Install it here in VSCode:
+
+![Downloading Liveshare](./READMEResources/LiveShare.PNG " DO ITTTTT")
+
 

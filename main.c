@@ -1,4 +1,3 @@
-// Shoopy doo
 /*
  * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
@@ -120,6 +119,7 @@ void i2c_init(void) {
     GPIOPinTypeI2CSCL(GPIO_PORTB_BASE, GPIO_PIN_2);
     GPIOPinTypeI2C(GPIO_PORTB_BASE, GPIO_PIN_3);
 
+
     // Initialize and configure I2C master
     I2CMasterInitExpClk(I2C0_BASE, SysCtlClockGet(), false);
 }
@@ -205,7 +205,7 @@ int main(void)
 
     /* Construct heartBeat1 Task  thread */
     Task_Params_init(&taskParams);
-    taskParams.arg0 = 300;
+    taskParams.arg0 = 100;
     taskParams.arg1 = 1;
     taskParams.stackSize = TASKSTACKSIZE;
     taskParams.stack = &task1Stack;

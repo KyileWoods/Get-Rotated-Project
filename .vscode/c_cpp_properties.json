@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "name": "Win32_tirtos_kyle",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/ti/tirtos_tivac_2_16_01_14",
+                "C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages",
+                "C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios",
+                "C:/ti/xdctools_3_32_00_06_core/packages",
+                "C:/ti/xdctools_3_32_00_06_core/packages/xdc",
+                "C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include",
+                "C:/ti/TivaWare_C_Series-2.2.0.295/inc",
+                "C:/ti/TivaWare_C_Series-2.2.0.295",
+                "C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages",
+                "C:/ti/TivaWare_C_Series-2.2.0.295/driverlib"
+            ],
+            "defines": [
+                "PART_TM4C1294NCPDT"
+            ],
+            "compilerPath": "C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl.exe",
+            "cStandard": "c99",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}

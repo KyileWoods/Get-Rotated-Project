@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "bios.h": "c",
+        "system.h": "c",
+        "std.h": "c",
+        "gpio.h": "c",
+        "task.h": "c",
+        "i2c.h": "c"
+    }
+}
