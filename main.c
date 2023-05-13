@@ -31,17 +31,35 @@
  */
 
 /*
- *  ======== empty_min.c ========
+ *  ======== main.c ========
  */
+/* Standard type of includes */
+#include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <math.h>
+
 /* XDCtools Header files */
 #include <xdc/std.h>
 #include <xdc/runtime/System.h>
+#include <xdc/runtime/Error.h>
 
 /* BIOS Header files */
 #include <ti/sysbios/BIOS.h>
 #include <ti/sysbios/knl/Task.h>
+#include <ti/sysbios/knl/Event.h>
+#include <ti/sysbios/knl/Clock.h>
+#include <ti/sysbios/knl/Swi.h>
+#include <ti/sysbios/knl/Queue.h>
 
 
+/* OG ROTATED CREATIONS */
+#include "OGcreations/OurEventsFuncs/OurEvents.h"
+#include "OGcreations/OurMessagingFuncs/OurMessaging.h"
+#include "OGcreations/OurTimingFuncs/OurTimers.h"
+//#include "OGcreations/HeartBeatFuncs/heartbeatfuncs.h"
+
+//#include "OGcreations/HeartBeatFuncs/heartbeatfuncs.h"
 
 
 /* TI-RTOS Header files */
@@ -64,8 +82,8 @@
 
 #include "drivers/opt3001.h"
 #include "drivers/i2cOptDriver.h"
-#include <stdio.h>
 
+/* Task Definitions  */
 #define TASKSTACKSIZE   512
 Task_Struct task0Struct;
 Char task0Stack[TASKSTACKSIZE];
@@ -76,38 +94,20 @@ Char task2Stack[TASKSTACKSIZE];
 #define STACKSIZE 1024
 Char taskStack[STACKSIZE];
 
+/* Events */
+Event_Struct evtStruct;
+Event_Handle evtHandle;
+
+
+
+
 
 /*
  *  ======== heartBeatFxn ========
  *  Toggle the Board_LED0/1. The Task_sleep is determined by arg0 which
  *  is configured for the heartBeat Task instance.
  */
-Void heartBeatFxn(UArg limit, UArg LED_inc)
-{
-    /*A function which can be entered into by multiple threads, and light up unique LED's.
-    The maximal-allowed time interval and LED# are passed as arg's, then the blinking
-    rate oscillates between zero and 'limit'
-    */
-    int direction = 1; //Define whether the blinking interval grows or shrinks, at the beginning
-    int ms_time = 1 + (LED_inc*limit);
-    while (1) {
-        Task_sleep((unsigned int)ms_time);
-        GPIO_toggle(Board_LED0+LED_inc);
-        if(direction == 1){
-            ms_time++;
-            if(ms_time>limit){
-                direction = -1;
-            }
-        }
-        if(direction == -1){
-            ms_time--;
-            if(ms_time<2){
-                direction = 1;
-            }
-        }
 
-    }
-}
 
 void i2c_init(void) {
     // Enable I2C peripheral
@@ -159,6 +159,17 @@ Void opt3001ReadFxn(UArg arg0, UArg arg1) {
 int main(void)
 {
     Task_Params taskParams;
+    Event_Params eventParams;
+
+    //create a clock swi fxn here
+    Clock_Params clkParams;
+    Clock_Params_init(&clkParams);
+    clkParams.startFlag = TRUE;
+    int Hz = 150; //Define the frequency to Hwi this clock
+    clkParams.period = 1000/Hz; //100ms => 10 Hz
+    Clock_construct(&clk0Struct, (Clock_FuncPtr)clk0_swi_clk_fxn,
+                    50, &clkParams);
+    clk0Handle = Clock_handle(&clk0Struct);
 
     // Initialize I2C peripheral
     i2c_init();
@@ -171,6 +182,16 @@ int main(void)
 
     // Create the opt3001ReadFxn task
     Task_Handle opt3001TaskHandle = Task_create((Task_FuncPtr)opt3001ReadFxn, &taskParams, NULL);
+
+    
+    Event_Params evtParams; //Declare params locally
+    Event_Params_init(&evtParams); //Initialise it with default values
+    //Event_create is DYNAMIC; even_construct is STATIC memory allocation-- PROTOTYPE: Event_Handle Event_create(Event_Params *__prms, xdc_runtime_Error_Block *__eb );
+    Event_construct(&evtStruct, &evtParams); //Construct an event according to params, populate a struct with the event's unique information
+    evtHandle = Event_handle(&evtStruct);// Pull the event handle out from the structure, for easy reference
+    if (evtHandle == NULL) {
+        System_printf("Event creation failed :( ");
+    }
 
     /* Call board init functions */
     Board_initGeneral();
@@ -200,7 +221,7 @@ int main(void)
     taskParams.arg1 = 0;
     taskParams.stackSize = TASKSTACKSIZE;
     taskParams.stack = &task0Stack;
-    Task_construct(&task0Struct, (Task_FuncPtr)heartBeatFxn, &taskParams, NULL);
+    //Task_construct(&task0Struct, (Task_FuncPtr)heartBeatFxn, &taskParams, NULL);
 
     /* Construct heartBeat1 Task  thread */
     Task_Params_init(&taskParams);
@@ -208,7 +229,7 @@ int main(void)
     taskParams.arg1 = 1;
     taskParams.stackSize = TASKSTACKSIZE;
     taskParams.stack = &task1Stack;
-    Task_construct(&task1Struct, (Task_FuncPtr)heartBeatFxn, &taskParams, NULL);
+    //Task_construct(&task1Struct, (Task_FuncPtr)heartBeatFxn, &taskParams, NULL);
 
     /* Start BIOS */
     BIOS_start();

@@ -5,6 +5,15 @@
         "std.h": "c",
         "gpio.h": "c",
         "task.h": "c",
-        "i2c.h": "c"
+        "i2c.h": "c",
+        "event.h": "c",
+        "error.h": "c",
+        "events.h": "c",
+        "swi.h": "c",
+        "mailbox.h": "c",
+        "stdio.h": "c",
+        "board.h": "c",
+        "math.h": "c",
+        "stdint.h": "c"
     }
 }

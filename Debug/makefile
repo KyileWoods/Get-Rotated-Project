@@ -12,6 +12,10 @@ GEN_CMDS__FLAG := -l"configPkg/linker.cmd"
 ORDERED_OBJS += \
 "./EK_TM4C1294XL.obj" \
 "./main.obj" \
+"./OGcreations/HeartBeatFuncs/heartbeatfuncs.obj" \
+"./OGcreations/OurMessagingFuncs/OurMessaging.obj" \
+"./OGcreations/OurTimingFuncs/OurTimers.obj" \
+"./OGcreations/Sensing/Sensing.obj" \
 "./drivers/i2cOptDriver.obj" \
 "./drivers/opt3001.obj" \
 "../EK_TM4C1294XL.cmd" \
@@ -29,8 +33,16 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include OGcreations/HeartBeatFuncs/subdir_vars.mk
+-include OGcreations/OurMessagingFuncs/subdir_vars.mk
+-include OGcreations/OurTimingFuncs/subdir_vars.mk
+-include OGcreations/Sensing/subdir_vars.mk
 -include drivers/subdir_vars.mk
 -include subdir_rules.mk
+-include OGcreations/HeartBeatFuncs/subdir_rules.mk
+-include OGcreations/OurMessagingFuncs/subdir_rules.mk
+-include OGcreations/OurTimingFuncs/subdir_rules.mk
+-include OGcreations/Sensing/subdir_rules.mk
 -include drivers/subdir_rules.mk
 -include objects.mk
 
@@ -149,8 +161,8 @@ Get\ Rotated\ Project.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "EK_TM4C1294XL.obj" "main.obj" "drivers\i2cOptDriver.obj" "drivers\opt3001.obj" 
-	-$(RM) "EK_TM4C1294XL.d" "main.d" "drivers\i2cOptDriver.d" "drivers\opt3001.d" 
+	-$(RM) "EK_TM4C1294XL.obj" "main.obj" "OGcreations\HeartBeatFuncs\heartbeatfuncs.obj" "OGcreations\OurMessagingFuncs\OurMessaging.obj" "OGcreations\OurTimingFuncs\OurTimers.obj" "OGcreations\Sensing\Sensing.obj" "drivers\i2cOptDriver.obj" "drivers\opt3001.obj" 
+	-$(RM) "EK_TM4C1294XL.d" "main.d" "OGcreations\HeartBeatFuncs\heartbeatfuncs.d" "OGcreations\OurMessagingFuncs\OurMessaging.d" "OGcreations\OurTimingFuncs\OurTimers.d" "OGcreations\Sensing\Sensing.d" "drivers\i2cOptDriver.d" "drivers\opt3001.d" 
 	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)
 	-@echo 'Finished clean'
 	-@echo ' '
