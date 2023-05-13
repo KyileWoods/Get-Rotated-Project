@@ -14,6 +14,14 @@
         "stdio.h": "c",
         "board.h": "c",
         "math.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "pin_map.h": "c",
+        "stdbool.h": "c",
+        "motor.h": "c",
+        "motorlib.h": "c",
+        "ourmotors.h": "c",
+        "ek_tm4c1294xl.h": "c",
+        "tm4c1294ncpdt.h": "c",
+        "hw_memmap.h": "c"
     }
 }

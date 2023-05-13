@@ -220,6 +220,8 @@ main.obj: ../Board.h
 main.obj: ../EK_TM4C1294XL.h
 main.obj: ../drivers/opt3001.h
 main.obj: ../drivers/i2cOptDriver.h
+main.obj: ../drivers/motorlib.h
+main.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Error.h
 
 ../main.c:
 
@@ -660,4 +662,8 @@ C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/sys
 ../drivers/opt3001.h:
 
 ../drivers/i2cOptDriver.h:
+
+../drivers/motorlib.h:
+
+C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Error.h:
 

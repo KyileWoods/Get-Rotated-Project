@@ -5,6 +5,9 @@
 SHELL = cmd.exe
 
 # Add inputs and outputs from these tool invocations to the build variables 
+LIB_SRCS += \
+../drivers/MotorLib.lib 
+
 C_SRCS += \
 ../drivers/i2cOptDriver.c \
 ../drivers/opt3001.c 

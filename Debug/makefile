@@ -14,12 +14,15 @@ ORDERED_OBJS += \
 "./main.obj" \
 "./OGcreations/HeartBeatFuncs/heartbeatfuncs.obj" \
 "./OGcreations/OurMessagingFuncs/OurMessaging.obj" \
+"./OGcreations/OurMotorFuncs/OurMotors.obj" \
 "./OGcreations/OurTimingFuncs/OurTimers.obj" \
 "./OGcreations/Sensing/Sensing.obj" \
 "./drivers/i2cOptDriver.obj" \
 "./drivers/opt3001.obj" \
 "../EK_TM4C1294XL.cmd" \
+"../drivers/MotorLib.lib" \
 $(GEN_CMDS__FLAG) \
+-l"C:/Users/Delluser/Desktop/Projects go in here/Get Rotated Project/drivers/MotorLib.lib" \
 -l"C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/grlib/ccs/Debug/grlib.lib" \
 -l"C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/usblib/ccs/Debug/usblib.lib" \
 -l"C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/ccs/Debug/driverlib.lib" \
@@ -35,12 +38,14 @@ RMDIR := RMDIR /S/Q
 -include subdir_vars.mk
 -include OGcreations/HeartBeatFuncs/subdir_vars.mk
 -include OGcreations/OurMessagingFuncs/subdir_vars.mk
+-include OGcreations/OurMotorFuncs/subdir_vars.mk
 -include OGcreations/OurTimingFuncs/subdir_vars.mk
 -include OGcreations/Sensing/subdir_vars.mk
 -include drivers/subdir_vars.mk
 -include subdir_rules.mk
 -include OGcreations/HeartBeatFuncs/subdir_rules.mk
 -include OGcreations/OurMessagingFuncs/subdir_rules.mk
+-include OGcreations/OurMotorFuncs/subdir_rules.mk
 -include OGcreations/OurTimingFuncs/subdir_rules.mk
 -include OGcreations/Sensing/subdir_rules.mk
 -include drivers/subdir_rules.mk
@@ -147,22 +152,22 @@ EXE_OUTPUTS__QUOTED += \
 
 
 # All Target
-all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
+all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@$(MAKE) --no-print-directory -Onone "Get Rotated Project.out"
 
 # Tool invocations
-Get\ Rotated\ Project.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
+Get\ Rotated\ Project.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: Arm Linker'
-	"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs --define=PART_TM4C1294NCPDT --define=TIVAWARE -g --gcc --diag_warning=225 --diag_warning=255 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"Get Rotated Project.map" --heap_size=0 --stack_size=512 -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/lib" -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="Get Rotated Project_linkInfo.xml" --rom_model -o "Get Rotated Project.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs --define=PART_TM4C1294NCPDT --define=TIVAWARE -g --gcc --diag_warning=225 --diag_warning=255 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"Get Rotated Project.map" --heap_size=0 --stack_size=512 -i"C:/Users/Delluser/Desktop/Projects go in here/Get Rotated Project/drivers" -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/lib" -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="Get Rotated Project_linkInfo.xml" --rom_model -o "Get Rotated Project.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "EK_TM4C1294XL.obj" "main.obj" "OGcreations\HeartBeatFuncs\heartbeatfuncs.obj" "OGcreations\OurMessagingFuncs\OurMessaging.obj" "OGcreations\OurTimingFuncs\OurTimers.obj" "OGcreations\Sensing\Sensing.obj" "drivers\i2cOptDriver.obj" "drivers\opt3001.obj" 
-	-$(RM) "EK_TM4C1294XL.d" "main.d" "OGcreations\HeartBeatFuncs\heartbeatfuncs.d" "OGcreations\OurMessagingFuncs\OurMessaging.d" "OGcreations\OurTimingFuncs\OurTimers.d" "OGcreations\Sensing\Sensing.d" "drivers\i2cOptDriver.d" "drivers\opt3001.d" 
+	-$(RM) "EK_TM4C1294XL.obj" "main.obj" "OGcreations\HeartBeatFuncs\heartbeatfuncs.obj" "OGcreations\OurMessagingFuncs\OurMessaging.obj" "OGcreations\OurMotorFuncs\OurMotors.obj" "OGcreations\OurTimingFuncs\OurTimers.obj" "OGcreations\Sensing\Sensing.obj" "drivers\i2cOptDriver.obj" "drivers\opt3001.obj" 
+	-$(RM) "EK_TM4C1294XL.d" "main.d" "OGcreations\HeartBeatFuncs\heartbeatfuncs.d" "OGcreations\OurMessagingFuncs\OurMessaging.d" "OGcreations\OurMotorFuncs\OurMotors.d" "OGcreations\OurTimingFuncs\OurTimers.d" "OGcreations\Sensing\Sensing.d" "drivers\i2cOptDriver.d" "drivers\opt3001.d" 
 	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)
 	-@echo 'Finished clean'
 	-@echo ' '

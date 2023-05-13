@@ -79,9 +79,11 @@
 
 /* Board Header file */
 #include "Board.h"
-
+/* QUT driver files*/
 #include "drivers/opt3001.h"
 #include "drivers/i2cOptDriver.h"
+#include "drivers/motorlib.h"
+
 
 /* Task Definitions  */
 #define TASKSTACKSIZE   512
@@ -173,6 +175,27 @@ int main(void)
 
     // Initialize I2C peripheral
     i2c_init();
+    //initialise the motor library
+    /*
+    This function requires an *eb errorbreak but it is breaking at this point.
+    Probably an error is being thrown, but with NULL in EB it is being thrown to 0xffffff and crashing*/
+    int enter = 0;
+    if(enter){
+        bool MotorLibSuccess ;
+        Error_Block m_eb;
+
+        Error_init(&m_eb);
+        
+        //enableMotor();
+        MotorLibSuccess = initMotorLib(50, &m_eb);
+        if (!MotorLibSuccess) {
+            Error_print(&m_eb);
+            System_abort("Error Initializing Motor\n");
+        }
+        //setDuty(50);
+        //initMotorLib(50); 
+    }
+
 
     // Initialize the task parameters
     Task_Params_init(&taskParams);
@@ -181,7 +204,7 @@ int main(void)
     taskParams.priority = 1;
 
     // Create the opt3001ReadFxn task
-    Task_Handle opt3001TaskHandle = Task_create((Task_FuncPtr)opt3001ReadFxn, &taskParams, NULL);
+    //Task_Handle opt3001TaskHandle = Task_create((Task_FuncPtr)opt3001ReadFxn, &taskParams, NULL);
 
     
     Event_Params evtParams; //Declare params locally
@@ -199,7 +222,7 @@ int main(void)
     Board_initGPIO();
     Board_initI2C();
 
-    sensorOpt3001Init();  // Initialize OPT3001 sensor
+    //sensorOpt3001Init();  // Initialize OPT3001 sensor
     // Board_initSDSPI();
     // Board_initSPI();
     // Board_initUART();
@@ -213,7 +236,7 @@ int main(void)
      * At the moment: giving different parameters, and different stack.
      * The arg1 is the LED number (LED0/1).
      * */
-    sensorOpt3001Enable(true);
+    //sensorOpt3001Enable(true);
 
     /* Construct heartBeat0 Task  thread */
     Task_Params_init(&taskParams);

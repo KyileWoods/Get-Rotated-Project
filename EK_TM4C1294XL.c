@@ -426,14 +426,17 @@ const PWMTiva_HWAttrs pwmTivaHWAttrs[EK_TM4C1294XL_PWMCOUNT] = {
     }
 };
 
-const PWM_Config PWM_config[] = {
-    {
-        .fxnTablePtr = &PWMTiva_fxnTable,
-        .object = &pwmTivaObjects[0],
-        .hwAttrs = &pwmTivaHWAttrs[0]
-    },
-    {NULL, NULL, NULL}
-};
+
+/* C O M M E N T E D   O U T  As instructed by the Readme for motorLib package*/
+// const PWM_Config PWM_config[] = {
+//     {
+//         .fxnTablePtr = &PWMTiva_fxnTable,
+//         .object = &pwmTivaObjects[0],
+//         .hwAttrs = &pwmTivaHWAttrs[0]
+//     },
+//     {NULL, NULL, NULL}
+// };
+
 
 /*
  *  ======== EK_TM4C1294XL_initPWM ========

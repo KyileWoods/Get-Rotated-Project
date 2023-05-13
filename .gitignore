@@ -70,3 +70,6 @@ Debug*/
 *.asm
 *.a43
 .loadinfo
+
+# Word files not intended to be shared
+.*.docx
