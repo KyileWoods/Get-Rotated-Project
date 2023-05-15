@@ -87,8 +87,9 @@
 
 /* Task Definitions  */
 #define TASKSTACKSIZE   512
-Task_Struct task0Struct;
-Char task0Stack[TASKSTACKSIZE];
+Task_Struct MotorTask_Struct;
+Char MotorTask_Stack[TASKSTACKSIZE];
+
 Task_Struct task1Struct;
 Char task1Stack[TASKSTACKSIZE];
 Task_Struct task2Struct;
@@ -99,6 +100,15 @@ Char taskStack[STACKSIZE];
 /* Events */
 Event_Struct evtStruct;
 Event_Handle evtHandle;
+
+typedef enum {
+    IDLING,
+    STARTING,
+    RUNNING,
+    ZOOMING,
+    SLOWING,
+    E_STOP,
+} MotorState;
 
 
 
@@ -160,11 +170,26 @@ Void opt3001ReadFxn(UArg arg0, UArg arg1) {
  */
 int main(void)
 {
+    /* Params */
     Task_Params taskParams;
     Event_Params eventParams;
-
-    //create a clock swi fxn here
     Clock_Params clkParams;
+    Mailbox_Params mbxParams;
+
+    Board_initGeneral();
+
+    Task_Params_init(&taskParams);
+        taskParams.arg0 = (UArg)mbxHandle;
+        taskParams.stackSize = TASKSTACKSIZE;
+        taskParams.priority = 1;
+        // Create the 2 events
+        taskParams.stack = &MotorTask_Stack;
+        Task_construct(&MotorTask_Struct, (Task_FuncPtr)writertask, &taskParams, NULL);
+        taskParams.stack = &task1Stack;
+        Task_construct(&task1Struct, (Task_FuncPtr)readertask, &taskParams, NULL);
+
+
+
     Clock_Params_init(&clkParams);
     clkParams.startFlag = TRUE;
     int Hz = 150; //Define the frequency to Hwi this clock
@@ -176,10 +201,15 @@ int main(void)
     // Initialize I2C peripheral
     i2c_init();
     //initialise the motor library
-    /*
+    /* ANY CONFUSING CODE BELOW HERE IS LIKELY TO BE DEBUG PURPOSES, FOR A SPECIFIC PROBLEM. DELTE JUDICIOUSLY
+
     This function requires an *eb errorbreak but it is breaking at this point.
     Probably an error is being thrown, but with NULL in EB it is being thrown to 0xffffff and crashing*/
-    int enter = 0;
+
+    setDuty(50); //Debug only
+
+
+    int enter = 0; //This is an if-guard which shouldn't exist, except this stupid error.
     if(enter){
         bool MotorLibSuccess ;
         Error_Block m_eb;
@@ -195,7 +225,7 @@ int main(void)
         //setDuty(50);
         //initMotorLib(50); 
     }
-
+    setDuty(50);
 
     // Initialize the task parameters
     Task_Params_init(&taskParams);
@@ -213,7 +243,7 @@ int main(void)
     Event_construct(&evtStruct, &evtParams); //Construct an event according to params, populate a struct with the event's unique information
     evtHandle = Event_handle(&evtStruct);// Pull the event handle out from the structure, for easy reference
     if (evtHandle == NULL) {
-        System_printf("Event creation failed :( ");
+        //System_printf("Event creation failed :( ");
     }
 
     /* Call board init functions */
@@ -222,7 +252,7 @@ int main(void)
     Board_initGPIO();
     Board_initI2C();
 
-    //sensorOpt3001Init();  // Initialize OPT3001 sensor
+    sensorOpt3001Init();  // Initialize OPT3001 sensor
     // Board_initSDSPI();
     // Board_initSPI();
     // Board_initUART();
@@ -243,7 +273,7 @@ int main(void)
     taskParams.arg0 = 300;
     taskParams.arg1 = 0;
     taskParams.stackSize = TASKSTACKSIZE;
-    taskParams.stack = &task0Stack;
+    taskParams.stack = &MotorTask_Stack;
     //Task_construct(&task0Struct, (Task_FuncPtr)heartBeatFxn, &taskParams, NULL);
 
     /* Construct heartBeat1 Task  thread */

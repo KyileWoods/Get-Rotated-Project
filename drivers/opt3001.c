@@ -137,7 +137,7 @@ bool sensorOpt3001Init(void)
      bool success = writeI2C(OPT3001_I2C_ADDRESS, REG_CONFIGURATION, (uint8_t*)&val);
      if (!success) {
          // Handle the error, e.g., by logging an error message or retrying the operation
-         System_printf("sensorOpt fail!");
+         //System_printf("sensorOpt fail!");
      }
  }
 
@@ -235,7 +235,7 @@ bool sensorOpt3001Test(void)
 		return (false);
 	}
 
-	System_printf("Manufacturer ID Correct: %c%c\n", val & 0x00FF, (val >> 8) & 0x00FF);
+	//System_printf("Manufacturer ID Correct: %c%c\n", val & 0x00FF, (val >> 8) & 0x00FF);
 
 	// Check device ID
 	readI2C(OPT3001_I2C_ADDRESS, REG_DEVICE_ID, (uint8_t *)&val);
@@ -246,7 +246,7 @@ bool sensorOpt3001Test(void)
 		return (false);
 	}
 
-	System_printf("Device ID Correct: %c%c\n", val & 0x00FF, (val >> 8) & 0x00FF);
+	//System_printf("Device ID Correct: %c%c\n", val & 0x00FF, (val >> 8) & 0x00FF);
 
 	return (true);
 }

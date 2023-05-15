@@ -110,8 +110,8 @@ void HallSensorA_isr(void)
     bool Hall_c = GPIOPinRead(GPIO_PORTL_BASE, GPIO_PIN_4);
     
     // Communicate that with other Tasks
-    System_printf("Sensor A:  %i%i%i \n", Hall_a,Hall_b,Hall_c);
-    System_flush();
+    //System_printf("Sensor A:  %i%i%i \n", Hall_a,Hall_b,Hall_c);
+    //System_flush();
 
     // Post the relevant event OR set a specific task to READY// 
     // DO THAT HERE//
