@@ -22,6 +22,8 @@
         "ourmotors.h": "c",
         "ek_tm4c1294xl.h": "c",
         "tm4c1294ncpdt.h": "c",
-        "hw_memmap.h": "c"
+        "hw_memmap.h": "c",
+        "queue.h": "c",
+        "ourmessaging.h": "c"
     }
 }

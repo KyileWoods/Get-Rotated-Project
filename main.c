@@ -1,36 +1,4 @@
 /*
- * Copyright (c) 2015, Texas Instruments Incorporated
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * *  Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- * *  Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * *  Neither the name of Texas Instruments Incorporated nor the names of
- *    its contributors may be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-/*
  *  ======== main.c ========
  */
 /* Standard type of includes */
@@ -52,13 +20,18 @@
 #include <ti/sysbios/knl/Swi.h>
 #include <ti/sysbios/knl/Queue.h>
 
+/* QUT driver files*/
+//#include "drivers/opt3001.h"
+//#include "drivers/i2cOptDriver.h"
+#include "drivers/motorlib.h"
 
 /* OG ROTATED CREATIONS */
+#include "OGcreations/MainInclude.h"
 #include "OGcreations/OurEventsFuncs/OurEvents.h"
 #include "OGcreations/OurMessagingFuncs/OurMessaging.h"
 #include "OGcreations/OurTimingFuncs/OurTimers.h"
-//#include "OGcreations/HeartBeatFuncs/heartbeatfuncs.h"
-
+#include "OGcreations/OurMotorFuncs/OurMotors.h"
+#include "shared_mem.h"
 //#include "OGcreations/HeartBeatFuncs/heartbeatfuncs.h"
 
 
@@ -79,17 +52,18 @@
 
 /* Board Header file */
 #include "Board.h"
-/* QUT driver files*/
-#include "drivers/opt3001.h"
-#include "drivers/i2cOptDriver.h"
-#include "drivers/motorlib.h"
 
 
-/* Task Definitions  */
-#define TASKSTACKSIZE   512
+
+/* TASKS  */
+#define MOTORTASKSTACKSIZE   512
 Task_Struct MotorTask_Struct;
-Char MotorTask_Stack[TASKSTACKSIZE];
+Char MotorTask_Stack[MOTORTASKSTACKSIZE];
+Task_Struct MotorTransitionTask_Struct;
+Char MotorTransitionTask_Stack[MOTORTASKSTACKSIZE];
 
+
+#define TASKSTACKSIZE   512
 Task_Struct task1Struct;
 Char task1Stack[TASKSTACKSIZE];
 Task_Struct task2Struct;
@@ -97,28 +71,15 @@ Char task2Stack[TASKSTACKSIZE];
 #define STACKSIZE 1024
 Char taskStack[STACKSIZE];
 
-/* Events */
+/* EVENTS*/
 Event_Struct evtStruct;
 Event_Handle evtHandle;
+#define MotorMailboxEventID Event_Id_02
 
-typedef enum {
-    IDLING,
-    STARTING,
-    RUNNING,
-    ZOOMING,
-    SLOWING,
-    E_STOP,
-} MotorState;
-
-
-
-
-
-/*
- *  ======== heartBeatFxn ========
- *  Toggle the Board_LED0/1. The Task_sleep is determined by arg0 which
- *  is configured for the heartBeat Task instance.
- */
+/* MAILBOXES */
+#define MAXMOTORMESSAGES 10
+Mailbox_Struct mbxStruct;
+Mailbox_Handle mbxHandle;
 
 
 void i2c_init(void) {
@@ -177,66 +138,85 @@ int main(void)
     Mailbox_Params mbxParams;
 
     Board_initGeneral();
+    Board_initGPIO();
+    Board_initI2C();
+    i2c_init();
+    // Board_initEMAC();
+    // Board_initSDSPI();
+    // Board_initSPI();
+    // Board_initUART();
+    // Board_initUSB(Board_USBDEVICE);
+    // Board_initUSBMSCHFatFs();
+    // Board_initWatchdog();
+    // Board_initWiFi();
+    // sensorOpt3001Init();  // Initialize OPT3001 sensor
 
-    Task_Params_init(&taskParams);
-        taskParams.arg0 = (UArg)mbxHandle;
-        taskParams.stackSize = TASKSTACKSIZE;
-        taskParams.priority = 1;
-        // Create the 2 events
+
+    //initialise the motor library
+        /* ANY CONFUSING CODE BELOW HERE IS LIKELY TO BE DEBUG PURPOSES, FOR A SPECIFIC PROBLEM. DELTE JUDICIOUSLY
+
+        This function requires an *eb errorbreak but it is breaking at this point.
+        Probably an error is being thrown, but with NULL in EB it is being thrown to 0xffffff and crashing*/
+
+        setDuty(50); //Debug only
+
+
+        int enter = 1; //This is an if-guard which shouldn't exist, except this stupid error.
+        if(enter){
+            bool MotorLibSuccess ;
+            Error_Block m_eb;
+
+            Error_init(&m_eb);
+
+            //enableMotor();
+            MotorLibSuccess = initMotorLib(50, &m_eb);
+            if (!MotorLibSuccess) {
+                Error_print(&m_eb);
+                System_abort("Error Initializing Motor\n");
+            }
+        }
+        setDuty(50);
+
+    /*===== CREATE EVERYTHING ABOUT MOTOR CONTROLLER FUNCTION=====*/
+    /* Construct a Mailbox Instance */
+    Mailbox_Params_init(&mbxParams);
+    mbxParams.readerEvent = evtHandle;
+    mbxParams.readerEventId = MotorMailboxEventID;
+    Mailbox_construct(&mbxStruct,sizeof(MsgObj), MAXMOTORMESSAGES, &mbxParams, NULL);
+    mbxHandle = Mailbox_handle(&mbxStruct);
+
+
+    MotorArgStruct_t MotorFxnArgs;
+    MotorFxnArgs.mbxHandle = mbxHandle;
+    MotorFxnArgs.max_mailbox_messages = MAXMOTORMESSAGES; //For iterating to a limit
+
+    Task_Params_init(&taskParams); //Start a generic task_params
+        taskParams.arg0 = (UArg) &MotorFxnArgs;
+        taskParams.stackSize = MOTORTASKSTACKSIZE;
+        taskParams.priority = MOTORTASK_PRIORITY;
         taskParams.stack = &MotorTask_Stack;
-        Task_construct(&MotorTask_Struct, (Task_FuncPtr)writertask, &taskParams, NULL);
-        taskParams.stack = &task1Stack;
-        Task_construct(&task1Struct, (Task_FuncPtr)readertask, &taskParams, NULL);
+        Task_construct(&MotorTask_Struct, (Task_FuncPtr)MotorTask, &taskParams, NULL);
+        taskParams.stack = &MotorTransitionTask_Stack;
+        Task_construct(&MotorTransitionTask_Struct, (Task_FuncPtr)MotorTransitionTask, &taskParams, NULL);
+    //Generic Task-creation template. Anything assigned a value BEFORE needs to be re-written.
+    taskParams.stackSize = TASKSTACKSIZE;
+    taskParams.priority = SUPERLOW_PRIORITY_TASK;
+    taskParams.stack = &task1Stack;
+    Task_construct(&task1Struct, (Task_FuncPtr)MotorTransitionTask, &taskParams, NULL);
 
 
 
     Clock_Params_init(&clkParams);
     clkParams.startFlag = TRUE;
-    int Hz = 150; //Define the frequency to Hwi this clock
-    clkParams.period = 1000/Hz; //100ms => 10 Hz
+    //int Hz = 150; //Define the frequency to Hwi this clock
+    clkParams.period = 1000/50; //100ms => 10 Hz
     Clock_construct(&clk0Struct, (Clock_FuncPtr)clk0_swi_clk_fxn,
                     50, &clkParams);
     clk0Handle = Clock_handle(&clk0Struct);
 
-    // Initialize I2C peripheral
-    i2c_init();
-    //initialise the motor library
-    /* ANY CONFUSING CODE BELOW HERE IS LIKELY TO BE DEBUG PURPOSES, FOR A SPECIFIC PROBLEM. DELTE JUDICIOUSLY
-
-    This function requires an *eb errorbreak but it is breaking at this point.
-    Probably an error is being thrown, but with NULL in EB it is being thrown to 0xffffff and crashing*/
-
-    setDuty(50); //Debug only
-
-
-    int enter = 0; //This is an if-guard which shouldn't exist, except this stupid error.
-    if(enter){
-        bool MotorLibSuccess ;
-        Error_Block m_eb;
-
-        Error_init(&m_eb);
-        
-        //enableMotor();
-        MotorLibSuccess = initMotorLib(50, &m_eb);
-        if (!MotorLibSuccess) {
-            Error_print(&m_eb);
-            System_abort("Error Initializing Motor\n");
-        }
-        //setDuty(50);
-        //initMotorLib(50); 
-    }
-    setDuty(50);
-
-    // Initialize the task parameters
-    Task_Params_init(&taskParams);
-    taskParams.stackSize = STACKSIZE;
-    taskParams.stack = &taskStack;
-    taskParams.priority = 1;
-
-    // Create the opt3001ReadFxn task
-    //Task_Handle opt3001TaskHandle = Task_create((Task_FuncPtr)opt3001ReadFxn, &taskParams, NULL);
 
     
+
     Event_Params evtParams; //Declare params locally
     Event_Params_init(&evtParams); //Initialise it with default values
     //Event_create is DYNAMIC; even_construct is STATIC memory allocation-- PROTOTYPE: Event_Handle Event_create(Event_Params *__prms, xdc_runtime_Error_Block *__eb );
@@ -246,46 +226,18 @@ int main(void)
         //System_printf("Event creation failed :( ");
     }
 
-    /* Call board init functions */
-    Board_initGeneral();
-    // Board_initEMAC();
-    Board_initGPIO();
-    Board_initI2C();
 
-    sensorOpt3001Init();  // Initialize OPT3001 sensor
-    // Board_initSDSPI();
-    // Board_initSPI();
-    // Board_initUART();
-    // Board_initUSB(Board_USBDEVICE);
-    // Board_initUSBMSCHFatFs();
-    // Board_initWatchdog();
-    // Board_initWiFi();
 
-    /*
-     * Creating two threads to operate on the same thread, with some experimental parameters.
-     * At the moment: giving different parameters, and different stack.
-     * The arg1 is the LED number (LED0/1).
-     * */
-    //sensorOpt3001Enable(true);
-
-    /* Construct heartBeat0 Task  thread */
-    Task_Params_init(&taskParams);
-    taskParams.arg0 = 300;
-    taskParams.arg1 = 0;
-    taskParams.stackSize = TASKSTACKSIZE;
-    taskParams.stack = &MotorTask_Stack;
-    //Task_construct(&task0Struct, (Task_FuncPtr)heartBeatFxn, &taskParams, NULL);
-
-    /* Construct heartBeat1 Task  thread */
-    Task_Params_init(&taskParams);
-    taskParams.arg0 = 100;
-    taskParams.arg1 = 1;
-    taskParams.stackSize = TASKSTACKSIZE;
-    taskParams.stack = &task1Stack;
-    //Task_construct(&task1Struct, (Task_FuncPtr)heartBeatFxn, &taskParams, NULL);
 
     /* Start BIOS */
     BIOS_start();
+
+    /*
+    BIOS_start NEVER EVER returns control to main()
+    This is the end of the program
+    */
+    System_printf("\n...................................Hello?!\n");
+    System_flush();
 
     return (0);
 }

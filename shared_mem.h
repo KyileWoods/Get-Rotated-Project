@@ -1,29 +1,31 @@
 #pragma once
 #pragma pack(1)     // no extra padding of declared memory structure
 
-
+#include <ti/sysbios/knl/Mailbox.h>
+#include <ti/sysbios/knl/Queue.h>
 // Definitions 
 
 // START ----------------------- MEMORY STRUCTURES -------------------------
 
-typedef struct MsgObj {
+// PLEASE DELETE ALL REFERENCES TO THE CODE THIS CAME FROM
+
+//THEN PLEASE PLACE THIS INTO AN OGCREATIONS FOLDER
+
+typedef struct MsgObj_s {
     Queue_Elem elem; /* first field for Queue
     */
     int id; /* writer task id */
     char data; /* message value */
 } MsgObj;
 
-typedef struct EGH456_data_t {
 
-    // Semaphores
-    sem_t Test1_semaphore   ; // 32 bytes 
-
-
-
+typedef struct MotorArgStruct{
+    Mailbox_Handle mbxHandle;
+    int max_mailbox_messages;
+}MotorArgStruct_t;
 
 
 
-}
 
 
 
@@ -36,7 +38,7 @@ typedef struct shared_mem {
 
     int fd;
 
-    EGH456_data_t* data;
+    //EGH456_data_t* data;
 
 } shared_mem_t;
 

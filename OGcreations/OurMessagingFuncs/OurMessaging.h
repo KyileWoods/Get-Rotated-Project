@@ -11,11 +11,17 @@
 #include <stdbool.h>
 #include <ti/sysbios/knl/Mailbox.h>
 
+typedef struct MailboxMessage {
+    Int         id;             /* Writer task id */
+    Char        val;            /* Message value */
+} MailboxMessage, *MailboxMessagePointer;
+
+
 // function declarations
 
-void MailboxMessageInteger(Mailbox_Handle MailboxHandle, int speed);
-void MailboxMessagePointer(Mailbox_Handle MailboxHandle, void* PointerAsVoid);
-void MailboxMessageBool(bool PostBool);
+void SendMailInteger(Mailbox_Handle MailboxHandle, int speed);
+void SendMailPointer(Mailbox_Handle MailboxHandle, void* PointerAsVoid);
+void SendMailBool(Mailbox_Handle MailboxHandle, bool PostBool);
 
 
 

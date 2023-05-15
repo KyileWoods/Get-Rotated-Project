@@ -1,14 +1,22 @@
 #include <stdbool.h>
 #include <ti/drivers/GPIO.h>
+#include <ti/sysbios/knl/Mailbox.h>
+#include <ti/sysbios/knl/Task.h> // For Task_exit()
+#include <xdc/runtime/System.h> //For printf'ing
+
 #include "inc/hw_memmap.h"
 #include "driverlib/gpio.h"
 #include "driverlib/interrupt.h"
 #include "driverlib/pin_map.h"
 #include "driverlib/sysctl.h"
 
+
 #include "Board.h"
-#include "OGcreations/OurMotorFuncs/OurMotors.h"
 #include "motorlib.h"
+#include "OGcreations/OurMotorFuncs/OurMotors.h"
+#include "OGcreations/OurMessagingFuncs/OurMessaging.h"
+#include "shared_mem.h"
+
 
 // ISR prototypes
 void HallSensorA_isr(void);
@@ -65,14 +73,14 @@ This is the conversion from motor-driver board, into the port-pin of launchpad
     GPIOIntTypeSet(GPIO_PORTN_BASE, GPIO_PIN_2, GPIO_BOTH_EDGES);
     
     // Register ISRs
-    GPIOIntRegister(GPIO_PORTM_BASE, HallSensorA_isr);
-    GPIOIntRegister(GPIO_PORTH_BASE, HallSensorB_isr);
-    GPIOIntRegister(GPIO_PORTN_BASE, HallSensorC_isr);
+//    GPIOIntRegister(GPIO_PORTM_BASE, HallSensorA_isr);
+//    GPIOIntRegister(GPIO_PORTH_BASE, HallSensorB_isr);
+//    GPIOIntRegister(GPIO_PORTN_BASE, HallSensorC_isr);
 
     // Enable interrupts
-    GPIOIntEnable(GPIO_PORTM_BASE, GPIO_INT_PIN_3);
-    GPIOIntEnable(GPIO_PORTH_BASE, GPIO_INT_PIN_2 | GPIO_INT_PIN_3);
-    GPIOIntEnable(GPIO_PORTN_BASE, GPIO_INT_PIN_2);
+//    GPIOIntEnable(GPIO_PORTM_BASE, GPIO_INT_PIN_3);
+//    GPIOIntEnable(GPIO_PORTH_BASE, GPIO_INT_PIN_2 | GPIO_INT_PIN_3);
+//    GPIOIntEnable(GPIO_PORTN_BASE, GPIO_INT_PIN_2);
 }
 
 void ConfigureMotors(void) {
@@ -149,6 +157,64 @@ void HallSensorC_isr(void)
     GPIOIntClear(GPIO_PORTL_BASE, GPIO_INT_PIN_4); //MUST CLEAR THE INTERRUPT
 }
 
+void MotorTransitionTask(UArg arg0, UArg arg1){
+    MotorArgStruct_t* args = (MotorArgStruct_t*)arg0;
+    Mailbox_Handle mbxHandle = args->mbxHandle;
+    int mbxMaxMessages = args->max_mailbox_messages;
+    MailboxMessage TheMessage;
 
+    int timeout = 50;
+
+    bool quitter = false;
+    while(quitter == false){
+        if(Mailbox_pend(mbxHandle, &TheMessage, 50)){
+            System_printf("Just received id = %d val = '%c' ...\n",
+            TheMessage.id, TheMessage.val);
+            System_flush();
+            if(TheMessage.val == 'Q'){
+                System_printf("QUIT SIGNAL RECEIVED");
+                System_flush();
+                quitter = true;
+            }
+        }
+    }
+    Task_exit();
+}
+
+
+void MotorTask(UArg arg0, UArg arg1){
+
+    MotorArgStruct_t* args = (MotorArgStruct_t*)arg0;
+    Mailbox_Handle mbxHandle = args->mbxHandle;
+    int mbxMaxMessages = args->max_mailbox_messages;
+    MailboxMessage TheMessage;
+    int timeout = 50;
+
+    ConfigureMotors();
+
+    //Write a message
+    for (int i=0; i < mbxMaxMessages; i++) {
+        /* Fill in value */
+        TheMessage.id = i;
+        TheMessage.val = i + 'a';
+
+        System_printf("Writing message id = %d val = '%c' ...\n",
+        TheMessage.id, TheMessage.val);
+        System_flush();
+
+        /* Enqueue message */
+        Mailbox_post(mbxHandle,&TheMessage,timeout);
+        
+    }
+    
+    TheMessage.val = 'Q';
+    System_printf("Writing QUIT...\n");
+    System_flush();
+    Mailbox_post(mbxHandle,&TheMessage,timeout);
+
+    Task_exit();
+
+
+}
 
 

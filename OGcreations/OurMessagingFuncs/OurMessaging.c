@@ -6,14 +6,14 @@
 
 
 
-void MailboxMessageInteger(Mailbox_Handle MailboxHandle, int speed){
+void SendMailInteger(Mailbox_Handle MailboxHandle, int speed){
     
 }
 
-void MailboxMessagePointer(Mailbox_Handle MailboxHandle, void* PointerAsVoid){
+void SendMailPointer(Mailbox_Handle MailboxHandle, void* PointerAsVoid){
 
 }
 
-void MailboxMessageBool(bool PostBool){
+void SendMailBool(bool PostBool){
 
 }
