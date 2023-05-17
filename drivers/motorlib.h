@@ -43,7 +43,6 @@ void setDuty(uint16_t duty);
  */
 void updateMotor(bool Hall_a, bool Hall_b, bool Hall_c);
 
-
 /*!
  *  @brief  Brakes motor by turning all phases high or low.
  *
@@ -90,7 +89,9 @@ bool initMotorLib(uint16_t pwm_period, Error_Block *eb);
  *
  * *
  */
-uint16_t getMotorPWMPeriod();
+uint16_t getMotorLibPWMPeriod();
+
+//uint16_t ROTATE_HARD();
 
 #ifdef __cplusplus
 }

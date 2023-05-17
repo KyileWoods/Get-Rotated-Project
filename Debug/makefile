@@ -15,6 +15,7 @@ ORDERED_OBJS += \
 "./OGcreations/HeartBeatFuncs/heartbeatfuncs.obj" \
 "./OGcreations/OurMessagingFuncs/OurMessaging.obj" \
 "./OGcreations/OurMotorFuncs/OurMotors.obj" \
+"./OGcreations/OurOptoFuncs/OurOpto.obj" \
 "./OGcreations/OurTimingFuncs/OurTimers.obj" \
 "./OGcreations/Sensing/Sensing.obj" \
 "./drivers/i2cOptDriver.obj" \
@@ -39,6 +40,7 @@ RMDIR := RMDIR /S/Q
 -include OGcreations/HeartBeatFuncs/subdir_vars.mk
 -include OGcreations/OurMessagingFuncs/subdir_vars.mk
 -include OGcreations/OurMotorFuncs/subdir_vars.mk
+-include OGcreations/OurOptoFuncs/subdir_vars.mk
 -include OGcreations/OurTimingFuncs/subdir_vars.mk
 -include OGcreations/Sensing/subdir_vars.mk
 -include drivers/subdir_vars.mk
@@ -46,6 +48,7 @@ RMDIR := RMDIR /S/Q
 -include OGcreations/HeartBeatFuncs/subdir_rules.mk
 -include OGcreations/OurMessagingFuncs/subdir_rules.mk
 -include OGcreations/OurMotorFuncs/subdir_rules.mk
+-include OGcreations/OurOptoFuncs/subdir_rules.mk
 -include OGcreations/OurTimingFuncs/subdir_rules.mk
 -include OGcreations/Sensing/subdir_rules.mk
 -include drivers/subdir_rules.mk
@@ -166,8 +169,8 @@ Get\ Rotated\ Project.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "EK_TM4C1294XL.obj" "main.obj" "OGcreations\HeartBeatFuncs\heartbeatfuncs.obj" "OGcreations\OurMessagingFuncs\OurMessaging.obj" "OGcreations\OurMotorFuncs\OurMotors.obj" "OGcreations\OurTimingFuncs\OurTimers.obj" "OGcreations\Sensing\Sensing.obj" "drivers\i2cOptDriver.obj" "drivers\opt3001.obj" 
-	-$(RM) "EK_TM4C1294XL.d" "main.d" "OGcreations\HeartBeatFuncs\heartbeatfuncs.d" "OGcreations\OurMessagingFuncs\OurMessaging.d" "OGcreations\OurMotorFuncs\OurMotors.d" "OGcreations\OurTimingFuncs\OurTimers.d" "OGcreations\Sensing\Sensing.d" "drivers\i2cOptDriver.d" "drivers\opt3001.d" 
+	-$(RM) "EK_TM4C1294XL.obj" "main.obj" "OGcreations\HeartBeatFuncs\heartbeatfuncs.obj" "OGcreations\OurMessagingFuncs\OurMessaging.obj" "OGcreations\OurMotorFuncs\OurMotors.obj" "OGcreations\OurOptoFuncs\OurOpto.obj" "OGcreations\OurTimingFuncs\OurTimers.obj" "OGcreations\Sensing\Sensing.obj" "drivers\i2cOptDriver.obj" "drivers\opt3001.obj" 
+	-$(RM) "EK_TM4C1294XL.d" "main.d" "OGcreations\HeartBeatFuncs\heartbeatfuncs.d" "OGcreations\OurMessagingFuncs\OurMessaging.d" "OGcreations\OurMotorFuncs\OurMotors.d" "OGcreations\OurOptoFuncs\OurOpto.d" "OGcreations\OurTimingFuncs\OurTimers.d" "OGcreations\Sensing\Sensing.d" "drivers\i2cOptDriver.d" "drivers\opt3001.d" 
 	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)
 	-@echo 'Finished clean'
 	-@echo ' '

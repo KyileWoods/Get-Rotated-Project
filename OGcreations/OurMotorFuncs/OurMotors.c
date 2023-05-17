@@ -11,19 +11,23 @@
 #include "driverlib/sysctl.h"
 
 
-#include "Board.h"
+//#include "Board.h"
 #include "motorlib.h"
 #include "OGcreations/OurMotorFuncs/OurMotors.h"
 #include "OGcreations/OurMessagingFuncs/OurMessaging.h"
 #include "shared_mem.h"
+#include <ti/drivers/GPIO.h>
+#include <ti/sysbios/hal/Hwi.h>
+#include <ti/sysbios/gates/GateHwi.h>
 
+extern Queue_Struct HallISR_Queue;
+extern Queue_Handle HallISR_QueueHandle;
+extern Queue_Params HallISR_QueueParams;
+extern bool Hall_a;
+extern bool Hall_b;
+extern bool Hall_c;
 
-// ISR prototypes
-void HallSensorA_isr(void);
-void HallSensorB_isr(void);
-void HallSensorC_isr(void);
-
-void ConfigureMotorPins(void){
+GateHwi_Handle gateHwi;
 
 /*
 This is the conversion from motor-driver board, into the port-pin of launchpad
@@ -36,52 +40,33 @@ This is the conversion from motor-driver board, into the port-pin of launchpad
 - INLC -> Port L, Pin 5
 - HALLA -> Port M, Pin 3
 - HALLB -> Port H, Pin 2
-- HALLC -> Port H, Pin 3
-- HALLD -> Port N, Pin 2
+- HALLC -> Port N, Pin 2
+- HALLD -> Port H, Pin 3
 */
 
-    // Enable the peripherals as GPIO
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOG);
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOL);
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOM);
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOH);
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPION);
+void ConfigureMotorPins(void){
+    /*
+    CHRIS has said that the initilization function of motorlib.h already sets up all of the OUTPUT pins,
+    We need to set up the HALL pins ourselves.
 
-    // Wait for the peripherals to be ready
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOF));
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOG));
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOL));
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOM));
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOH));
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPION));
+    Hall setup is being done at line...basically line 277 onwards
+    of the EK_TM4C1294XL.c board configuration function
+    */
 
-    // Configure INHA, INLA, INHB, INLB, INHC, INLC as PWM outputs
-    GPIOPinTypeTimer(GPIO_PORTF_BASE, GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
-    GPIOPinTypeTimer(GPIO_PORTG_BASE, GPIO_PIN_0);
-    GPIOPinTypeTimer(GPIO_PORTL_BASE, GPIO_PIN_4 | GPIO_PIN_5);
 
-    // Configure Hall Sensors as input...
-    GPIOPinTypeGPIOInput(GPIO_PORTM_BASE, GPIO_PIN_3);
-    GPIOPinTypeGPIOInput(GPIO_PORTH_BASE, GPIO_PIN_2);
-    GPIOPinTypeGPIOInput(GPIO_PORTH_BASE, GPIO_PIN_3);
-    GPIOPinTypeGPIOInput(GPIO_PORTN_BASE, GPIO_PIN_2);
-    //                           ....... with interrupt on both edges
-    GPIOIntTypeSet(GPIO_PORTM_BASE, GPIO_PIN_3, GPIO_BOTH_EDGES);
-    GPIOIntTypeSet(GPIO_PORTH_BASE, GPIO_PIN_2, GPIO_BOTH_EDGES);
-    GPIOIntTypeSet(GPIO_PORTH_BASE, GPIO_PIN_3, GPIO_BOTH_EDGES);
-    GPIOIntTypeSet(GPIO_PORTN_BASE, GPIO_PIN_2, GPIO_BOTH_EDGES);
+    /* GPIO configurations */
+    /* Set GPIOs as outputs */
+    /* Enable GPIO interrupts */
+    GPIO_enableInt(4);
+    GPIO_enableInt(5);
+    GPIO_enableInt(6);
+    GPIO_enableInt(0); // kick-switch
+    GPIO_enableInt(1); // kill-switch
     
-    // Register ISRs
-//    GPIOIntRegister(GPIO_PORTM_BASE, HallSensorA_isr);
-//    GPIOIntRegister(GPIO_PORTH_BASE, HallSensorB_isr);
-//    GPIOIntRegister(GPIO_PORTN_BASE, HallSensorC_isr);
 
-    // Enable interrupts
-//    GPIOIntEnable(GPIO_PORTM_BASE, GPIO_INT_PIN_3);
-//    GPIOIntEnable(GPIO_PORTH_BASE, GPIO_INT_PIN_2 | GPIO_INT_PIN_3);
-//    GPIOIntEnable(GPIO_PORTN_BASE, GPIO_INT_PIN_2);
+    
 }
+
 
 void ConfigureMotors(void) {
 
@@ -91,15 +76,38 @@ void ConfigureMotors(void) {
     
 }
 
-void kill_motors(bool be_gentle){
+void kill_motors(bool stop_hard){
     
-    stopMotor(be_gentle);
+    stopMotor(stop_hard);
 
 
 }
 
+void SW1_kick_ISR(void){
+    enableMotor();
+    GPIOIntClear(GPIO_PORTJ_BASE, GPIO_INT_PIN_0); // MUST CLEAR THE INTERRUPT
+    Hall_a = GPIOPinRead(GPIO_PORTM_BASE, GPIO_PIN_3);
+    Hall_b = GPIOPinRead(GPIO_PORTH_BASE, GPIO_PIN_2);
+    Hall_c = GPIOPinRead(GPIO_PORTN_BASE, GPIO_PIN_2);
+    // KICK IT!
+    updateMotor(Hall_a, Hall_b, Hall_c);
+}
+
+void SW2_kill_ISR(void){
+    GPIOIntClear(GPIO_PORTJ_BASE, GPIO_INT_PIN_1); // MUST CLEAR THE INTERRUPT
+    UInt gateKey = GateHwi_enter(gateHwi); // PROTECT THE OPERATIONS
+    //stopMotor(true);
+    disableMotor();
+    GateHwi_leave(gateHwi, gateKey); // Release the operation
+}
+
 void HallSensorA_isr(void)
 {
+    GPIOIntClear(GPIO_PORTM_BASE, GPIO_INT_PIN_3); // MUST CLEAR THE INTERRUPT
+    UInt gateKey;
+    gateKey = GateHwi_enter(gateHwi); // PROTECT THE OPERATIONS
+    //System_printf("Triggered\n");
+    //System_flush();
     /*
     1) Read all three (oR ONE?) Hall sensors, dump it into a register or structure
     2) Flag a Hall-read event
@@ -108,53 +116,42 @@ void HallSensorA_isr(void)
             actually asking it to wait upon anything
     3) Increment the speed counter
     4) updateMotor();
-
-    Some of these can be moved out of this function, but this gives a general outline/flow
     */
-
+   
     // Read the GPIO line of the halls
-    bool Hall_a = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_1);
-    bool Hall_b = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_3);
-    bool Hall_c = GPIOPinRead(GPIO_PORTL_BASE, GPIO_PIN_4);
+    Hall_a = !Hall_a;
     
-    // Communicate that with other Tasks
-    //System_printf("Sensor A:  %i%i%i \n", Hall_a,Hall_b,Hall_c);
-    //System_flush();
-
-    // Post the relevant event OR set a specific task to READY// 
-    // DO THAT HERE//
-
-    // Increment the speed counter. Not actually sure what that means
-    uint16_t PowerPercentage = 20;
-    setDuty(getMotorPWMPeriod()*PowerPercentage/100);//Move this out into a copmutation-intensive task, or SWI
+    // Post the relevant event OR set a specific task to READY
 
     //New motor position registered, means new motor position demanded.
     updateMotor(Hall_a, Hall_b, Hall_c);
+    
 
-
-    GPIOIntClear(GPIO_PORTF_BASE, GPIO_INT_PIN_1);//MUST CLEAR THE INTERRUPT
+    // Increment the speed counter. Not actually sure what that means
+    //gateKey = GateHwi_enter(gateHwi); // PROTECT THE OPERATIONS
+    //Do a thing
+    GateHwi_leave(gateHwi, gateKey); // Release the operation
 }
 
 void HallSensorB_isr(void)
 {
-    
-    //System_printf("Sensor B:  %i%i%i \n", 1,2,3);
-    //System_flush();
-
-
-
-    GPIOIntClear(GPIO_PORTF_BASE, GPIO_INT_PIN_3);//MUST CLEAR THE INTERRUPT
+   GPIOIntClear(GPIO_PORTH_BASE, GPIO_INT_PIN_2);//MUST CLEAR THE INTERRUPT
+    UInt gateKey;
+    gateKey = GateHwi_enter(gateHwi); // PROTECT THE OPERATIONS
+    Hall_b = !Hall_b;
+    updateMotor(Hall_a, Hall_b, Hall_c);
+    GateHwi_leave(gateHwi, gateKey); // Release the operation
 }
 
 void HallSensorC_isr(void)
 {
-
     
-    //System_printf("Sensor C:  %i%i%i \n", 1,2,3);
-    //System_flush();
-
-
-    GPIOIntClear(GPIO_PORTL_BASE, GPIO_INT_PIN_4); //MUST CLEAR THE INTERRUPT
+    GPIOIntClear(GPIO_PORTN_BASE, GPIO_INT_PIN_2); //MUST CLEAR THE INTERRUPT
+    UInt gateKey;
+    gateKey = GateHwi_enter(gateHwi); // PROTECT THE OPERATIONS
+    Hall_c = !Hall_c;
+    updateMotor(Hall_a, Hall_b, Hall_c);
+    GateHwi_leave(gateHwi, gateKey); // Release the operation
 }
 
 void MotorTransitionTask(UArg arg0, UArg arg1){
@@ -171,6 +168,11 @@ void MotorTransitionTask(UArg arg0, UArg arg1){
             System_printf("Just received id = %d val = '%c' ...\n",
             TheMessage.id, TheMessage.val);
             System_flush();
+
+
+
+
+
             if(TheMessage.val == 'Q'){
                 System_printf("QUIT SIGNAL RECEIVED");
                 System_flush();
@@ -178,6 +180,19 @@ void MotorTransitionTask(UArg arg0, UArg arg1){
             }
         }
     }
+    while(0){
+        //SysCtlDelay(50);
+
+        bool A_read = GPIOPinRead(GPIO_PORTM_BASE, GPIO_PIN_3);
+        bool B_read = GPIOPinRead(GPIO_PORTH_BASE, GPIO_PIN_2);
+        bool C_read = GPIOPinRead(GPIO_PORTN_BASE, GPIO_PIN_2);
+        
+        //int halls = Hall_a<<2|Hall_b<<1|Hall_c;
+        System_printf("Hall: %i%i%i\n", A_read, B_read, C_read);
+        System_flush();
+    }
+
+
     Task_exit();
 }
 
@@ -197,9 +212,10 @@ void MotorTask(UArg arg0, UArg arg1){
         /* Fill in value */
         TheMessage.id = i;
         TheMessage.val = i + 'a';
+        TheMessage.valNumber = 20+i;
 
-        System_printf("Writing message id = %d val = '%c' ...\n",
-        TheMessage.id, TheMessage.val);
+        System_printf("Writing message id = %d val = '%i' ...\n",
+        TheMessage.id, TheMessage.valNumber);
         System_flush();
 
         /* Enqueue message */

@@ -2763,12 +2763,12 @@ ti_sysbios_family_arm_lm4_Timer_Object__ ti_sysbios_family_arm_lm4_Timer_Object_
     {/* instance#0 */
         0,
         1,  /* staticInst */
-        (xdc_Int)0x0,  /* id */
+        (xdc_Int)0x2,  /* id */
         ti_sysbios_interfaces_ITimer_RunMode_CONTINUOUS,  /* runMode */
         ti_sysbios_interfaces_ITimer_StartMode_AUTO,  /* startMode */
         (xdc_UInt)0x1d4c0,  /* period */
         ti_sysbios_interfaces_ITimer_PeriodType_COUNTS,  /* periodType */
-        (xdc_UInt)0x23,  /* intNum */
+        (xdc_UInt)0x27,  /* intNum */
         ((xdc_UArg)0),  /* arg */
         ((xdc_Void(*)(xdc_UArg))((xdc_Fxn)ti_sysbios_knl_Clock_doTick__I)),  /* tickFxn */
         {
@@ -2821,9 +2821,9 @@ __T1_ti_sysbios_family_arm_lm4_Timer_Module_State__device ti_sysbios_family_arm_
 
 /* --> ti_sysbios_family_arm_lm4_Timer_Module_State_0_handles__A */
 __T1_ti_sysbios_family_arm_lm4_Timer_Module_State__handles ti_sysbios_family_arm_lm4_Timer_Module_State_0_handles__A[8] = {
-    (ti_sysbios_family_arm_lm4_Timer_Handle)&ti_sysbios_family_arm_lm4_Timer_Object__table__V[0],  /* [0] */
+    0,  /* [0] */
     0,  /* [1] */
-    0,  /* [2] */
+    (ti_sysbios_family_arm_lm4_Timer_Handle)&ti_sysbios_family_arm_lm4_Timer_Object__table__V[0],  /* [2] */
     0,  /* [3] */
     0,  /* [4] */
     0,  /* [5] */
@@ -2841,7 +2841,7 @@ ti_sysbios_family_arm_lm4_Timer_Module_State__ ti_sysbios_family_arm_lm4_Timer_M
 #endif
 #endif
 ti_sysbios_family_arm_lm4_Timer_Module_State__ ti_sysbios_family_arm_lm4_Timer_Module__state__V = {
-    (xdc_UInt)0xfe,  /* availMask */
+    (xdc_UInt)0xfb,  /* availMask */
     ((void*)ti_sysbios_family_arm_lm4_Timer_Module_State_0_device__A),  /* device */
     ((void*)ti_sysbios_family_arm_lm4_Timer_Module_State_0_handles__A),  /* handles */
 };
@@ -2999,7 +2999,7 @@ ti_sysbios_family_arm_m3_Hwi_Object__ ti_sysbios_family_arm_m3_Hwi_Object__table
         ((xdc_Void(*)(xdc_UArg))((xdc_Fxn)ti_sysbios_family_arm_lm4_Timer_isrStub__E)),  /* fxn */
         ((xdc_UArg)(0x3)),  /* irp */
         (xdc_UInt8)0xff,  /* priority */
-        (xdc_Int16)0x23,  /* intNum */
+        (xdc_Int16)0x27,  /* intNum */
         ((void*)0),  /* hookEnv */
     },
 };
@@ -4115,7 +4115,7 @@ __FAR__ const CT__ti_sysbios_knl_Clock_tickMode ti_sysbios_knl_Clock_tickMode__C
 
 /* timerId__C */
 #pragma DATA_SECTION(ti_sysbios_knl_Clock_timerId__C, ".const:ti_sysbios_knl_Clock_timerId__C");
-__FAR__ const CT__ti_sysbios_knl_Clock_timerId ti_sysbios_knl_Clock_timerId__C = (xdc_UInt)(-0x0 - 1);
+__FAR__ const CT__ti_sysbios_knl_Clock_timerId ti_sysbios_knl_Clock_timerId__C = (xdc_UInt)0x2;
 
 /* tickPeriod__C */
 #pragma DATA_SECTION(ti_sysbios_knl_Clock_tickPeriod__C, ".const:ti_sysbios_knl_Clock_tickPeriod__C");

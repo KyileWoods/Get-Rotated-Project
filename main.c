@@ -53,8 +53,6 @@
 /* Board Header file */
 #include "Board.h"
 
-
-
 /* TASKS  */
 #define MOTORTASKSTACKSIZE   512
 Task_Struct MotorTask_Struct;
@@ -71,6 +69,9 @@ Char task2Stack[TASKSTACKSIZE];
 #define STACKSIZE 1024
 Char taskStack[STACKSIZE];
 
+/*SEMAPHORES, KEYS, FLAGS*/
+
+
 /* EVENTS*/
 Event_Struct evtStruct;
 Event_Handle evtHandle;
@@ -80,6 +81,16 @@ Event_Handle evtHandle;
 #define MAXMOTORMESSAGES 10
 Mailbox_Struct mbxStruct;
 Mailbox_Handle mbxHandle;
+
+/* QUEUE's*/
+Queue_Struct HallISR_Queue;
+Queue_Handle HallISR_QueueHandle;
+Queue_Params HallISR_QueueParams;
+
+/* GLOBALS*/
+bool Hall_a=0;
+bool Hall_b=0;
+bool Hall_c=0;
 
 
 void i2c_init(void) {
@@ -98,39 +109,34 @@ void i2c_init(void) {
     I2CMasterInitExpClk(I2C0_BASE, SysCtlClockGet(), false);
 }
 
-Void opt3001ReadFxn(UArg arg0, UArg arg1) {
-    uint16_t rawData;
-    float lux;
+void task_function_skeleton(void){
 
-    // Initialize OPT3001 sensor
-    sensorOpt3001Init();
+    bool Condition_maybe_forever= true;
 
-    // Enable the OPT3001 sensor
-    sensorOpt3001Enable(true);
+    /*Prologue*/
+    //Initilizations
+    //Declarations
 
-    while (1) {
-        // Read raw data from the OPT3001 sensor
-        if (sensorOpt3001Read(&rawData)) {
-            // Convert raw data to Lux
-            sensorOpt3001Convert(rawData, &lux);
+    while(Condition_maybe_forever){
+        /*Process*/
+        //Maybe runs forever, or has an exit condition but this probably shouldn't be very instantly exitted
 
-            // Print the Lux value or perform any other required operation
-            // For example: UARTprintf("Lux: %f\n", lux);
-        } else {
-            // Handle the error if necessary, e.g., log an error message
-        }
-
-        // Add a delay to control the frequency of sensor readings
-        // Replace DELAY_VALUE with an appropriate number of system ticks
-        Task_sleep(100);
     }
+
+    /*Epilogue*/
+
+    //Release your memory
+    //Shut down the task
+    //Doesn't have to ever be reached
 }
+
+
 
 /*
  *  ======== main ========
  */
 int main(void)
-{
+    {
     /* Params */
     Task_Params taskParams;
     Event_Params eventParams;
@@ -161,6 +167,7 @@ int main(void)
         setDuty(50); //Debug only
 
 
+
         int enter = 1; //This is an if-guard which shouldn't exist, except this stupid error.
         if(enter){
             bool MotorLibSuccess ;
@@ -175,7 +182,7 @@ int main(void)
                 System_abort("Error Initializing Motor\n");
             }
         }
-        setDuty(50);
+        setDuty(30);
 
     /*===== CREATE EVERYTHING ABOUT MOTOR CONTROLLER FUNCTION=====*/
     /* Construct a Mailbox Instance */
@@ -226,7 +233,13 @@ int main(void)
         //System_printf("Event creation failed :( ");
     }
 
+    
+    Queue_Params_init(&HallISR_QueueParams); // Initialize with default parameters
+    Queue_construct(&HallISR_Queue, &HallISR_QueueParams);
+    HallISR_QueueHandle = Queue_handle(&HallISR_Queue);
+    
 
+    //GPIO_setCallback(Port M, Pin 3,HallSensorA_isr);
 
 
     /* Start BIOS */
@@ -237,7 +250,7 @@ int main(void)
     This is the end of the program
     */
     System_printf("\n...................................Hello?!\n");
-    System_flush();
+    //System_flush(); THIS HALTS THE CPU?!!!!! WARNING ABOUT FLUSH
 
     return (0);
 }

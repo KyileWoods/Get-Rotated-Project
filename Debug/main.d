@@ -211,6 +211,7 @@ main.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sys
 main.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Clock.h
 main.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/IModule.h
 main.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Event.h
+main.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Queue.h
 main.obj: ../OGcreations/OurTimingFuncs/OurTimers.h
 main.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Clock.h
 main.obj: ../OGcreations/OurMotorFuncs/OurMotors.h
@@ -647,6 +648,8 @@ C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/C
 C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/IModule.h:
 
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Event.h:
+
+C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Queue.h:
 
 ../OGcreations/OurTimingFuncs/OurTimers.h:
 

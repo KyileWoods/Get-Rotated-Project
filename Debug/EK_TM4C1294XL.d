@@ -205,6 +205,7 @@ EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/ndk_2_25_00_09/package
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/ndk_2_25_00_09/packages/ti/ndk/inc/stack/inc/rawethif.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/GPIO.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/gpio/GPIOTiva.h
+EK_TM4C1294XL.obj: ../OGcreations/OurMotorFuncs/OurMotors.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/I2C.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/i2c/I2CTiva.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Semaphore.h
@@ -716,6 +717,8 @@ C:/ti/tirtos_tivac_2_16_01_14/products/ndk_2_25_00_09/packages/ti/ndk/inc/stack/
 C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/GPIO.h:
 
 C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/gpio/GPIOTiva.h:
+
+../OGcreations/OurMotorFuncs/OurMotors.h:
 
 C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/I2C.h:
 

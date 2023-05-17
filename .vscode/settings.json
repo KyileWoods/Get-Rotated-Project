@@ -24,6 +24,9 @@
         "tm4c1294ncpdt.h": "c",
         "hw_memmap.h": "c",
         "queue.h": "c",
-        "ourmessaging.h": "c"
+        "ourmessaging.h": "c",
+        "emacsnow.h": "c",
+        "sdspitiva.h": "c",
+        "__locale": "c"
     }
 }

@@ -127,6 +127,7 @@ SUBDIRS := \
 OGcreations/HeartBeatFuncs \
 OGcreations/OurMessagingFuncs \
 OGcreations/OurMotorFuncs \
+OGcreations/OurOptoFuncs \
 OGcreations/OurTimingFuncs \
 OGcreations/Sensing \
 drivers \

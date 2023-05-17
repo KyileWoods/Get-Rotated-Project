@@ -276,6 +276,7 @@ void EK_TM4C1294XL_initEMAC(void)
 
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/gpio/GPIOTiva.h>
+#include "OGcreations/OurMotorFuncs/OurMotors.h"
 
 /*
  * Array of Pin configurations
@@ -297,6 +298,16 @@ GPIO_PinConfig gpioPinConfigs[] = {
     GPIOTiva_PN_1 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,
     /* EK_TM4C1294XL_USR_D2 */
     GPIOTiva_PN_0 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,
+
+    /* Hall-effect sensor pins */
+    /* HALLA */
+    GPIOTiva_PM_3 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_BOTH_EDGES,
+    /* HALLB */
+    GPIOTiva_PH_2 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_BOTH_EDGES,
+    /* HALLC */
+    GPIOTiva_PN_2 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_BOTH_EDGES,
+    /* HALLD */
+    GPIOTiva_PH_3 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_BOTH_EDGES
 };
 
 /*
@@ -307,8 +318,14 @@ GPIO_PinConfig gpioPinConfigs[] = {
  *       reduce memory usage (if placed at end of gpioPinConfigs array).
  */
 GPIO_CallbackFxn gpioCallbackFunctions[] = {
-    NULL,  /* EK_TM4C1294XL_USR_SW1 */
-    NULL   /* EK_TM4C1294XL_USR_SW2 */
+    SW1_kick_ISR,  /* EK_TM4C1294XL_USR_SW1 */
+    SW2_kill_ISR,   /* EK_TM4C1294XL_USR_SW2 */
+    NULL,
+    NULL,
+    HallSensorA_isr,
+    HallSensorB_isr,
+    HallSensorC_isr,
+    NULL
 };
 
 /* The device-specific GPIO_config structure */

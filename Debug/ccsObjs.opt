@@ -3,6 +3,7 @@
 "./OGcreations/HeartBeatFuncs/heartbeatfuncs.obj"
 "./OGcreations/OurMessagingFuncs/OurMessaging.obj"
 "./OGcreations/OurMotorFuncs/OurMotors.obj"
+"./OGcreations/OurOptoFuncs/OurOpto.obj"
 "./OGcreations/OurTimingFuncs/OurTimers.obj"
 "./OGcreations/Sensing/Sensing.obj"
 "./drivers/i2cOptDriver.obj"

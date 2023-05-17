@@ -10,11 +10,24 @@
 
 #include <stdbool.h>
 #include <ti/sysbios/knl/Mailbox.h>
+#include <ti/sysbios/knl/Queue.h>
 
 typedef struct MailboxMessage {
     Int         id;             /* Writer task id */
     Char        val;            /* Message value */
+    Int         valNumber;
 } MailboxMessage, *MailboxMessagePointer;
+
+typedef struct QueueMessageObject {
+    Queue_Elem elem; /* first field for Queue*/
+
+    int id; /* writer task id */
+    char data; /* message value */
+    void* MoreData_p;
+    bool HallA;
+    bool HallB;
+    bool HallC;
+} QueueMessageObject_t;
 
 
 // function declarations

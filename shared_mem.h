@@ -8,10 +8,10 @@
 // START ----------------------- MEMORY STRUCTURES -------------------------
 
 // PLEASE DELETE ALL REFERENCES TO THE CODE THIS CAME FROM
-
+int I_AM_INTENTIONALLY_DRAWING_YOUR_ATTENTION;
 //THEN PLEASE PLACE THIS INTO AN OGCREATIONS FOLDER
 
-typedef struct MsgObj_s {
+typedef struct MsgObj_s { // This type of struct (with Q_elem) is for queues
     Queue_Elem elem; /* first field for Queue
     */
     int id; /* writer task id */
