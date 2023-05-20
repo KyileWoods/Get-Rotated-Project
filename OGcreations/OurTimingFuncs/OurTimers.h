@@ -14,6 +14,9 @@
 Clock_Struct clk0Struct;
 Clock_Handle clk0Handle;
 
+Clock_Struct CalcMotorSpeed_clkStruct;
+Clock_Handle CalcMotorSpeed_clkHandle;
+
 Void clk0_swi_clk_fxn(UArg arg0);
 
 

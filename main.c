@@ -50,6 +50,7 @@
 // #include <ti/drivers/Watchdog.h>
 // #include <ti/drivers/WiFi.h>
 
+
 /* Board Header file */
 #include "Board.h"
 
@@ -215,8 +216,12 @@ int main(void)
 
     Clock_Params_init(&clkParams);
     clkParams.startFlag = TRUE;
-    //int Hz = 150; //Define the frequency to Hwi this clock
-    clkParams.period = 1000/50; //100ms => 10 Hz
+    int Hz = 150; //Define the frequency to Hwi this clock
+    clkParams.period = 1000/Hz; // 1000 Tick-> 1 second
+    Clock_construct(&CalcMotorSpeed_clkStruct, (Clock_FuncPtr)CalcMotorSpeed,
+                    50, &clkParams);
+    CalcMotorSpeed_clkHandle = Clock_handle(&CalcMotorSpeed_clkStruct);
+
     Clock_construct(&clk0Struct, (Clock_FuncPtr)clk0_swi_clk_fxn,
                     50, &clkParams);
     clk0Handle = Clock_handle(&clk0Struct);

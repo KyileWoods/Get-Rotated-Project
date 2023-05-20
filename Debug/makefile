@@ -20,6 +20,11 @@ ORDERED_OBJS += \
 "./OGcreations/Sensing/Sensing.obj" \
 "./drivers/i2cOptDriver.obj" \
 "./drivers/opt3001.obj" \
+"../src/sysbios/BIOS.obj" \
+"../src/sysbios/m3_Hwi_asm.obj" \
+"../src/sysbios/m3_Hwi_asm_switch.obj" \
+"../src/sysbios/m3_IntrinsicsSupport_asm.obj" \
+"../src/sysbios/m3_TaskSupport_asm.obj" \
 "../EK_TM4C1294XL.cmd" \
 "../drivers/MotorLib.lib" \
 $(GEN_CMDS__FLAG) \
@@ -44,6 +49,7 @@ RMDIR := RMDIR /S/Q
 -include OGcreations/OurTimingFuncs/subdir_vars.mk
 -include OGcreations/Sensing/subdir_vars.mk
 -include drivers/subdir_vars.mk
+-include src/sysbios/subdir_vars.mk
 -include subdir_rules.mk
 -include OGcreations/HeartBeatFuncs/subdir_rules.mk
 -include OGcreations/OurMessagingFuncs/subdir_rules.mk
@@ -52,6 +58,7 @@ RMDIR := RMDIR /S/Q
 -include OGcreations/OurTimingFuncs/subdir_rules.mk
 -include OGcreations/Sensing/subdir_rules.mk
 -include drivers/subdir_rules.mk
+-include src/sysbios/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)

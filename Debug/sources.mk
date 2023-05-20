@@ -131,4 +131,5 @@ OGcreations/OurOptoFuncs \
 OGcreations/OurTimingFuncs \
 OGcreations/Sensing \
 drivers \
+src/sysbios \
 

@@ -26,8 +26,23 @@ extern Queue_Params HallISR_QueueParams;
 extern bool Hall_a;
 extern bool Hall_b;
 extern bool Hall_c;
+uint_fast16_t SpeedCounter;
+uint_fast16_t SpeedValue;
 
 GateHwi_Handle gateHwi;
+
+enum MOTOR_STATE{
+    DRIVE_IDLE,
+    DRIVE_TRANSITION_STARTING,
+    DRIVE_RUNNING,
+    DRIVE_E_STOP,
+    DRIVE_EXPLOSION,
+
+
+    
+    DRIVE_N_STATES //Equal to the value of valid motor states
+};
+enum MOTOR_STATE DRIVE_RULESET = DRIVE_IDLE;
 
 /*
 This is the conversion from motor-driver board, into the port-pin of launchpad
@@ -53,61 +68,54 @@ void ConfigureMotorPins(void){
     of the EK_TM4C1294XL.c board configuration function
     */
 
-
     /* GPIO configurations */
     /* Set GPIOs as outputs */
     /* Enable GPIO interrupts */
+    GPIO_enableInt(0); // Switch-1
+    GPIO_enableInt(1); // Switch-2
+
+
     GPIO_enableInt(4);
     GPIO_enableInt(5);
     GPIO_enableInt(6);
-    GPIO_enableInt(0); // kick-switch
-    GPIO_enableInt(1); // kill-switch
-    
-
-    
 }
 
 
 void ConfigureMotors(void) {
 
     ConfigureMotorPins(); //Set pWM, GPIO, input/output
-
-    //IS THERE EVEN ANYTHING ELSE TO BE DONE?!?
+    
+    //Set an initial motor state.
+    DRIVE_RULESET = DRIVE_IDLE;
+    SpeedCounter = 0;
     
 }
 
-void kill_motors(bool stop_hard){
-    
-    stopMotor(stop_hard);
 
-
-}
-
-void SW1_kick_ISR(void){
-    enableMotor();
+// KEEP a generic function on these buttons, so we can easily,
+// quickly drop a new fuprototyping function onto this interrupt (Otherwise you have to change configs in board.h)
+void SW1_ISR(void){kick_motors_on();}
+void kick_motors_on(void){
     GPIOIntClear(GPIO_PORTJ_BASE, GPIO_INT_PIN_0); // MUST CLEAR THE INTERRUPT
-    Hall_a = GPIOPinRead(GPIO_PORTM_BASE, GPIO_PIN_3);
-    Hall_b = GPIOPinRead(GPIO_PORTH_BASE, GPIO_PIN_2);
-    Hall_c = GPIOPinRead(GPIO_PORTN_BASE, GPIO_PIN_2);
-    // KICK IT!
-    updateMotor(Hall_a, Hall_b, Hall_c);
+    
+    DRIVE_RULESET = DRIVE_RUNNING;
 }
 
-void SW2_kill_ISR(void){
+void SW2_ISR(void){kill_motors();}
+void kill_motors(void){
     GPIOIntClear(GPIO_PORTJ_BASE, GPIO_INT_PIN_1); // MUST CLEAR THE INTERRUPT
     UInt gateKey = GateHwi_enter(gateHwi); // PROTECT THE OPERATIONS
-    //stopMotor(true);
     disableMotor();
     GateHwi_leave(gateHwi, gateKey); // Release the operation
+    DRIVE_RULESET = DRIVE_IDLE;
 }
 
 void HallSensorA_isr(void)
 {
+    Hall_a = !Hall_a; // Toggle new Hall-state
+    updateMotor(Hall_a, Hall_b, Hall_c); //Try keep this temporally close to interrupt event
     GPIOIntClear(GPIO_PORTM_BASE, GPIO_INT_PIN_3); // MUST CLEAR THE INTERRUPT
-    UInt gateKey;
-    gateKey = GateHwi_enter(gateHwi); // PROTECT THE OPERATIONS
-    //System_printf("Triggered\n");
-    //System_flush();
+    
     /*
     1) Read all three (oR ONE?) Hall sensors, dump it into a register or structure
     2) Flag a Hall-read event
@@ -118,39 +126,31 @@ void HallSensorA_isr(void)
     4) updateMotor();
     */
    
-    // Read the GPIO line of the halls
-    Hall_a = !Hall_a;
-    
-    // Post the relevant event OR set a specific task to READY
-
-    //New motor position registered, means new motor position demanded.
-    updateMotor(Hall_a, Hall_b, Hall_c);
-    
-
-    // Increment the speed counter. Not actually sure what that means
-    //gateKey = GateHwi_enter(gateHwi); // PROTECT THE OPERATIONS
-    //Do a thing
+   UInt gateKey;
+    gateKey = GateHwi_enter(gateHwi); // PROTECT THE OPERATIONS
+    SpeedCounter++;
     GateHwi_leave(gateHwi, gateKey); // Release the operation
 }
 
 void HallSensorB_isr(void)
 {
-   GPIOIntClear(GPIO_PORTH_BASE, GPIO_INT_PIN_2);//MUST CLEAR THE INTERRUPT
-    UInt gateKey;
-    gateKey = GateHwi_enter(gateHwi); // PROTECT THE OPERATIONS
     Hall_b = !Hall_b;
     updateMotor(Hall_a, Hall_b, Hall_c);
+    GPIOIntClear(GPIO_PORTH_BASE, GPIO_INT_PIN_2);//MUST CLEAR THE INTERRUPT
+    UInt gateKey;
+    gateKey = GateHwi_enter(gateHwi); // PROTECT THE OPERATIONS
+    SpeedCounter++;
     GateHwi_leave(gateHwi, gateKey); // Release the operation
 }
 
 void HallSensorC_isr(void)
 {
-    
+    Hall_c = !Hall_c;
+    updateMotor(Hall_a, Hall_b, Hall_c);
     GPIOIntClear(GPIO_PORTN_BASE, GPIO_INT_PIN_2); //MUST CLEAR THE INTERRUPT
     UInt gateKey;
     gateKey = GateHwi_enter(gateHwi); // PROTECT THE OPERATIONS
-    Hall_c = !Hall_c;
-    updateMotor(Hall_a, Hall_b, Hall_c);
+    SpeedCounter++;
     GateHwi_leave(gateHwi, gateKey); // Release the operation
 }
 
@@ -168,6 +168,7 @@ void MotorTransitionTask(UArg arg0, UArg arg1){
             System_printf("Just received id = %d val = '%c' ...\n",
             TheMessage.id, TheMessage.val);
             System_flush();
+            
 
 
 
@@ -197,16 +198,14 @@ void MotorTransitionTask(UArg arg0, UArg arg1){
 }
 
 
-void MotorTask(UArg arg0, UArg arg1){
 
+void WriteAMessage(UArg arg0){
     MotorArgStruct_t* args = (MotorArgStruct_t*)arg0;
     Mailbox_Handle mbxHandle = args->mbxHandle;
     int mbxMaxMessages = args->max_mailbox_messages;
     MailboxMessage TheMessage;
     int timeout = 50;
-
-    ConfigureMotors();
-
+    
     //Write a message
     for (int i=0; i < mbxMaxMessages; i++) {
         /* Fill in value */
@@ -227,7 +226,68 @@ void MotorTask(UArg arg0, UArg arg1){
     System_printf("Writing QUIT...\n");
     System_flush();
     Mailbox_post(mbxHandle,&TheMessage,timeout);
+}
 
+void CalcMotorSpeed(UArg arg0){
+            //   (Counts/totalSegments)/frequency
+    //SpeedValue = (SpeedCounter/24)/150;
+}
+
+void DrivingModeTask(UArg arg0, UArg arg1){
+/* A High-priority task used for handling RTOS decisions and
+analysis for when the motor is in DRIVING mode
+*/
+
+
+
+}
+
+void MotorTask(UArg arg0, UArg arg1){
+    /* A low-priority background system for determining some non-RTOS functionality*/
+
+    /* P R E L U D E */
+    WriteAMessage(arg0);
+    ConfigureMotors();
+
+    /* B O D Y */
+
+    while(DRIVE_RULESET != DRIVE_EXPLOSION){
+
+        /*Detect anything important about the motors*/
+
+        
+        //Determine whether a ruleset change has been imposed
+        switch(DRIVE_RULESET){
+            case DRIVE_IDLE:
+                // Wait for a trigger to begin moving
+
+            break;
+            case DRIVE_TRANSITION_STARTING:
+                // Create the conditions needed to ignite the motor
+                enableMotor(); //This is the key.
+                Hall_a = GPIOPinRead(GPIO_PORTM_BASE, GPIO_PIN_3);
+                Hall_b = GPIOPinRead(GPIO_PORTH_BASE, GPIO_PIN_2);
+                Hall_c = GPIOPinRead(GPIO_PORTN_BASE, GPIO_PIN_2);
+                // KICK IT!
+                updateMotor(Hall_a, Hall_b, Hall_c);
+                DRIVE_RULESET = DRIVE_RUNNING;
+                break;
+            case DRIVE_RUNNING:
+                //printf("Motor Speed = %i\n", SpeedCounter);
+                break;
+        }
+
+        
+        //Determine whether a ruleset change is required
+
+        // Modify the variables which are important to happen within this ruleset
+
+        //Communicate with other tasks about what has happened
+
+    }
+
+
+    /* E X I T   C O N D I T I O N S*/
     Task_exit();
 
 

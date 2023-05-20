@@ -182,7 +182,7 @@ void EK_TM4C1294XL_initGeneral(void)
 #include <ti/drivers/emac/EMACSnow.h>
 
 /*
- *  Required by the Networking Stack (NDK). This array must be NULL terminated.
+ *  Required by the Networng Stack (NDK). This array must be NULL terminated.
  *  This can be removed if NDK is not used.
  *  Double curly braces are needed to avoid GCC bug #944572
  *  https://bugs.launchpad.net/gcc-linaro/+bug/944572
@@ -318,8 +318,8 @@ GPIO_PinConfig gpioPinConfigs[] = {
  *       reduce memory usage (if placed at end of gpioPinConfigs array).
  */
 GPIO_CallbackFxn gpioCallbackFunctions[] = {
-    SW1_kick_ISR,  /* EK_TM4C1294XL_USR_SW1 */
-    SW2_kill_ISR,   /* EK_TM4C1294XL_USR_SW2 */
+    SW1_ISR,  /* EK_TM4C1294XL_USR_SW1 */
+    SW2_ISR,   /* EK_TM4C1294XL_USR_SW2 */
     NULL,
     NULL,
     HallSensorA_isr,
