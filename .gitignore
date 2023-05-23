@@ -73,3 +73,10 @@ Debug*/
 
 # Word files not intended to be shared
 .*.docx
+*.mk
+*.obj
+*.xml
+*.out
+*.map
+*.obj
+*.xml

@@ -160,7 +160,7 @@ int main(void)
 
 
     //initialise the motor library
-        /* ANY CONFUSING CODE BELOW HERE IS LIKELY TO BE DEBUG PURPOSES, FOR A SPECIFIC PROBLEM. DELTE JUDICIOUSLY
+        /* ANY CONFUSING CODE BELOW HERE IS LIKELY TO BE DEBUG PURPOSES, FOR A SPECIFIC PROBLEM. DELETE JUDICIOUSLY
 
         This function requires an *eb errorbreak but it is breaking at this point.
         Probably an error is being thrown, but with NULL in EB it is being thrown to 0xffffff and crashing*/

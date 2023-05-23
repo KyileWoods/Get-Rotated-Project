@@ -35,6 +35,7 @@ enum MOTOR_STATE{
     DRIVE_IDLE,
     DRIVE_TRANSITION_STARTING,
     DRIVE_RUNNING,
+    DRIVE_TRANSITION_STOPPING,
     DRIVE_E_STOP,
     DRIVE_EXPLOSION,
 
@@ -97,8 +98,7 @@ void ConfigureMotors(void) {
 void SW1_ISR(void){kick_motors_on();}
 void kick_motors_on(void){
     GPIOIntClear(GPIO_PORTJ_BASE, GPIO_INT_PIN_0); // MUST CLEAR THE INTERRUPT
-    
-    DRIVE_RULESET = DRIVE_RUNNING;
+    DRIVE_RULESET = DRIVE_TRANSITION_STARTING;
 }
 
 void SW2_ISR(void){kill_motors();}
