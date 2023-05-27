@@ -260,11 +260,12 @@ analysis for when the motor is in DRIVING mode
 
 }
 
+//NEEDS TO BE FIXED
+Task_Params taskParams;
+Event_Params eventParams;
+Clock_Params clkParams;
+Mailbox_Params mbxParams;
 void MotorsPrelude(void){
-    Task_Params taskParams;
-    Event_Params eventParams;
-    Clock_Params clkParams;
-    Mailbox_Params mbxParams;
 
 
     Error_Block m_eb;
@@ -276,8 +277,8 @@ void MotorsPrelude(void){
     }
     setDuty(30);
 
-    taskParams.stack = &MotorMonitorTask_Stack;
-    Task_construct(&MotorMonitorTask_Struct, (Task_FuncPtr)MotorMonitorTask, &taskParams, NULL);
+//    taskParams.stack = &MotorMonitorTask_Stack;
+//    Task_construct(&MotorMonitorTask_Struct, (Task_FuncPtr)MotorMonitorTask, &taskParams, NULL);
 }
 
 void MotorTask(UArg arg0, UArg arg1){
