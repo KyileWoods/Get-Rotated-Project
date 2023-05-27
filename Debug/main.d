@@ -215,6 +215,7 @@ main.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sys
 main.obj: ../OGcreations/OurTimingFuncs/OurTimers.h
 main.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Clock.h
 main.obj: ../OGcreations/OurMotorFuncs/OurMotors.h
+main.obj: ../OGcreations/Sensing/Sensing.h
 main.obj: ../shared_mem.h
 main.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Mailbox.h
 main.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Queue.h
@@ -656,6 +657,8 @@ C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Q
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Clock.h:
 
 ../OGcreations/OurMotorFuncs/OurMotors.h:
+
+../OGcreations/Sensing/Sensing.h:
 
 ../shared_mem.h:
 

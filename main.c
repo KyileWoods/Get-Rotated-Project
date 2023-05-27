@@ -31,6 +31,8 @@
 #include "OGcreations/OurMessagingFuncs/OurMessaging.h"
 #include "OGcreations/OurTimingFuncs/OurTimers.h"
 #include "OGcreations/OurMotorFuncs/OurMotors.h"
+#include "OGcreations/Sensing/Sensing.h"
+
 #include "shared_mem.h"
 //#include "OGcreations/HeartBeatFuncs/heartbeatfuncs.h"
 
@@ -70,6 +72,15 @@ Char task2Stack[TASKSTACKSIZE];
 Char taskStack[STACKSIZE];
 
 /*SEMAPHORES, KEYS, FLAGS*/
+#define TASKSTACKSIZE           512
+
+Task_Struct task0Struct;
+Char task0Stack[TASKSTACKSIZE];
+Swi_Struct swi0Struct, swi1Struct;
+Swi_Handle swi0Handle, swi1Handle;
+Clock_Struct clk0Struct;
+//Semaphore_Struct sem0Struct;
+//Semaphore_Handle sem0Handle;
 
 
 /* EVENTS*/

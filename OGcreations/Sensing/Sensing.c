@@ -1,8 +1,34 @@
+/*
+ *  Filename:    Sensing.c
+ *
+ *  Description: Source file for My Module.
+ *
+ *  Created on:  [May 2023]
+ *  Author:      [Phoenix Seybold]
+ */
+
+/* XDC module Headers */
+#include <xdc/std.h>
+#include <xdc/runtime/System.h>
+
+/* BIOS module Headers */
+#include <ti/sysbios/BIOS.h>
+#include <ti/sysbios/knl/Swi.h>
+#include <ti/sysbios/knl/Task.h>
+#include <ti/sysbios/knl/Clock.h>
+#include <ti/sysbios/knl/Semaphore.h>
+#include <ti/sysbios/knl/Event.h>
+
+/* Example/Board Header files */
+#include "Board.h"
+
+/* Basic Header Files */
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <math.h>
 
+/* Library */
 #include "driverlib/adc.h"
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
@@ -12,26 +38,28 @@
 #include <ti/drivers/GPIO.h>
 //#include "drivers/motor_current.h"
 
+/* HANDLES */
+Swi_Handle          PowerSwi, SpeedSwi;
+
+Clock_Handle        clkSpeed, clkPower;
+Clock_Struct        clkSpeedStruct, clkPowerStruct;
+
+Event_Struct        evtStruct;
+Event_Handle        evtHandle;
+
+
 /* ------------------ Setup Sensor Swi for Clocks ------------------ */
-
-void CurrentFxn(UArg arg0){
-    // Call Software Interupt to get Power from ADCs
-    Swi_post{CurrSwi};
-}
-
-void SpeedFxn(UArg arg0){
-    // Call Software Interupt to get RPM from Halls
-    Swi_post{SpeedSwi};
-}
 
 /*Clock Interrupt for RPM @ 100Hz*/
 void rpmFxn(UArg arg0){
-    Swi_post(rpmSwi);
+    // Call Software Interupt to get RPM from Halls
+    Swi_post(SpeedSwi);
 }
 
 /*Clock Interrupt for current @ 200Hz*/
 void currFxn(UArg arg0){
-    Swi_post(currSwi);
+    // Call Software Interupt to get Power from ADCs
+    Swi_post(PowerSwi);
 }
 
 //void AccelerometerFxn(UArg arg0){
@@ -46,12 +74,48 @@ void currFxn(UArg arg0){
 //    Event_post(evtHandle, Dist_Event);
 //}
 /* ------------------                   ------------------ */
+/* Function Definitions */
 
-/*
- * To be called before attempting to read from sensors:
- * This function will intialise the ADC GPIO for Trigger input
- */
+
+void PowerBuffer(UArg arg0, UArg arg1){
+
+}
+
+void SpeedBuffer(UArg arg0, UArg arg1){
+
+}
+
+/* initADC(void)
+    -----------------------------------------------------------
+    Description:
+    ------------
+    This function will intialise the ADC GPIO for Trigger input
+
+    Parameters:
+    -----------
+    argument1 : type
+        Description of the first argument.
+    argument2 : type
+        Description of the second argument.
+
+    Returns:
+    --------
+    return_type
+        Description of the return value(s) of the function.
+
+    Notes:
+    ------
+    Any additional information or considerations about the function.
+
+    Examples:
+    ---------
+    >>> my_function(argument1, argument2)
+    Example usage and expected output.
+
+*/
+
 void initADC (void){
+    
         int ADC_SEQ = 2;
         int ADC_STEP = 0;
 
@@ -81,16 +145,33 @@ void initADC (void){
         ADCIntEnable(ADC1_BASE, 1);
 }
 
+/* 
+    MainSense(void)
+    -----------------------------------------------------------
+    Description:
+    ------------
+    Call this Func inside main to ensure Sensing API is initialised & can function properly
+    - Essentially contains all main functions for Sensing Subsystem and prevents Main() from becoming too cluttered.
 
-/*
- * Call this within main to ensure proper Sensing API can function properly
- * Essentially contains all main functions for Sensing Subsystem and prevents Main() from becoming too cluttered.
- *
- * */
-void MainSense{
+    Returns: NONE
+    --------
+
+    Notes:
+    ------
+    Any additional information or considerations about the function.
+*/
+void MainSense(void){
+        /*------------------------ PARAMS-EVENTS --------------------------*/
+
+        Task_Params     taskParams;
+        Event_Params    eventParams;
+        Clock_Params    clkParams;
+//        Mailbox_Params  mbxParams;
+        Swi_Params      swiParams;
+
         /*------------------------ INIT-EVENTS --------------------------*/
 
-        Event_construct(&evtStruct, &evtParams); //Construct an event according to params, populate a struct with the event's unique information
+        Event_construct(&evtStruct, &eventParams); //Construct an event according to params, populate a struct with the event's unique information
         evtHandle = Event_handle(&evtStruct);// Pull the event handle out from the structure, for easy reference
 
         /*------------------------ INIT-SWIS --------------------------*/
@@ -103,8 +184,8 @@ void MainSense{
         }
 
         /*Power ADC swi*/
-        CurrSwi = Swi_create(PowerBuffer, &swiParams, NULL);
-        if (CurrSwi == NULL) { System_abort("SWI Failure: ADC");
+        PowerSwi = Swi_create(PowerBuffer, &swiParams, NULL);
+        if (PowerSwi == NULL) { System_abort("SWI Failure: ADC");
         }
 
         /*----------------------- INIT-CLOCKS --------------------------*/
@@ -120,24 +201,37 @@ void MainSense{
         /*  Speed Clock (Hall Sensors) - 100hz */
         int speed_Hz              = 100;          //Define the frequency to Hwi this clock
         clkParams.period    = 1000/speed_Hz;      // 1000 Tick-> 1 second
-        Clock_construct(&clkRPMStruct, (Clock_FuncPtr)rpmFxn, 10, &clkParams);
+        Clock_construct(&clkSpeedStruct, (Clock_FuncPtr)rpmFxn, 10, &clkParams);
         clkSpeed            = Clock_handle(&clkSpeedStruct);
 
         /* Current Clock (DRV8323) - 150hz */
         int Power_Hz              = 150;          //Define the frequency to Hwi this clock
         clkParams.period    = 1000/Power_Hz;      // 1000 Tick-> 1 second
-        Clock_construct(&clkRPMStruct, (Clock_FuncPtr)rpmFxn, 10, &clkParams);
+        Clock_construct(&clkPowerStruct, (Clock_FuncPtr)currFxn, 10, &clkParams);
         clkPower            = Clock_handle(&clkPowerStruct);
 
 }
 
-/*
- * Call to read ADC values & return
- * - Function updates ADC values for the motor
- * - Will also Buffer and filter ADC current readings.
- * */
-void ReadADC() {
-    uint32 CurrentADC;
+
+/* MainSense(void)
+    -----------------------------------------------------------
+    Description:
+    ------------
+    Call to read ADC values & return
+    - Function updates ADC values for the motor
+    - Will also Buffer and filter ADC current readings.
+
+    Returns:
+    --------
+    CurrentADC : uint32
+        (Amps) Filtered motor current as read through ADC
+
+    Notes:
+    ------
+    Any additional information or considerations about the function.
+*/
+uint32_t ReadADC(void) {
+    uint32_t CurrentADC;
     // ADC Conversion
     ADCProcessorTrigger(ADC1_BASE, 2);
     while(!ADCIntStatus(ADC1_BASE, 2, false)){}
