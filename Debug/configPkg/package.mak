@@ -70,8 +70,8 @@ package.mak: C:/ti/xdctools_3_32_00_06_core/packages/xdc/bld/ITargetFilter.xs
 C:/ti/xdctools_3_32_00_06_core/packages/xdc/bld/package.xs:
 package.mak: C:/ti/xdctools_3_32_00_06_core/packages/xdc/bld/package.xs
 package.mak: config.bld
-C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/ToF_Assignment/Debug/configPkg/config.bld:
-package.mak: C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/ToF_Assignment/Debug/configPkg/config.bld
+C:/Users/jessb/egh456_workspace/Get-Rotated-Project/ToF_Assignment/Debug/configPkg/config.bld:
+package.mak: C:/Users/jessb/egh456_workspace/Get-Rotated-Project/ToF_Assignment/Debug/configPkg/config.bld
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/ITarget.xs:
 package.mak: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/ITarget.xs
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/C28_large.xs:
@@ -99,7 +99,7 @@ C:/ti/xdctools_3_32_00_06_core/packages/xdc/tools/configuro/template/package.xs.
 package.mak: C:/ti/xdctools_3_32_00_06_core/packages/xdc/tools/configuro/template/package.xs.xdt
 endif
 
-ti.targets.arm.elf.M4F.rootDir ?= C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
+ti.targets.arm.elf.M4F.rootDir ?= C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 ti.targets.arm.elf.packageBase ?= C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/arm/elf/
 .PRECIOUS: $(XDCCFGDIR)/%.oem4f
 .PHONY: all,em4f .dlls,em4f .executables,em4f test,em4f

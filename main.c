@@ -50,6 +50,9 @@
 // #include <ti/drivers/Watchdog.h>
 // #include <ti/drivers/WiFi.h>
 
+/* GUI Header file*/
+#include "ui/user_interface.h"
+
 
 /* Board Header file */
 #include "Board.h"
