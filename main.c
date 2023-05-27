@@ -31,9 +31,9 @@
 #include "OGcreations/OurMessagingFuncs/OurMessaging.h"
 #include "OGcreations/OurTimingFuncs/OurTimers.h"
 #include "OGcreations/OurMotorFuncs/OurMotors.h"
+#include "OGcreations/OurOptoFuncs/OurOpto.h"
 #include "shared_mem.h"
 //#include "OGcreations/HeartBeatFuncs/heartbeatfuncs.h"
-
 
 /* TI-RTOS Header files */
 // #include <ti/drivers/EMAC.h>
@@ -58,13 +58,19 @@
 #define MOTORTASKSTACKSIZE   512
 Task_Struct MotorTask_Struct;
 Char MotorTask_Stack[MOTORTASKSTACKSIZE];
-#define TASKSTACKSIZE   512
+#define TASKSTACKSIZE   4096
 Task_Struct task1Struct;
 Char task1Stack[TASKSTACKSIZE];
 Task_Struct task2Struct;
 Char task2Stack[TASKSTACKSIZE];
 #define STACKSIZE 1024
 Char taskStack[STACKSIZE];
+
+I2C_Handle i2c;
+I2C_Params i2cParams;
+
+Task_Struct taskOpt3001Struct;
+Char taskOpt3001Stack[TASKSTACKSIZE];
 
 /*SEMAPHORES, KEYS, FLAGS*/
 
@@ -145,7 +151,7 @@ int main(void)
     // Board_initUSBMSCHFatFs();
     // Board_initWatchdog();
     // Board_initWiFi();
-    // sensorOpt3001Init();  // Initialize OPT3001 sensor
+     //sensorOpt3001Init();  // Initialize OPT3001 sensor
 
 
 
@@ -162,20 +168,40 @@ int main(void)
 
     //Start a generic task_params
     Task_Params_init(&taskParams);
-        //Modify it for each special case
-        taskParams.arg0 = (UArg) &MotorFxnArgs;
-        taskParams.stackSize = MOTORTASKSTACKSIZE;
-        taskParams.priority = MOTORTASK_PRIORITY;
-        taskParams.stack = &MotorTask_Stack;
-        Task_construct(&MotorTask_Struct, (Task_FuncPtr)MotorTask, &taskParams, NULL);
-        
+    //Modify it for each special case
+    taskParams.arg0 = (UArg) &MotorFxnArgs;
+    taskParams.stackSize = MOTORTASKSTACKSIZE;
+    taskParams.priority = MOTORTASK_PRIORITY;
+    taskParams.stack = &MotorTask_Stack;
+    Task_construct(&MotorTask_Struct, (Task_FuncPtr)MotorTask, &taskParams, NULL);
+
     //Generic Task-creation template. Anything assigned a value BEFORE needs to be re-written.
     taskParams.stackSize = TASKSTACKSIZE;
     taskParams.priority = SUPERLOW_PRIORITY_TASK;
     taskParams.stack = &task1Stack;
     Task_construct(&task1Struct, (Task_FuncPtr)MotorMonitorTask, &taskParams, NULL);
 
+    /* Construct OPT3001 Sensor Task thread */
+    Task_Params_init(&taskParams);
+    taskParams.arg0 = 1000;
+    taskParams.stackSize = TASKSTACKSIZE;
+    taskParams.priority = SUPERLOW_PRIORITY_TASK;
+    taskParams.stack = &taskOpt3001Stack;
+    Task_construct(&taskOpt3001Struct, (Task_FuncPtr)I2C_Opto3001Fxn, &taskParams, NULL);
 
+    System_printf("OPT3001 sensor task thread created successfully!\n");
+
+    /* Create and Open I2C port*/
+    I2C_Params_init(&i2cParams);
+    i2cParams.bitRate = I2C_400kHz;
+    i2c = I2C_open(Board_I2C_OPT3001, &i2cParams);
+
+    if (i2c == NULL) {
+    System_printf("Error Initializing I2C!\n");     // GETTING ERROR MESSAGE SAYING ERROR INITIALISING I2C BUT OPT3001 SESNOR VALUES ARE PRINTING TO CONSOLE!!!
+    }
+    if (i2c != NULL) {
+    System_printf("I2C Initialized!\n");
+    }
 
     Clock_Params_init(&clkParams);
     clkParams.startFlag = TRUE;
@@ -189,8 +215,6 @@ int main(void)
                     50, &clkParams);
     clk0Handle = Clock_handle(&clk0Struct);
 
-
-    
 
     Event_Params evtParams; //Declare params locally
     Event_Params_init(&evtParams); //Initialise it with default values
@@ -210,6 +234,7 @@ int main(void)
     */
     System_printf("\n...................................Hello?!\n");
     //System_flush(); THIS HALTS THE CPU?!!!!! WARNING ABOUT FLUSH
+
 
     return (0);
 }

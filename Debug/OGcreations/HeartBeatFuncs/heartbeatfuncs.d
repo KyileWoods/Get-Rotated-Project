@@ -9,16 +9,16 @@ OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/ccs1220/ccs/tools/compiler/
 OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/linkage.h
 OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/machine/_types.h
 OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stddef.h
-OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/arm/elf/std.h
-OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/arm/elf/M4F.h
-OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/std.h
+OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/std.h
+OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/M4F.h
+OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/std.h
 OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdint.h
 OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/_stdint40.h
 OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/sys/stdint.h
 OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/machine/_stdint.h
 OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/sys/_stdint.h
-OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/Board.h
-OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/EK_TM4C1294XL.h
+OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/Users/Sam/EGH456_Assignment_2023/Get-Rotated-Project/Board.h
+OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/Users/Sam/EGH456_Assignment_2023/Get-Rotated-Project/EK_TM4C1294XL.h
 
 ../OGcreations/HeartBeatFuncs/heartbeatfuncs.c:
 
@@ -38,11 +38,11 @@ C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/machine/_types.h:
 
 C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stddef.h:
 
-C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/arm/elf/std.h:
+C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/std.h:
 
-C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/arm/elf/M4F.h:
+C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/M4F.h:
 
-C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/std.h:
+C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/std.h:
 
 C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdint.h:
 
@@ -54,7 +54,7 @@ C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/machine/_stdint.h
 
 C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/sys/_stdint.h:
 
-C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/Board.h:
+C:/Users/Sam/EGH456_Assignment_2023/Get-Rotated-Project/Board.h:
 
-C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/EK_TM4C1294XL.h:
+C:/Users/Sam/EGH456_Assignment_2023/Get-Rotated-Project/EK_TM4C1294XL.h:
 

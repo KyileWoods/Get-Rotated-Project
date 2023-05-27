@@ -21,9 +21,9 @@ drivers/opt3001.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/System.
 drivers/opt3001.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/std.h
 drivers/opt3001.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdarg.h
 drivers/opt3001.obj: C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stddef.h
-drivers/opt3001.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/arm/elf/std.h
-drivers/opt3001.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/arm/elf/M4F.h
-drivers/opt3001.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/std.h
+drivers/opt3001.obj: C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/std.h
+drivers/opt3001.obj: C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/M4F.h
+drivers/opt3001.obj: C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/std.h
 drivers/opt3001.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/xdc.h
 drivers/opt3001.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Types.h
 drivers/opt3001.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Types__prologue.h
@@ -136,11 +136,11 @@ C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdarg.h:
 
 C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stddef.h:
 
-C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/arm/elf/std.h:
+C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/std.h:
 
-C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/arm/elf/M4F.h:
+C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/M4F.h:
 
-C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/targets/std.h:
+C:/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/std.h:
 
 C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/xdc.h:
 
