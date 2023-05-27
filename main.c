@@ -188,7 +188,7 @@ int main(void)
     Task_Params_init(&taskParams);
     taskParams.arg0 = 1000;
     taskParams.stackSize = TASKSTACKSIZE;
-    taskParams.priority = ABSOLUTE_LOWEST_PRIORITY_TASK;
+    taskParams.priority = OPT3001_PRIORITY;
     taskParams.stack = &taskOpt3001Stack;
     Task_construct(&taskOpt3001Struct, (Task_FuncPtr)I2C_Opto3001Fxn, &taskParams, NULL);
 

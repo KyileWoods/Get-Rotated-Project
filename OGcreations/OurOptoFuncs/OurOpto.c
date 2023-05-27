@@ -98,8 +98,8 @@ Void I2C_Opto3001Fxn(UArg arg0, UArg arg1)
         // Loop Forever
         while(1)
         {
-    //        SysCtlDelay(g_ui32SysClock/100);
-            Task_sleep(100);
+            //SysCtlDelay(100);
+            Task_sleep(250);
 
             //Read and convert OPT values
             success = sensorOpt3001Read(&rawData);
