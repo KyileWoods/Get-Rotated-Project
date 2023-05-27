@@ -10,7 +10,20 @@
 
 #include <xdc/std.h>
 #include <stdbool.h>
+#include <ti/sysbios/knl/Task.h>
+#include "inc/hw_memmap.h"
+#include "driverlib/gpio.h"
+#include "driverlib/interrupt.h"
+#include "driverlib/pin_map.h"
+#include "driverlib/sysctl.h"
 
+
+// typedef struct MotorsComms{
+//     /* QUEUE's*/
+//     Queue_Struct HallISR_Queue;
+//     Queue_Handle HallISR_QueueHandle;
+//     Queue_Params HallISR_QueueParams;
+// } MotorComms_t;
 
 // SETUP
 void ConfigureMotorPins(void);
