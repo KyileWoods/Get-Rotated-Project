@@ -76,7 +76,7 @@ Void I2C_Opto3001Fxn(UArg arg0, UArg arg1)
         bool      worked, success;
         uint16_t  rawData = 0;
         float     convertedLux = 0;
-        char      tempStr[20];
+        char      tempStr[40];
 
         // Test that sensor is set up correctly
         System_printf("Testing OPT3001 Sensor:\n");
@@ -99,7 +99,7 @@ Void I2C_Opto3001Fxn(UArg arg0, UArg arg1)
         while(1)
         {
             //SysCtlDelay(100);
-            Task_sleep(250);
+            Task_sleep(100);
 
             //Read and convert OPT values
             success = sensorOpt3001Read(&rawData);
