@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v20.2.7                     
 ******************************************************************************
->> Linked Sat May 27 09:58:01 2023
+>> Linked Sat May 27 10:26:40 2023
 
 OUTPUT FILE NAME:   <Get Rotated Project.out>
 ENTRY POINT SYMBOL: "_c_int00"  address: 000055a9
@@ -772,8 +772,8 @@ section   page    origin      length       input sections
 .vecs      0    20000000    00000360     UNINITIALIZED
                   20000000    00000360     empty_min_pem4f.oem4f (.vecs)
 
-xdc.meta   0    00000000    000000fe     COPY SECTION
-                  00000000    000000fe     empty_min_pem4f.oem4f (xdc.meta)
+xdc.meta   0    00000000    000000fc     COPY SECTION
+                  00000000    000000fc     empty_min_pem4f.oem4f (xdc.meta)
 
 __llvm_prf_cnts 
 *          0    20000000    00000000     UNINITIALIZED
@@ -798,7 +798,7 @@ MODULE SUMMARY
     +--+----------------------------+-------+---------+---------+
        Total:                       44      0         0      
                                                              
-    C:\Users\Delluser\Desktop\Projects go in here\Get Rotated Project\Debug\configPkg\package\cfg\
+    C:\Engineering\EmbeddedSystems\GroupProject\Get-Rotated-Project\Debug\configPkg\package\cfg\
        empty_min_pem4f.oem4f        2038    8135      4424   
     +--+----------------------------+-------+---------+---------+
        Total:                       2038    8135      4424   
@@ -827,7 +827,7 @@ MODULE SUMMARY
     +--+----------------------------+-------+---------+---------+
        Total:                       3504    260       185    
                                                              
-    C:\Users\Delluser\Desktop\Projects go in here\Get Rotated Project\src\sysbios\sysbios.aem4f
+    C:\Engineering\EmbeddedSystems\GroupProject\Get-Rotated-Project\src\sysbios\sysbios.aem4f
        BIOS.obj                     12814   0         0      
        m3_Hwi_asm.obj               314     0         0      
        m3_TaskSupport_asm.obj       180     0         0      
@@ -835,7 +835,7 @@ MODULE SUMMARY
     +--+----------------------------+-------+---------+---------+
        Total:                       13426   0         0      
                                                              
-    C:\ti\ccs1220\ccs\tools\compiler\ti-cgt-arm_20.2.7.LTS\lib\rtsv7M4_T_le_v4SPD16_eabi.lib
+    C:\ti\ccs1230\ccs\tools\compiler\ti-cgt-arm_20.2.7.LTS\lib\rtsv7M4_T_le_v4SPD16_eabi.lib
        trgmsg.c.obj                 108     0         288    
        memcpy_t2.asm.obj            156     0         0      
        memset_t2.asm.obj            122     0         0      
@@ -1039,11 +1039,11 @@ UNDEFED   SHT$$INIT_ARRAY$$Limit
 00003a15  WriteAMessage                                                        
 00000000  __ASM__                                                              
 200012c0  __CIOBUF_                                                            
-0000007c  __ISA__                                                              
-0000008f  __PLAT__                                                             
+0000007a  __ISA__                                                              
+0000008d  __PLAT__                                                             
 20001fe8  __STACK_END                                                          
 00000300  __STACK_SIZE                                                         
-000000b0  __TARG__                                                             
+000000ae  __TARG__                                                             
 00009e00  __TI_CINIT_Base                                                      
 00009e18  __TI_CINIT_Limit                                                     
 00009de0  __TI_Handler_Table_Base                                              
@@ -1058,7 +1058,7 @@ ffffffff  __TI_prof_data_start
 00009bd0  __TI_static_base__                                                   
 000062b9  __TI_writemsg                                                        
 0000752d  __TI_zero_init                                                       
-000000d6  __TRDR__                                                             
+000000d4  __TRDR__                                                             
 00003acf  __aeabi_idiv0                                                        
 00003acf  __aeabi_ldiv0                                                        
 0000495b  __aeabi_memclr                                                       
@@ -1642,10 +1642,10 @@ address   name
 00000001  xdc_runtime_Startup__RESETFXN__C                                     
 00000041  setDuty                                                              
 00000069  updateMotor                                                          
-0000007c  __ISA__                                                              
-0000008f  __PLAT__                                                             
-000000b0  __TARG__                                                             
-000000d6  __TRDR__                                                             
+0000007a  __ISA__                                                              
+0000008d  __PLAT__                                                             
+000000ae  __TARG__                                                             
+000000d4  __TRDR__                                                             
 0000024f  stopMotor                                                            
 000002a9  enableMotor                                                          
 000002b7  disableMotor                                                         
