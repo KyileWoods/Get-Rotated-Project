@@ -29,42 +29,48 @@
 		<link>
 			<name>drivers/Kentec320x240x16_ssd2119_spi.c</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/Kentec320x240x16_ssd2119_spi.c</locationURI>
+			<locationURI>PARENT-4-ORIGINAL_PROJECT_ROOT/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/Kentec320x240x16_ssd2119_spi.c</locationURI>
 		</link>
 		<link>
 			<name>drivers/Kentec320x240x16_ssd2119_spi.h</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/Kentec320x240x16_ssd2119_spi.h</locationURI>
+			<locationURI>PARENT-4-ORIGINAL_PROJECT_ROOT/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/Kentec320x240x16_ssd2119_spi.h</locationURI>
 		</link>
 		<link>
 			<name>drivers/frame.c</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/frame.c</locationURI>
+			<locationURI>PARENT-4-ORIGINAL_PROJECT_ROOT/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/frame.c</locationURI>
 		</link>
 		<link>
 			<name>drivers/frame.h</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/frame.h</locationURI>
+			<locationURI>PARENT-4-ORIGINAL_PROJECT_ROOT/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/frame.h</locationURI>
 		</link>
 		<link>
 			<name>drivers/pinout.c</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/pinout.c</locationURI>
+			<locationURI>PARENT-4-ORIGINAL_PROJECT_ROOT/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/pinout.c</locationURI>
 		</link>
 		<link>
 			<name>drivers/pinout.h</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/pinout.h</locationURI>
+			<locationURI>PARENT-4-ORIGINAL_PROJECT_ROOT/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/pinout.h</locationURI>
 		</link>
 		<link>
 			<name>drivers/touch.c</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/touch.c</locationURI>
+			<locationURI>PARENT-4-ORIGINAL_PROJECT_ROOT/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/touch.c</locationURI>
 		</link>
 		<link>
 			<name>drivers/touch.h</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/touch.h</locationURI>
+			<locationURI>PARENT-4-ORIGINAL_PROJECT_ROOT/ti/tivaware_c_series_2_1_4_178/examples/boards/ek-tm4c1294xl-boostxl-kentec-s1/drivers/touch.h</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>ORIGINAL_PROJECT_ROOT</name>
+			<value>file:/C:/Users/Delluser/Desktop/Projects%20go%20in%20here/Get%20Rotated%20Project</value>
+		</variable>
+	</variableList>
 </projectDescription>
