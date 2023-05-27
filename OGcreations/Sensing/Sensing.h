@@ -23,11 +23,13 @@ extern "C" {
 #define BUFFER_SIZE 100
 #define WINDOW_SIZE 10
 
-// STRUCTS
-typedef struct BMI160sensorStruct{
-    float Acc_x, Acc_y, Acc_z;
-    float Gyr_x, Gyr_y ,Gyr_z;
-};
+/*   ADC current shunt stats   */
+#define R_Sense     0.007;        // Current resistance
+#define G_csa       10;           // Gain setting
+#define V_vref      24;           // Motor Voltage
+#define ADC_voltage 3.3;          // Logic voltage range for ADC
+#define Sample_Resolution 4096;   // Sampling resolution of ADC
+
 
 
 /* Function prototypes */
@@ -39,7 +41,7 @@ typedef struct BMI160sensorStruct{
  *         - 0: Success
  *         - Negative value: Error code
  */
-int32_t my_module_init(void);
+//int32_t my_module_init(void);
 
 
 /**
@@ -50,7 +52,7 @@ int32_t my_module_init(void);
  *         - 0: Success
  *         - Negative value: Error code
  */
-int32_t my_module_action(uint32_t parameter);
+//int32_t my_module_action(uint32_t parameter);
 
 
 

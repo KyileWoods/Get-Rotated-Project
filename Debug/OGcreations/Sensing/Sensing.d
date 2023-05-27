@@ -204,6 +204,7 @@ OGcreations/Sensing/Sensing.obj: C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare
 OGcreations/Sensing/Sensing.obj: C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/inc/hw_memmap.h
 OGcreations/Sensing/Sensing.obj: C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/pin_map.h
 OGcreations/Sensing/Sensing.obj: C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/GPIO.h
+OGcreations/Sensing/Sensing.obj: ../OGcreations/Sensing/sensing.h
 
 ../OGcreations/Sensing/Sensing.c:
 
@@ -612,4 +613,6 @@ C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/inc/hw_memmap
 C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/pin_map.h:
 
 C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/GPIO.h:
+
+../OGcreations/Sensing/sensing.h:
 

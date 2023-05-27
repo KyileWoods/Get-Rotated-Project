@@ -17,11 +17,12 @@ extern "C" {
 /* Includes */
 #include <stdint.h>
 
-/*      ADRESSES    */
 
-// SLAVE
-#define
-
+// STRUCTS
+typedef struct BMI160sensorStruct{
+    float Acc_x, Acc_y, Acc_z;
+    float Gyr_x, Gyr_y ,Gyr_z;
+};
 
 
 /* Function prototypes */
@@ -33,7 +34,7 @@ extern "C" {
  *         - 0: Success
  *         - Negative value: Error code
  */
-int32_t my_module_init(void);
+//int32_t my_module_init(void);
 
 /**
  * @brief Perform an action in My Module.
@@ -43,7 +44,7 @@ int32_t my_module_init(void);
  *         - 0: Success
  *         - Negative value: Error code
  */
-int32_t my_module_action(uint32_t parameter);
+//int32_t my_module_action(uint32_t parameter);
 
 /* Macros and constants */
 //#define MY_MODULE_CONSTANT     (42)

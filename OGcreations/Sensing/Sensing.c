@@ -36,6 +36,8 @@
 #include "driverlib/pin_map.h"
 
 #include <ti/drivers/GPIO.h>
+#include "sensing.h"
+
 //#include "drivers/motor_current.h"
 
 /* HANDLES */
@@ -137,7 +139,7 @@ void initADC1 (void){
     -----------------------------------------------------------
     Description:
     ------------
-    Call this Func inside main to ensure Sensing API is initialised & can function properly
+    Call this Function inside main to ensure Sensing API is initialised & can function properly
     - Essentially contains all main functions for Sensing Subsystem and prevents Main() from becoming too cluttered.
 
     Returns: NONE
@@ -216,7 +218,7 @@ void MainSense(void){
     Notes:
     ------
     - ADC 0 used by both touchscreen & Motor; WATCHOUT FOR CONFLICTS
-    - section 8.3.4.1 of DRV232RH driver datasheet gives equation of Motor current from voltage
+    - section 8.3.4.1 of DRV232RH driver datasheet (page 41) gives equation of Motor current from voltage
     - Shunt resistor = 0.007 Ohms per current sense line
     - Gain 10; for current Amplifier
 */
@@ -234,6 +236,37 @@ uint32_t ReadADC(void) {
     ADCSequenceDataGet(ADC1_BASE, 1, ui32ADC1_CurrentSense);
     return ui32ADC1_CurrentSense[0];
 }
+
+/* getCurrent()
+    -----------------------------------------------------------
+    Description:
+    ------------
+    getCurrent will read current from the shunt after an ISR;
+    Current is calculated and the missing ADC acounted for.
+
+    Returns:
+    --------
+    CurrentADC : uint32
+        (Amps) Filtered motor current as read through ADC
+
+    Notes:
+    ------
+    - ADC 0 used by both touchscreen & Motor; WATCHOUT FOR CONFLICTS
+    - section 8.3.4.1 of DRV232RH driver datasheet (page 41) gives equation of Motor current from voltage
+    - Shunt resistor = 0.007 Ohms per current sense line
+    - Gain 10; for current Amplifier
+*/
+//void getCurrent(){
+//    float Current;
+//    float Power;
+//    float avg_shunt;
+//    float V_sox;
+//
+//    V_sox   = ((ADC_voltage * avg_shunt)/ Sample_Resolution);
+//    Current = fabs((0.5*V_vref - V_sox) / ( G_csa * R_Sense )) * 1000;
+//
+//    Power = (V_vref * Current) / 1000;
+//}
 
 
 

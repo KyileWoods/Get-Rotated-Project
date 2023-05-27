@@ -38,6 +38,8 @@
 #include "driverlib/pin_map.h"
 
 #include <ti/drivers/GPIO.h>
+#include "ACCELEROMETER.h"
+
 
 /* HANDLES */
 Swi_Handle          AccelSwi;
