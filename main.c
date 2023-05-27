@@ -58,11 +58,14 @@
 #define MOTORTASKSTACKSIZE   512
 Task_Struct MotorTask_Struct;
 Char MotorTask_Stack[MOTORTASKSTACKSIZE];
+
 #define TASKSTACKSIZE   512
 Task_Struct task1Struct;
 Char task1Stack[TASKSTACKSIZE];
+
 Task_Struct task2Struct;
 Char task2Stack[TASKSTACKSIZE];
+
 #define STACKSIZE 1024
 Char taskStack[STACKSIZE];
 
@@ -109,8 +112,7 @@ void task_function_skeleton(void){
 
     while(Condition_maybe_forever){
         /*Process*/
-        //Maybe runs forever, or has an exit condition but this probably shouldn't be very instantly exitted
-
+        //Maybe runs forever, or has an exit condition but this probably shouldn't be very instantly exited
     }
 
     /*Epilogue*/
@@ -119,8 +121,6 @@ void task_function_skeleton(void){
     //Shut down the task
     //Doesn't have to ever be reached
 }
-
-
 
 /*
  *  ======== main ========
@@ -179,10 +179,12 @@ int main(void)
 
     Clock_Params_init(&clkParams);
     clkParams.startFlag = TRUE;
+
     int Hz = 150; //Define the frequency to Hwi this clock
     clkParams.period = 1000/Hz; // 1000 Tick-> 1 second
     Clock_construct(&CalcMotorSpeed_clkStruct, (Clock_FuncPtr)CalcMotorSpeed,
                     50, &clkParams);
+
     CalcMotorSpeed_clkHandle = Clock_handle(&CalcMotorSpeed_clkStruct);
 
     Clock_construct(&clk0Struct, (Clock_FuncPtr)clk0_swi_clk_fxn,
