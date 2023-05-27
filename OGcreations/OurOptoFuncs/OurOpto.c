@@ -67,51 +67,51 @@ I2C_Params i2cParams;
  */
 Void I2C_Opto3001Fxn(UArg arg0, UArg arg1)
 {
-//    while (1) {
-//        Task_sleep((unsigned int)arg0);
-//        GPIO_toggle(Board_LED0);
-//        System_flush();
-//    }
+    //    while (1) {
+    //        Task_sleep((unsigned int)arg0);
+    //        GPIO_toggle(Board_LED0);
+    //        System_flush();
+    //    }
 
-    bool      worked, success;
-    uint16_t  rawData = 0;
-    float     convertedLux = 0;
-    char      tempStr[40];
+        bool      worked, success;
+        uint16_t  rawData = 0;
+        float     convertedLux = 0;
+        char      tempStr[20];
 
-    // Test that sensor is set up correctly
-    System_printf("Testing OPT3001 Sensor:\n");
-    worked = sensorOpt3001Test();
-
-    while (!worked) {
-//        SysCtlDelay(g_ui32SysClock);
-        Task_sleep(100);
-        System_printf("\nTest Failed, Trying again\n");
+        // Test that sensor is set up correctly
+        System_printf("Testing OPT3001 Sensor:\n");
         worked = sensorOpt3001Test();
-    }
 
-    System_printf("All Tests Passed!\n\n");
+//        while (!worked) {
+//    //        SysCtlDelay(g_ui32SysClock);
+//            Task_sleep(100);
+//            System_printf("\nTest Failed, Trying again\n");
+//            worked = sensorOpt3001Test();
+//        }
 
-    // Initialize opt3001 sensor
-    sensorOpt3001Init();
-    sensorOpt3001Enable(true);
+        System_printf("All Tests Passed!\n\n");
 
-    // Loop Forever
-    while(1)
-    {
-//        SysCtlDelay(g_ui32SysClock/100);
-        Task_sleep(100);
+        // Initialize opt3001 sensor
+        sensorOpt3001Init();
+        sensorOpt3001Enable(true);
 
-        //Read and convert OPT values
-        success = sensorOpt3001Read(&rawData);
+        // Loop Forever
+        while(1)
+        {
+    //        SysCtlDelay(g_ui32SysClock/100);
+            Task_sleep(100);
 
-        if (success) {
-            sensorOpt3001Convert(rawData, &convertedLux);
+            //Read and convert OPT values
+            success = sensorOpt3001Read(&rawData);
 
-            // Construct Text
-            sprintf(tempStr, "Lux: %5.2f\n", convertedLux);
-            System_printf("%s\n", tempStr);
+            if (success) {
+                sensorOpt3001Convert(rawData, &convertedLux);
+
+                // Construct Text
+                sprintf(tempStr, "Lux: %5.2f\n", convertedLux);
+                System_printf("%s\n", tempStr);
+            }
+            System_flush();
         }
-        System_flush();
-    }
 }
 

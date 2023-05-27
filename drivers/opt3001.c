@@ -152,68 +152,68 @@ bool sensorOpt3001Init(void)
  *
  * @return      TRUE if valid data
  **************************************************************************************************/
-bool sensorOpt3001Read(uint16_t *rawData)
-{
-//	bool success;
-//	uint16_t val;
-//
-//	success = readI2C(OPT3001_I2C_ADDRESS, REG_CONFIGURATION, (uint8_t *)&val);
-//
-//
-//	if (success)
-//	{
-//		success = ((val>>8 &0xFF) & DATA_RDY_BIT) == DATA_RDY_BIT;
-//	}
-//
-//	if (success)
-//	{
-//		success = readI2C(OPT3001_I2C_ADDRESS, REG_RESULT, (uint8_t *)&val);
-//	}
-//
-//	if (success)
-//	{
-//		// Swap bytes
-//		*rawData = (val << 8) | (val>>8 &0xFF);
-//	}
-//	else
-//	{
-//		//	  sensorSetErrorData
-//	}
-//
-//	return (success);
+ bool sensorOpt3001Read(uint16_t *rawData)
+ {
+ //  bool success;
+ //  uint16_t val;
+ //
+ //  success = readI2C(OPT3001_I2C_ADDRESS, REG_CONFIGURATION, (uint8_t *)&val);
+ //
+ //
+ //  if (success)
+ //  {
+ //      success = ((val>>8 &0xFF) & DATA_RDY_BIT) == DATA_RDY_BIT;
+ //  }
+ //
+ //  if (success)
+ //  {
+ //      success = readI2C(OPT3001_I2C_ADDRESS, REG_RESULT, (uint8_t *)&val);
+ //  }
+ //
+ //  if (success)
+ //  {
+ //      // Swap bytes
+ //      *rawData = (val << 8) | (val>>8 &0xFF);
+ //  }
+ //  else
+ //  {
+ //      //    sensorSetErrorData
+ //  }
+ //
+ //  return (success);
 
-    bool data_ready;
-        uint16_t val;
+     bool data_ready;
+         uint16_t val;
 
-        //Get status of configuration register
-        if (readI2C(OPT3001_I2C_ADDRESS, REG_CONFIGURATION, (uint8_t *)&val))
-        {
-            data_ready = ((val>>8 &0xFF) & DATA_RDY_BIT) == DATA_RDY_BIT;
-        }
-        else
-        {
-            return false;
-        }
+         //Get status of configuration register
+         if (readI2C(OPT3001_I2C_ADDRESS, REG_CONFIGURATION, (uint8_t *)&val))
+         {
+             data_ready = ((val>>8 &0xFF) & DATA_RDY_BIT) == DATA_RDY_BIT;
+         }
+         else
+         {
+             return false;
+         }
 
-        if (data_ready)
-        {
-            if (readI2C(OPT3001_I2C_ADDRESS, REG_RESULT, (uint8_t *)&val))
-            {
-                // Swap bytes
-                *rawData = (val << 8) | (val>>8 &0xFF);
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return false;
-        }
+         if (data_ready)
+         {
+             if (readI2C(OPT3001_I2C_ADDRESS, REG_RESULT, (uint8_t *)&val))
+             {
+                 // Swap bytes
+                 *rawData = (val << 8) | (val>>8 &0xFF);
+             }
+             else
+             {
+                 return false;
+             }
+         }
+         else
+         {
+             return false;
+         }
 
-        return true;
-}
+         return true;
+ }
 
 /**************************************************************************************************
  * @fn          sensorOpt3001Test
@@ -264,10 +264,10 @@ bool sensorOpt3001Test(void)
  **************************************************************************************************/
 void sensorOpt3001Convert(uint16_t rawData, float *convertedLux)
 {
-	uint16_t e, m;
+    uint16_t e, m;
 
-	m = rawData & 0x0FFF;
-	e = (rawData & 0xF000) >> 12;
+    m = rawData & 0x0FFF;
+    e = (rawData & 0xF000) >> 12;
 
-	*convertedLux = m * (0.01 * exp2(e));
+    *convertedLux = m * (0.01 * exp2(e));
 }

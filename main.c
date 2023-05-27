@@ -181,11 +181,14 @@ int main(void)
     taskParams.stack = &task1Stack;
     Task_construct(&task1Struct, (Task_FuncPtr)MotorMonitorTask, &taskParams, NULL);
 
+
+
+
     /* Construct OPT3001 Sensor Task thread */
     Task_Params_init(&taskParams);
     taskParams.arg0 = 1000;
     taskParams.stackSize = TASKSTACKSIZE;
-    taskParams.priority = OPT3001_PRIORITY;
+    taskParams.priority = ABSOLUTE_LOWEST_PRIORITY_TASK;
     taskParams.stack = &taskOpt3001Stack;
     Task_construct(&taskOpt3001Struct, (Task_FuncPtr)I2C_Opto3001Fxn, &taskParams, NULL);
 
