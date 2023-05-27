@@ -58,10 +58,6 @@
 #define MOTORTASKSTACKSIZE   512
 Task_Struct MotorTask_Struct;
 Char MotorTask_Stack[MOTORTASKSTACKSIZE];
-Task_Struct MotorTransitionTask_Struct;
-Char MotorTransitionTask_Stack[MOTORTASKSTACKSIZE];
-
-
 #define TASKSTACKSIZE   512
 Task_Struct task1Struct;
 Char task1Stack[TASKSTACKSIZE];
@@ -84,15 +80,8 @@ Mailbox_Struct mbxStruct;
 Mailbox_Handle mbxHandle;
 
 /* QUEUE's*/
-Queue_Struct HallISR_Queue;
-Queue_Handle HallISR_QueueHandle;
-Queue_Params HallISR_QueueParams;
 
 /* GLOBALS*/
-bool Hall_a=0;
-bool Hall_b=0;
-bool Hall_c=0;
-
 
 void i2c_init(void) {
     // Enable I2C peripheral
@@ -159,31 +148,6 @@ int main(void)
     // sensorOpt3001Init();  // Initialize OPT3001 sensor
 
 
-    //initialise the motor library
-        /* ANY CONFUSING CODE BELOW HERE IS LIKELY TO BE DEBUG PURPOSES, FOR A SPECIFIC PROBLEM. DELETE JUDICIOUSLY
-
-        This function requires an *eb errorbreak but it is breaking at this point.
-        Probably an error is being thrown, but with NULL in EB it is being thrown to 0xffffff and crashing*/
-
-        setDuty(50); //Debug only
-
-
-
-        int enter = 1; //This is an if-guard which shouldn't exist, except this stupid error.
-        if(enter){
-            bool MotorLibSuccess ;
-            Error_Block m_eb;
-
-            Error_init(&m_eb);
-
-            //enableMotor();
-            MotorLibSuccess = initMotorLib(50, &m_eb);
-            if (!MotorLibSuccess) {
-                Error_print(&m_eb);
-                System_abort("Error Initializing Motor\n");
-            }
-        }
-        setDuty(30);
 
     /*===== CREATE EVERYTHING ABOUT MOTOR CONTROLLER FUNCTION=====*/
     /* Construct a Mailbox Instance */
@@ -192,25 +156,24 @@ int main(void)
     mbxParams.readerEventId = MotorMailboxEventID;
     Mailbox_construct(&mbxStruct,sizeof(MsgObj), MAXMOTORMESSAGES, &mbxParams, NULL);
     mbxHandle = Mailbox_handle(&mbxStruct);
-
-
     MotorArgStruct_t MotorFxnArgs;
     MotorFxnArgs.mbxHandle = mbxHandle;
     MotorFxnArgs.max_mailbox_messages = MAXMOTORMESSAGES; //For iterating to a limit
 
-    Task_Params_init(&taskParams); //Start a generic task_params
+    //Start a generic task_params
+    Task_Params_init(&taskParams);
+        //Modify it for each special case
         taskParams.arg0 = (UArg) &MotorFxnArgs;
         taskParams.stackSize = MOTORTASKSTACKSIZE;
         taskParams.priority = MOTORTASK_PRIORITY;
         taskParams.stack = &MotorTask_Stack;
         Task_construct(&MotorTask_Struct, (Task_FuncPtr)MotorTask, &taskParams, NULL);
-        taskParams.stack = &MotorTransitionTask_Stack;
-        Task_construct(&MotorTransitionTask_Struct, (Task_FuncPtr)MotorTransitionTask, &taskParams, NULL);
+        
     //Generic Task-creation template. Anything assigned a value BEFORE needs to be re-written.
     taskParams.stackSize = TASKSTACKSIZE;
     taskParams.priority = SUPERLOW_PRIORITY_TASK;
     taskParams.stack = &task1Stack;
-    Task_construct(&task1Struct, (Task_FuncPtr)MotorTransitionTask, &taskParams, NULL);
+    Task_construct(&task1Struct, (Task_FuncPtr)MotorMonitorTask, &taskParams, NULL);
 
 
 
@@ -237,15 +200,6 @@ int main(void)
     if (evtHandle == NULL) {
         //System_printf("Event creation failed :( ");
     }
-
-    
-    Queue_Params_init(&HallISR_QueueParams); // Initialize with default parameters
-    Queue_construct(&HallISR_Queue, &HallISR_QueueParams);
-    HallISR_QueueHandle = Queue_handle(&HallISR_Queue);
-    
-
-    //GPIO_setCallback(Port M, Pin 3,HallSensorA_isr);
-
 
     /* Start BIOS */
     BIOS_start();

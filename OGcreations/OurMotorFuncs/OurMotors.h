@@ -31,7 +31,7 @@ void CalcMotorSpeed(UArg arg0);
 void DrivingModeTask(UArg arg0, UArg arg1);
 void kick_motors_on(void);
 void kill_motors(void);
-void MotorTransitionTask(UArg arg0, UArg arg1);
+void MotorMonitorTask(UArg arg0, UArg arg1);
 void MotorTask(UArg arg0, UArg arg1);
 
 #endif /* OGCREATIONS_OURMOTORFUNCS_OURMOTORS_H_ */

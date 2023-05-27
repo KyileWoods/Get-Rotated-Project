@@ -2,6 +2,8 @@
 #include <ti/drivers/GPIO.h>
 #include <ti/sysbios/knl/Mailbox.h>
 #include <ti/sysbios/knl/Task.h> // For Task_exit()
+#include <ti/sysbios/knl/Event.h>
+#include <ti/sysbios/knl/Clock.h>
 #include <xdc/runtime/System.h> //For printf'ing
 
 #include "inc/hw_memmap.h"
@@ -20,16 +22,29 @@
 #include <ti/sysbios/hal/Hwi.h>
 #include <ti/sysbios/gates/GateHwi.h>
 
-extern Queue_Struct HallISR_Queue;
-extern Queue_Handle HallISR_QueueHandle;
-extern Queue_Params HallISR_QueueParams;
-extern bool Hall_a;
-extern bool Hall_b;
-extern bool Hall_c;
+
+
+/* TASKS  */
+#define MOTORTASKSTACKSIZE   512
+Task_Struct MotorMonitorTask_Struct;
+Char MotorMonitorTask_Stack[MOTORTASKSTACKSIZE];
+
+/* QUEUE's*/
+Queue_Struct HallISR_Queue;
+Queue_Handle HallISR_QueueHandle;
+Queue_Params HallISR_QueueParams;
+
 uint_fast16_t SpeedCounter;
 uint_fast16_t SpeedValue;
 
 GateHwi_Handle gateHwi;
+
+
+
+/* GLOBALS*/
+bool Hall_a=0;
+bool Hall_b=0;
+bool Hall_c=0;
 
 enum MOTOR_STATE{
     DRIVE_IDLE,
@@ -85,16 +100,20 @@ void ConfigureMotorPins(void){
 void ConfigureMotors(void) {
 
     ConfigureMotorPins(); //Set pWM, GPIO, input/output
+    Queue_Params_init(&HallISR_QueueParams); // Initialize with default parameters
+    Queue_construct(&HallISR_Queue, &HallISR_QueueParams);
+    HallISR_QueueHandle = Queue_handle(&HallISR_Queue);
     
     //Set an initial motor state.
     DRIVE_RULESET = DRIVE_IDLE;
     SpeedCounter = 0;
+
     
 }
 
 
 // KEEP a generic function on these buttons, so we can easily,
-// quickly drop a new fuprototyping function onto this interrupt (Otherwise you have to change configs in board.h)
+// quickly drop a new prototyping function onto this interrupt (Otherwise you have to change configs in board.h)
 void SW1_ISR(void){kick_motors_on();}
 void kick_motors_on(void){
     GPIOIntClear(GPIO_PORTJ_BASE, GPIO_INT_PIN_0); // MUST CLEAR THE INTERRUPT
@@ -154,59 +173,18 @@ void HallSensorC_isr(void)
     GateHwi_leave(gateHwi, gateKey); // Release the operation
 }
 
-void MotorTransitionTask(UArg arg0, UArg arg1){
-    MotorArgStruct_t* args = (MotorArgStruct_t*)arg0;
-    Mailbox_Handle mbxHandle = args->mbxHandle;
-    int mbxMaxMessages = args->max_mailbox_messages;
-    MailboxMessage TheMessage;
-
-    int timeout = 50;
-
-    bool quitter = false;
-    while(quitter == false){
-        if(Mailbox_pend(mbxHandle, &TheMessage, 50)){
-            System_printf("Just received id = %d val = '%c' ...\n",
-            TheMessage.id, TheMessage.val);
-            System_flush();
-            
-
-
-
-
-
-            if(TheMessage.val == 'Q'){
-                System_printf("QUIT SIGNAL RECEIVED");
-                System_flush();
-                quitter = true;
-            }
-        }
-    }
-    while(0){
-        //SysCtlDelay(50);
-
-        bool A_read = GPIOPinRead(GPIO_PORTM_BASE, GPIO_PIN_3);
-        bool B_read = GPIOPinRead(GPIO_PORTH_BASE, GPIO_PIN_2);
-        bool C_read = GPIOPinRead(GPIO_PORTN_BASE, GPIO_PIN_2);
-        
-        //int halls = Hall_a<<2|Hall_b<<1|Hall_c;
-        System_printf("Hall: %i%i%i\n", A_read, B_read, C_read);
-        System_flush();
-    }
-
-
-    Task_exit();
-}
-
-
 
 void WriteAMessage(UArg arg0){
+    /* Mostly at the moment this is a DEBUG function
+    MotorMonitorTask is monitoring this MailBox
+    This is NOT a task. It is called, and handed the task arg0*/
     MotorArgStruct_t* args = (MotorArgStruct_t*)arg0;
     Mailbox_Handle mbxHandle = args->mbxHandle;
     int mbxMaxMessages = args->max_mailbox_messages;
     MailboxMessage TheMessage;
     int timeout = 50;
     
-    //Write a message
+    //Write a message 
     for (int i=0; i < mbxMaxMessages; i++) {
         /* Fill in value */
         TheMessage.id = i;
@@ -229,8 +207,50 @@ void WriteAMessage(UArg arg0){
 }
 
 void CalcMotorSpeed(UArg arg0){
-            //   (Counts/totalSegments)/frequency
-    //SpeedValue = (SpeedCounter/24)/150;
+              //(Counts/totalSegments)/frequency;
+    SpeedValue = (SpeedCounter/24)    /150;
+    //printf("Speed: %i\n", SpeedValue);
+}
+
+void MotorMonitorTask(UArg arg0, UArg arg1){
+    MotorArgStruct_t* args = (MotorArgStruct_t*)arg0;
+    Mailbox_Handle mbxHandle = args->mbxHandle;
+    int mbxMaxMessages = args->max_mailbox_messages;
+    MailboxMessage TheMessage;
+
+    int timeout = 50;
+
+    bool quitter = false;
+    while(quitter == false){
+        if( Mailbox_pend(mbxHandle, &TheMessage, 500)){
+            System_printf("Just received id = %d val = '%c' ...\n",
+            TheMessage.id, TheMessage.val);
+            System_flush();
+            
+            if(TheMessage.val == 'Q'){
+                System_printf("QUIT SIGNAL RECEIVED {IGNORING}\n");
+                System_flush();
+                //quitter = true;
+            }
+        }
+        else{
+            System_printf("Speed: %i\n", SpeedValue);
+        }
+    }
+    while(0){
+        //SysCtlDelay(50);
+
+        bool A_read = GPIOPinRead(GPIO_PORTM_BASE, GPIO_PIN_3);
+        bool B_read = GPIOPinRead(GPIO_PORTH_BASE, GPIO_PIN_2);
+        bool C_read = GPIOPinRead(GPIO_PORTN_BASE, GPIO_PIN_2);
+        
+        //int halls = Hall_a<<2|Hall_b<<1|Hall_c;
+        System_printf("Hall: %i%i%i\n", A_read, B_read, C_read);
+        System_flush();
+    }
+
+
+    Task_exit();
 }
 
 void DrivingModeTask(UArg arg0, UArg arg1){
@@ -238,8 +258,26 @@ void DrivingModeTask(UArg arg0, UArg arg1){
 analysis for when the motor is in DRIVING mode
 */
 
+}
+
+void MotorsPrelude(void){
+    Task_Params taskParams;
+    Event_Params eventParams;
+    Clock_Params clkParams;
+    Mailbox_Params mbxParams;
 
 
+    Error_Block m_eb;
+    Error_init(&m_eb);
+    bool MotorLibSuccess = initMotorLib(50, &m_eb);
+    if (!MotorLibSuccess) {
+        Error_print(&m_eb);
+        System_abort("Error Initializing Motor\n");
+    }
+    setDuty(30);
+
+    taskParams.stack = &MotorMonitorTask_Stack;
+    Task_construct(&MotorMonitorTask_Struct, (Task_FuncPtr)MotorMonitorTask, &taskParams, NULL);
 }
 
 void MotorTask(UArg arg0, UArg arg1){
@@ -248,11 +286,12 @@ void MotorTask(UArg arg0, UArg arg1){
     /* P R E L U D E */
     WriteAMessage(arg0);
     ConfigureMotors();
+    MotorsPrelude();
 
     /* B O D Y */
 
     while(DRIVE_RULESET != DRIVE_EXPLOSION){
-
+        // event_pend()
         /*Detect anything important about the motors*/
 
         
