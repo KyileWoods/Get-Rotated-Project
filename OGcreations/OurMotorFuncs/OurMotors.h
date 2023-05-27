@@ -27,6 +27,7 @@ void HallSensorB_isr(void);
 void HallSensorC_isr(void);
 
 // OPERATIONS
+void MotorsPrelude(void);
 void CalcMotorSpeed(UArg arg0);
 void DrivingModeTask(UArg arg0, UArg arg1);
 void kick_motors_on(void);

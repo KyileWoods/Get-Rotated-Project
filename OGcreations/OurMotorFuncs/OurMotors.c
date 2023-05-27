@@ -24,22 +24,38 @@
 
 
 
+/* EVENTS*/
+extern Event_Struct evtStruct;
+extern Event_Handle MotorEventHandle;
+#define MonitorMailboxEventID Event_Id_03
+
 /* TASKS  */
-#define MOTORTASKSTACKSIZE   512
+#define MOTORMONITORTASKSTACKSIZE   512
+#define MAXMONITORMESSAGES 15
 Task_Struct MotorMonitorTask_Struct;
-Char MotorMonitorTask_Stack[MOTORTASKSTACKSIZE];
+Char MotorMonitorTask_Stack[MOTORMONITORTASKSTACKSIZE];
 
 /* QUEUE's*/
 Queue_Struct HallISR_Queue;
 Queue_Handle HallISR_QueueHandle;
 Queue_Params HallISR_QueueParams;
 
+/* MAILBOXES */
+Mailbox_Struct MonitorMailStruct;
+Mailbox_Handle MonitorMailHandle;
+
+/* Highly Muteable*/
+Task_Params taskParams;
+Event_Params eventParams;
+Clock_Params clkParams;
+Mailbox_Params MotorMailParams;
+Error_Block ErrorBlock;
+
+
 uint_fast16_t SpeedCounter;
 uint_fast16_t SpeedValue;
 
 GateHwi_Handle gateHwi;
-
-
 
 /* GLOBALS*/
 bool Hall_a=0;
@@ -204,6 +220,8 @@ void WriteAMessage(UArg arg0){
     System_printf("Writing QUIT...\n");
     System_flush();
     Mailbox_post(mbxHandle,&TheMessage,timeout);
+    System_printf("QUITted\n");
+    System_flush();
 }
 
 void CalcMotorSpeed(UArg arg0){
@@ -261,32 +279,36 @@ analysis for when the motor is in DRIVING mode
 }
 
 void MotorsPrelude(void){
-    Task_Params taskParams;
-    Event_Params eventParams;
-    Clock_Params clkParams;
-    Mailbox_Params mbxParams;
+    ConfigureMotors();
 
-
-    Error_Block m_eb;
-    Error_init(&m_eb);
-    bool MotorLibSuccess = initMotorLib(50, &m_eb);
+    Error_init(&ErrorBlock);// Move this somewhere
+    bool MotorLibSuccess = initMotorLib(50, &ErrorBlock);
     if (!MotorLibSuccess) {
-        Error_print(&m_eb);
+        Error_print(&ErrorBlock);
         System_abort("Error Initializing Motor\n");
     }
     setDuty(30);
 
+    Mailbox_Params_init(&MotorMailParams);
+    MotorMailParams.readerEvent = MotorEventHandle;
+    MotorMailParams.readerEventId = MonitorMailboxEventID;
+    Mailbox_construct(&MonitorMailStruct,sizeof(MsgObj), MAXMONITORMESSAGES, &MotorMailParams, NULL);
+    MonitorMailHandle = Mailbox_handle(&MonitorMailStruct);
     taskParams.stack = &MotorMonitorTask_Stack;
+    System_printf("Tasking time\n");
+    System_flush();
     Task_construct(&MotorMonitorTask_Struct, (Task_FuncPtr)MotorMonitorTask, &taskParams, NULL);
 }
 
 void MotorTask(UArg arg0, UArg arg1){
     /* A low-priority background system for determining some non-RTOS functionality*/
 
+    System_flush();
     /* P R E L U D E */
-    WriteAMessage(arg0);
-    ConfigureMotors();
     MotorsPrelude();
+    WriteAMessage(arg0);
+    System_printf("Preluded\n");
+    System_flush();
 
     /* B O D Y */
 
