@@ -142,7 +142,7 @@ int main(void)
     Board_initGeneral();
     Board_initGPIO();
     Board_initI2C();
-    i2c_init();
+    //i2c_init();
     // Board_initEMAC();
     // Board_initSDSPI();
     // Board_initSPI();
@@ -151,7 +151,7 @@ int main(void)
     // Board_initUSBMSCHFatFs();
     // Board_initWatchdog();
     // Board_initWiFi();
-     //sensorOpt3001Init();  // Initialize OPT3001 sensor
+    // sensorOpt3001Init();  // Initialize OPT3001 sensor
 
 
 
@@ -185,7 +185,7 @@ int main(void)
     Task_Params_init(&taskParams);
     taskParams.arg0 = 1000;
     taskParams.stackSize = TASKSTACKSIZE;
-    taskParams.priority = SUPERLOW_PRIORITY_TASK;
+    taskParams.priority = OPT3001_PRIORITY;
     taskParams.stack = &taskOpt3001Stack;
     Task_construct(&taskOpt3001Struct, (Task_FuncPtr)I2C_Opto3001Fxn, &taskParams, NULL);
 
@@ -197,10 +197,10 @@ int main(void)
     i2c = I2C_open(Board_I2C_OPT3001, &i2cParams);
 
     if (i2c == NULL) {
-    System_printf("Error Initializing I2C!\n");     // GETTING ERROR MESSAGE SAYING ERROR INITIALISING I2C BUT OPT3001 SESNOR VALUES ARE PRINTING TO CONSOLE!!!
+    System_abort("Error Initializing I2C!\n");
     }
     if (i2c != NULL) {
-    System_printf("I2C Initialized!\n");
+    System_printf("OPT3001 I2C Initialized!\n");    // OPT3001 I2C INITIALISES CORRECTLY, HOWEVER NO SENSOR VALUES PRINTING TO CONSOLE (THEY WERE ORIGINALLY PRINTING WHEN I2C WASN'T INITIALISING CORRECTLY!!!
     }
 
     Clock_Params_init(&clkParams);
