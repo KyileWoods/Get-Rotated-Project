@@ -5,6 +5,7 @@
 "./OGcreations/OurMotorFuncs/OurMotors.obj"
 "./OGcreations/OurOptoFuncs/OurOpto.obj"
 "./OGcreations/OurTimingFuncs/OurTimers.obj"
+"./OGcreations/Sensing/ACCELEROMETER.obj"
 "./OGcreations/Sensing/Sensing.obj"
 "./drivers/i2cOptDriver.obj"
 "./drivers/opt3001.obj"

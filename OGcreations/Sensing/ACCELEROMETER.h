@@ -1,5 +1,5 @@
 /*
- *  Filename:    Sensing.h
+ *  Filename:    ACCELEROMETER.h
  *
  *  Description: Header file for My Module.
  *
@@ -7,8 +7,8 @@
  *  Author:      [Phoenix Seybold, N9379410]
  */
 
-#ifndef SENSING_MODUAL_H
-#define SENSING_MODUAL_H
+#ifndef BMI160_ACCELEROMETER_H
+#define BMI160_ACCELEROMETER_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,17 +17,11 @@ extern "C" {
 /* Includes */
 #include <stdint.h>
 
+/*      ADRESSES    */
 
-/* Macros and constants */
-// globals
-#define BUFFER_SIZE 100
-#define WINDOW_SIZE 10
+// SLAVE
+#define
 
-// STRUCTS
-typedef struct BMI160sensorStruct{
-    float Acc_x, Acc_y, Acc_z;
-    float Gyr_x, Gyr_y ,Gyr_z;
-};
 
 
 /* Function prototypes */
@@ -41,7 +35,6 @@ typedef struct BMI160sensorStruct{
  */
 int32_t my_module_init(void);
 
-
 /**
  * @brief Perform an action in My Module.
  *
@@ -52,14 +45,11 @@ int32_t my_module_init(void);
  */
 int32_t my_module_action(uint32_t parameter);
 
-
+/* Macros and constants */
+//#define MY_MODULE_CONSTANT     (42)
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* SENSING_MODUAL_H */
-
-
-
-
+#endif /* BMI160_ACCELEROMETER_H */
