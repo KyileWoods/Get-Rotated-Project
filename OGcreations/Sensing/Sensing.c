@@ -100,58 +100,7 @@ void SpeedBuffer(UArg arg0, UArg arg1){
 
 }
 
-/* initADC(void)
-    -----------------------------------------------------------
-    Description:
-    ------------
-    Intialise the ADC GPIO for Trigger input
-    - Configure and enable the sequencer (sequencer, channel, trigger type, priority)
-    - Configure each step
-    - Setup ADC1 PE3
 
-    Notes:
-    ------
-    - ADC 0 used by both touchscreen & Motor; WATCHOUT FOR CONFLICTS
-    - microcontroller has 2 ADC modules ADC0 and ADC1.
-          They have 20 shared analog channels AIN0-19.
-    - ADC is 12 bit with max sampling rate of 2M samples/sec
-    - Can transfer data to memory without CPU processing via DMA
-*/
-void initADC1 (void){
-    
-        int ADC_SEQ   =  1;
-        int ADC_STEP  =  0;
-
-//        SysCtlPeripheralEnable( SYSCTL_PERIPH_ADC0 );
-        SysCtlPeripheralEnable( SYSCTL_PERIPH_ADC1 );
-
-        /* CONFIGURE BOTH ADC GPIOS FOR ANALOG INPUT */
-//        /* Enable ADC0 */
-//        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
-//        GPIOPinTypeADC(GPIO_PORTD_BASE, GPIO_PIN_7);
-
-        /* Enable ADC1 */
-        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
-        GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_3);
-
-        /* Enable ADC Sequence */
-        ADCSequenceConfigure(ADC1_BASE, ADC_SEQ, ADC_TRIGGER_PROCESSOR, 0);
-
-                                /*  (Base, Sequence, Step, Config)
-                                 *  CONFIG:
-                                 *  --------
-                                 *  ADC_CTL_IE  = Interrupt enable
-                                 *  ADC_CTL_CH0 = Input channel 0
-                                 *  ADC_CTL_END = Sequence end select    */
-        ADCSequenceStepConfigure(ADC1_BASE, ADC_SEQ, ADC_STEP, ADC_CTL_IE | ADC_CTL_CH0 | ADC_CTL_END);
-
-        /* Oversampling - for 150Hz */
-        ADCHardwareOversampleConfigure(ADC1_BASE, 8);
-
-        ADCSequenceEnable(ADC1_BASE, ADC_SEQ);
-
-        ADCIntEnable(ADC1_BASE, 1);
-}
 
 /* 
     MainSense(void)
@@ -220,8 +169,63 @@ void MainSense(void){
 
 }
 
+/* initADC1(void)
+    -----------------------------------------------------------
+    Description:
+    ------------
+    Intialise the ADC GPIO for Trigger input
+    - Configure and enable the sequencer (sequencer, channel, trigger type, priority)
+    - Configure each step
+    - Setup ADC1 PE3
 
-/* MainSense(void)
+    Notes:
+    ------
+    - ADC 0 used by both touchscreen & Motor; WATCHOUT FOR CONFLICTS
+    - microcontroller has 2 ADC modules ADC0 and ADC1.
+          They have 20 shared analog channels AIN0-19.
+    - ADC is 12 bit with max sampling rate of 2M samples/sec
+    - Can transfer data to memory without CPU processing via DMA
+*/
+void initADC1 (void){
+
+        int ADC_SEQ   =  2; // <-->
+        int ADC_STEP  =  0;
+
+//        SysCtlPeripheralEnable( SYSCTL_PERIPH_ADC0 );
+        SysCtlPeripheralEnable( SYSCTL_PERIPH_ADC1 );
+
+        /* CONFIGURE BOTH ADC GPIOS FOR ANALOG INPUT */
+        /* Enable ADC0 */
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD); // <-->
+        GPIOPinTypeADC(GPIO_PORTD_BASE, GPIO_PIN_7); // <-->
+
+        /* Enable ADC1 */
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
+        GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_3);
+
+        /* Enable ADC Sequence */
+        ADCSequenceConfigure(ADC1_BASE, ADC_SEQ, ADC_TRIGGER_PROCESSOR, 0);
+
+                                /*  (Base, Sequence, Step, Config)
+                                 *  CONFIG:
+                                 *  --------
+                                 *  ADC_CTL_IE  = Interrupt enable
+                                 *  ADC_CTL_CH0 = Input channel 0
+                                 *  ADC_CTL_END = Sequence end select
+                                 *
+                                 *  ADC_CTL_CH4 = Input channel 4 */
+        ADCSequenceStepConfigure(ADC1_BASE, ADC_SEQ, ADC_STEP, ADC_CTL_CH4); // <-->
+
+        ADCSequenceStepConfigure(ADC1_BASE, ADC_SEQ, ADC_STEP+1, ADC_CTL_IE | ADC_CTL_CH0 | ADC_CTL_END);
+
+        /* Oversampling - for 150Hz */
+        ADCHardwareOversampleConfigure(ADC1_BASE, 8);
+
+        ADCSequenceEnable(ADC1_BASE, ADC_SEQ);
+
+        ADCIntEnable(ADC1_BASE, ADC_SEQ);
+}
+/* ReadADC(void)
     -----------------------------------------------------------
     Description:
     ------------
@@ -231,8 +235,8 @@ void MainSense(void){
 
     Returns:
     --------
-    CurrentADC : uint32
-        (Amps) Filtered motor current as read through ADC
+    CurrentADC : uint32 list - 1x2
+        ( 0 -- 4096 : Discrete Sample ) Filtered motor current as read through ADC
 
     Notes:
     ------
@@ -242,18 +246,19 @@ void MainSense(void){
     - Gain 10; for current Amplifier
 */
 uint32_t ReadADC(void) {
+    int ADC_SEQ   =  2;
 
     /*  ADC Sequence from Lecture - Another method possible via ISR or Hwi if using TI-RTOS  */
-    uint32_t ui32ADC1_CurrentSense[1];
+    uint32_t ui32ADC1_CurrentSense[ADC_SEQ];
     // Trigger ADC Conversion
-    ADCProcessorTrigger(ADC1_BASE, 1);
+    ADCProcessorTrigger(ADC1_BASE, ADC_SEQ);
     // wait for conversion
-    while(!ADCIntStatus(ADC1_BASE, 1, false)){ }
+    while(!ADCIntStatus(ADC1_BASE, ADC_SEQ, false)){ }
     //Clear Interrupt
-    ADCIntClear( ADC1_BASE, 2);
+    ADCIntClear( ADC1_BASE, ADC_SEQ);
     // Read ADC FIFO buffer from sample sequence
-    ADCSequenceDataGet(ADC1_BASE, 1, ui32ADC1_CurrentSense);
-    return ui32ADC1_CurrentSense[0];
+    ADCSequenceDataGet(ADC1_BASE, ADC_SEQ, ui32ADC1_CurrentSense);
+    return ui32ADC1_CurrentSense; // return 2 list of current readings from ADC
 }
 
 /* getCurrent()
@@ -278,17 +283,20 @@ uint32_t ReadADC(void) {
         - ADC_voltage    = 3.3V   Logic voltage for ADC channel
         - ADC_Resolution = 4096   ADC sampling resolution
 */
-//void getCurrent(){
-//    float Current;
-//    float Power;
-//    float avg_shunt;
-//    float V_sox;
-//
-//    V_sox   = ((ADC_voltage * avg_shunt)/ ADC_Resolution);
-//    Current = fabs((0.5*V_vref - V_sox) / ( G_csa * R_Sense )) * 1000;
-//
-//    Power = (V_vref * Current) / 1000;
-//}
+
+float getCurrent(uint32_t ui32ADC1_CurrentSense[2]){
+
+    float Current[2];
+    float avgCurrent;
+    float V_sox0 = ui32ADC1_CurrentSense[0] * ADC_voltage/ ADC_Resolution;
+    float V_sox1 = ui32ADC1_CurrentSense[1] * ADC_voltage/ ADC_Resolution;
+
+    Current[0] = fabs( ((0.5*V_vref - V_sox0) / ( G_csa * R_Sense ) ));
+    Current[1] = fabs( ((0.5*V_vref - V_sox1) / ( G_csa * R_Sense ) ));
+    avgCurrent = ( Current[0] + Current[1] ) * 1.5;
+
+    return avgCurrent;
+}
 
 
 
