@@ -28,7 +28,7 @@ extern "C" {
 #define G_csa       10;           // Gain setting
 #define V_vref      24;           // Motor Voltage
 #define ADC_voltage 3.3;          // Logic voltage range for ADC
-#define Sample_Resolution 4096;   // Sampling resolution of ADC
+#define ADC_Resolution 4096;   // Sampling resolution of ADC
 
 
 

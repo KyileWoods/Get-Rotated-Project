@@ -241,8 +241,8 @@ uint32_t ReadADC(void) {
     -----------------------------------------------------------
     Description:
     ------------
-    getCurrent will read current from the shunt after an ISR;
-    Current is calculated and the missing ADC acounted for.
+    getCurrent() will read ADC ( from ReadADC() ) to calculate over shunt resistor after an ISR;
+    Motor current from voltage is calculated (in AMPs) using equation specified section 8.3.4.1 DRV232RH Datasheet (p41)
 
     Returns:
     --------
@@ -252,9 +252,12 @@ uint32_t ReadADC(void) {
     Notes:
     ------
     - ADC 0 used by both touchscreen & Motor; WATCHOUT FOR CONFLICTS
-    - section 8.3.4.1 of DRV232RH driver datasheet (page 41) gives equation of Motor current from voltage
-    - Shunt resistor = 0.007 Ohms per current sense line
-    - Gain 10; for current Amplifier
+        Stats Defined in Sensing.h:
+        - R_Sense = 0.007       Ohms shunt resistance per current sense line
+        - G_csa   = 10          Set Gain for current Amplifier
+        - V_vref  = 24V         Motor reference voltage
+        - ADC_voltage    = 3.3V   Logic voltage for ADC channel
+        - ADC_Resolution = 4096   ADC sampling resolution
 */
 //void getCurrent(){
 //    float Current;
@@ -262,7 +265,7 @@ uint32_t ReadADC(void) {
 //    float avg_shunt;
 //    float V_sox;
 //
-//    V_sox   = ((ADC_voltage * avg_shunt)/ Sample_Resolution);
+//    V_sox   = ((ADC_voltage * avg_shunt)/ ADC_Resolution);
 //    Current = fabs((0.5*V_vref - V_sox) / ( G_csa * R_Sense )) * 1000;
 //
 //    Power = (V_vref * Current) / 1000;
