@@ -72,11 +72,30 @@ void currFxn(UArg arg0){
 /* ------------------                   ------------------ */
 /* Function Definitions */
 
+/* PowerBuffer(void)
+    -----------------------------------------------------------
+    Description:
+    ------------
+    Filter readings with min buffer size of 5
 
+    Notes:
+    ------
+    * Called by currFxn Swi
+*/
 void PowerBuffer(UArg arg0, UArg arg1){
 
 }
+/* SpeedBuffer(void)
+    -----------------------------------------------------------
+    Description:
+    ------------
+    Filter readings with min buffer size of 5
 
+    Notes:
+    ------
+    * Called by rpmFxn Swi
+
+*/
 void SpeedBuffer(UArg arg0, UArg arg1){
 
 }
@@ -168,12 +187,12 @@ void MainSense(void){
         Swi_Params_init(&swiParams);
 
         /*Speed Swi' for converting revolution count to RPM*/
-        SpeedSwi = Swi_create(SpeedBuffer, &swiParams, NULL);
+        SpeedSwi = Swi_create((Task_FuncPtr)SpeedBuffer, &swiParams, NULL);
         if (SpeedSwi == NULL) { System_abort("SWI Failure: HALLS");
         }
 
         /*Power ADC swi*/
-        PowerSwi = Swi_create(PowerBuffer, &swiParams, NULL);
+        PowerSwi = Swi_create((Task_FuncPtr)PowerBuffer, &swiParams, NULL);
         if (PowerSwi == NULL) { System_abort("SWI Failure: ADC");
         }
 
