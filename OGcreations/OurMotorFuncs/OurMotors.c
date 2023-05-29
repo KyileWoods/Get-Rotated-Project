@@ -31,10 +31,18 @@ extern Event_Struct MotorEventStruct;
 extern Event_Handle MotorEventHandle;
 #define MonitorMailboxEventID Event_Id_03
 
+/* EVENTS*/
+extern Event_Struct evtStruct;
+extern Event_Handle MotorEventHandle;
+#define MonitorMailboxEventID Event_Id_03
+
 /* TASKS  */
 #define MOTORMONITORTASKSTACKSIZE   512
 #define MAXMONITORMESSAGES 15
+#define MOTORMONITORTASKSTACKSIZE   512
+#define MAXMONITORMESSAGES 15
 Task_Struct MotorMonitorTask_Struct;
+Char MotorMonitorTask_Stack[MOTORMONITORTASKSTACKSIZE];
 Char MotorMonitorTask_Stack[MOTORMONITORTASKSTACKSIZE];
 
 /* QUEUE's*/
@@ -302,15 +310,21 @@ void MotorsPrelude(void){
     taskParams.stack = &MotorMonitorTask_Stack;
     System_printf("Tasking time\n");
     System_flush();
+    System_printf("Tasking time\n");
+    System_flush();
     Task_construct(&MotorMonitorTask_Struct, (Task_FuncPtr)MotorMonitorTask, &taskParams, NULL);
 }
 
 void MotorTask(UArg arg0, UArg arg1){
     /* A low-priority background system for determining some non-RTOS functionality*/
 
+    System_flush();
     /* P R E L U D E */
     MotorsPrelude();
+    MotorsPrelude();
     WriteAMessage(arg0);
+    System_printf("Preluded\n");
+    System_flush();
     System_printf("Preluded\n");
     System_flush();
 
