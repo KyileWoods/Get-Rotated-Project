@@ -1282,6 +1282,12 @@ const __T1_ti_sysbios_knl_Idle_coreList ti_sysbios_knl_Idle_coreList__A[1];
  * ======== ti.sysbios.knl.Semaphore DECLARATIONS ========
  */
 
+/* --> ti_sysbios_knl_Event_post__E */
+extern xdc_Void ti_sysbios_knl_Event_post__E(ti_sysbios_knl_Event_Handle,xdc_UInt);
+
+/* --> ti_sysbios_knl_Event_sync__E */
+extern xdc_Void ti_sysbios_knl_Event_sync__E(ti_sysbios_knl_Event_Handle,xdc_UInt,xdc_UInt);
+
 
 /*
  * ======== ti.sysbios.knl.Swi DECLARATIONS ========
@@ -4785,7 +4791,7 @@ __FAR__ const CT__ti_sysbios_knl_Semaphore_A_pendTaskDisabled ti_sysbios_knl_Sem
 
 /* supportsEvents__C */
 #pragma DATA_SECTION(ti_sysbios_knl_Semaphore_supportsEvents__C, ".const:ti_sysbios_knl_Semaphore_supportsEvents__C");
-__FAR__ const CT__ti_sysbios_knl_Semaphore_supportsEvents ti_sysbios_knl_Semaphore_supportsEvents__C = 0;
+__FAR__ const CT__ti_sysbios_knl_Semaphore_supportsEvents ti_sysbios_knl_Semaphore_supportsEvents__C = 1;
 
 /* supportsPriority__C */
 #pragma DATA_SECTION(ti_sysbios_knl_Semaphore_supportsPriority__C, ".const:ti_sysbios_knl_Semaphore_supportsPriority__C");
@@ -4793,11 +4799,11 @@ __FAR__ const CT__ti_sysbios_knl_Semaphore_supportsPriority ti_sysbios_knl_Semap
 
 /* eventPost__C */
 #pragma DATA_SECTION(ti_sysbios_knl_Semaphore_eventPost__C, ".const:ti_sysbios_knl_Semaphore_eventPost__C");
-__FAR__ const CT__ti_sysbios_knl_Semaphore_eventPost ti_sysbios_knl_Semaphore_eventPost__C = ((CT__ti_sysbios_knl_Semaphore_eventPost)0);
+__FAR__ const CT__ti_sysbios_knl_Semaphore_eventPost ti_sysbios_knl_Semaphore_eventPost__C = ((CT__ti_sysbios_knl_Semaphore_eventPost)((xdc_Fxn)ti_sysbios_knl_Event_post__E));
 
 /* eventSync__C */
 #pragma DATA_SECTION(ti_sysbios_knl_Semaphore_eventSync__C, ".const:ti_sysbios_knl_Semaphore_eventSync__C");
-__FAR__ const CT__ti_sysbios_knl_Semaphore_eventSync ti_sysbios_knl_Semaphore_eventSync__C = ((CT__ti_sysbios_knl_Semaphore_eventSync)0);
+__FAR__ const CT__ti_sysbios_knl_Semaphore_eventSync ti_sysbios_knl_Semaphore_eventSync__C = ((CT__ti_sysbios_knl_Semaphore_eventSync)((xdc_Fxn)ti_sysbios_knl_Event_sync__E));
 
 
 /*

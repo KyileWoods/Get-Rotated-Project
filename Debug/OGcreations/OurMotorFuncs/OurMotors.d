@@ -194,9 +194,11 @@ OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/drivers/motorlib.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Error.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/OGcreations/OurMotorFuncs/OurMotors.h
+OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Task.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/OGcreations/OurMessagingFuncs/OurMessaging.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Mailbox.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Queue.h
+OGcreations/OurMotorFuncs/OurMotors.obj: C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/OGcreations/MainInclude.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/shared_mem.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Mailbox.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Queue.h
@@ -635,11 +637,15 @@ C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Error.h:
 
 C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/OGcreations/OurMotorFuncs/OurMotors.h:
 
+C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Task.h:
+
 C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/OGcreations/OurMessagingFuncs/OurMessaging.h:
 
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Mailbox.h:
 
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Queue.h:
+
+C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/OGcreations/MainInclude.h:
 
 C:/Users/Delluser/Desktop/Projects\ go\ in\ here/Get\ Rotated\ Project/shared_mem.h:
 

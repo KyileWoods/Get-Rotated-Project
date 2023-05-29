@@ -17,6 +17,8 @@
 #include "motorlib.h"
 #include "OGcreations/OurMotorFuncs/OurMotors.h"
 #include "OGcreations/OurMessagingFuncs/OurMessaging.h"
+// THIS WAS INTENDED TO ONLY BE FOR MAIN.C, but is has a PRIORITY ENUM struct
+#include "OGcreations/MainInclude.h" 
 #include "shared_mem.h"
 #include <ti/drivers/GPIO.h>
 #include <ti/sysbios/hal/Hwi.h>
@@ -25,7 +27,7 @@
 
 
 /* EVENTS*/
-extern Event_Struct evtStruct;
+extern Event_Struct MotorEventStruct;
 extern Event_Handle MotorEventHandle;
 #define MonitorMailboxEventID Event_Id_03
 
@@ -43,12 +45,12 @@ Queue_Params HallISR_QueueParams;
 /* MAILBOXES */
 Mailbox_Struct MonitorMailStruct;
 Mailbox_Handle MonitorMailHandle;
+Mailbox_Params MotorMailParams;
 
 /* Highly Muteable*/
 Task_Params taskParams;
 Event_Params eventParams;
 Clock_Params clkParams;
-Mailbox_Params MotorMailParams;
 Error_Block ErrorBlock;
 
 
@@ -280,6 +282,7 @@ analysis for when the motor is in DRIVING mode
 
 void MotorsPrelude(void){
     ConfigureMotors();
+    
 
     Error_init(&ErrorBlock);// Move this somewhere
     bool MotorLibSuccess = initMotorLib(50, &ErrorBlock);
@@ -289,11 +292,13 @@ void MotorsPrelude(void){
     }
     setDuty(30);
 
-    Mailbox_Params_init(&MotorMailParams);
-    MotorMailParams.readerEvent = MotorEventHandle;
-    MotorMailParams.readerEventId = MonitorMailboxEventID;
-    Mailbox_construct(&MonitorMailStruct,sizeof(MsgObj), MAXMONITORMESSAGES, &MotorMailParams, NULL);
-    MonitorMailHandle = Mailbox_handle(&MonitorMailStruct);
+    // Creating the task
+    MotorArgStruct_t MotorFxnArgs;
+    MotorFxnArgs.mbxHandle = MonitorMailHandle;
+    Task_Params_init(&taskParams);
+    taskParams.arg0 = (UArg) &MotorFxnArgs;
+    taskParams.stackSize = MOTORMONITORTASKSTACKSIZE;
+    taskParams.priority = MOTORMONITORTASK_PRIORITY;
     taskParams.stack = &MotorMonitorTask_Stack;
     System_printf("Tasking time\n");
     System_flush();
@@ -303,7 +308,6 @@ void MotorsPrelude(void){
 void MotorTask(UArg arg0, UArg arg1){
     /* A low-priority background system for determining some non-RTOS functionality*/
 
-    System_flush();
     /* P R E L U D E */
     MotorsPrelude();
     WriteAMessage(arg0);

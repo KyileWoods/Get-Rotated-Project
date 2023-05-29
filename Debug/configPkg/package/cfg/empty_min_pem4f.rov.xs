@@ -14157,11 +14157,11 @@ __o = __obj[696]  // ti.sysbios.knl.Semaphore
     __o['Object__table'] = null
     __o['common$'] = __obj[705.0]
     __o['configNameMap$'] = __obj[706.0]
-    __o['eventPost'] = null
-    __o['eventSync'] = null
+    __o['eventPost'] = String(java.net.URLDecoder.decode('%26ti_sysbios_knl_Event_post__E', 'UTF-8'))
+    __o['eventSync'] = String(java.net.URLDecoder.decode('%26ti_sysbios_knl_Event_sync__E', 'UTF-8'))
     __o['rovShowRawTab$'] = true
     __o['rovViewInfo'] = __obj[74.0]
-    __o['supportsEvents'] = false
+    __o['supportsEvents'] = true
     __o['supportsPriority'] = false
     __o['viewNameMap$'] = __obj[719.0]
 

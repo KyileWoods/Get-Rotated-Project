@@ -70,7 +70,7 @@ Char taskStack[STACKSIZE];
 
 
 /* EVENTS*/
-Event_Struct evtStruct;
+Event_Struct MotorEventStruct;
 Event_Handle MotorEventHandle;
 #define MotorMailboxEventID Event_Id_02
 
@@ -157,16 +157,15 @@ int main(void)
         // Handle error: Event creation failed
     }
 
-    printf("Marco\n");
-
     Mailbox_Params_init(&mbxParams);
     mbxParams.readerEvent = MotorEventHandle;
     mbxParams.readerEventId = MotorMailboxEventID;
-    Mailbox_construct(&mbxStruct,sizeof(MsgObj), MAXMOTORMESSAGES, &mbxParams, NULL);
-    mbxHandle = Mailbox_handle(&mbxStruct);
-    MotorArgStruct_t MotorFxnArgs;
-    MotorFxnArgs.mbxHandle = mbxHandle;
-    MotorFxnArgs.max_mailbox_messages = MAXMOTORMESSAGES; //For iterating to a limit
+//  Uncomment this when mailboxes are needed
+   Mailbox_construct(&mbxStruct,sizeof(MsgObj), MAXMOTORMESSAGES, &mbxParams, NULL);
+   mbxHandle = Mailbox_handle(&mbxStruct);
+   MotorArgStruct_t MotorFxnArgs;
+   MotorFxnArgs.mbxHandle = mbxHandle;
+   MotorFxnArgs.max_mailbox_messages = MAXMOTORMESSAGES; //For iterating to a limit
 
     //Start a generic task_params
     Task_Params_init(&taskParams);
