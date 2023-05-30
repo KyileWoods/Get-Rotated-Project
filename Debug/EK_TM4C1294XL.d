@@ -206,15 +206,6 @@ EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/ndk_2_25_00_09/package
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/GPIO.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/gpio/GPIOTiva.h
 EK_TM4C1294XL.obj: ../OGcreations/OurMotorFuncs/OurMotors.h
-EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/I2C.h
-EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/i2c/I2CTiva.h
-EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Semaphore.h
-EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Types.h
-EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/IInstance.h
-EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Diags.h
-EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Log.h
-EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Assert.h
-EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Queue.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Task.h
 EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Types.h
 EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/IInstance.h
@@ -252,6 +243,18 @@ EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packag
 EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Types.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/interfaces/ITaskSupport.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Task__epilogue.h
+EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/package/Task_SupportProxy.h
+EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/interrupt.h
+EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/I2C.h
+EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/i2c/I2CTiva.h
+EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Semaphore.h
+EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Types.h
+EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/IInstance.h
+EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Diags.h
+EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Log.h
+EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Assert.h
+EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Queue.h
+EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Task.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Clock.h
 EK_TM4C1294XL.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/IModule.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Event.h
@@ -298,7 +301,6 @@ EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packag
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Semaphore.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/family/arm/m3/Hwi.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Task.h
-EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/package/Task_SupportProxy.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Semaphore.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/usblib/host/usbhmsc.h
 EK_TM4C1294XL.obj: C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/Watchdog.h
@@ -720,24 +722,6 @@ C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/dr
 
 ../OGcreations/OurMotorFuncs/OurMotors.h:
 
-C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/I2C.h:
-
-C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/i2c/I2CTiva.h:
-
-C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Semaphore.h:
-
-C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Types.h:
-
-C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/IInstance.h:
-
-C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Diags.h:
-
-C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Log.h:
-
-C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Assert.h:
-
-C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Queue.h:
-
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Task.h:
 
 C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Types.h:
@@ -811,6 +795,30 @@ C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Types.h:
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/interfaces/ITaskSupport.h:
 
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Task__epilogue.h:
+
+C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/package/Task_SupportProxy.h:
+
+C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/interrupt.h:
+
+C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/I2C.h:
+
+C:/ti/tirtos_tivac_2_16_01_14/products/tidrivers_tivac_2_16_01_13/packages/ti/drivers/i2c/I2CTiva.h:
+
+C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Semaphore.h:
+
+C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Types.h:
+
+C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/IInstance.h:
+
+C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Diags.h:
+
+C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Log.h:
+
+C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Assert.h:
+
+C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Queue.h:
+
+C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Task.h:
 
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Clock.h:
 
@@ -903,8 +911,6 @@ C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/S
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/family/arm/m3/Hwi.h:
 
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Task.h:
-
-C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/package/Task_SupportProxy.h:
 
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Semaphore.h:
 

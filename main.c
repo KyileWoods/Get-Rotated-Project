@@ -70,8 +70,8 @@ Char taskStack[STACKSIZE];
 
 
 /* EVENTS*/
-Event_Struct evtStruct;
-Event_Handle evtHandle;
+Event_Struct MotorEventStruct;
+Event_Handle MotorEventHandle;
 #define MotorMailboxEventID Event_Id_02
 
 /* MAILBOXES */
@@ -151,14 +151,22 @@ int main(void)
 
     /*===== CREATE EVERYTHING ABOUT MOTOR CONTROLLER FUNCTION=====*/
     /* Construct a Mailbox Instance */
+    Event_Params_init(&eventParams);
+    MotorEventHandle = Event_create(&eventParams, NULL);
+    if (MotorEventHandle == NULL) {
+        // Handle error: Event creation failed
+    }
+
     Mailbox_Params_init(&mbxParams);
-    mbxParams.readerEvent = evtHandle;
+    mbxParams.readerEvent = MotorEventHandle;
     mbxParams.readerEventId = MotorMailboxEventID;
-    Mailbox_construct(&mbxStruct,sizeof(MsgObj), MAXMOTORMESSAGES, &mbxParams, NULL);
-    mbxHandle = Mailbox_handle(&mbxStruct);
-    MotorArgStruct_t MotorFxnArgs;
-    MotorFxnArgs.mbxHandle = mbxHandle;
-    MotorFxnArgs.max_mailbox_messages = MAXMOTORMESSAGES; //For iterating to a limit
+    
+//  Uncomment this when mailboxes are needed
+   Mailbox_construct(&mbxStruct,sizeof(MsgObj), MAXMOTORMESSAGES, &mbxParams, NULL);
+   mbxHandle = Mailbox_handle(&mbxStruct);
+   MotorArgStruct_t MotorFxnArgs;
+   MotorFxnArgs.mbxHandle = mbxHandle;
+   MotorFxnArgs.max_mailbox_messages = MAXMOTORMESSAGES; //For iterating to a limit
 
     //Start a generic task_params
     Task_Params_init(&taskParams);
@@ -170,10 +178,10 @@ int main(void)
         Task_construct(&MotorTask_Struct, (Task_FuncPtr)MotorTask, &taskParams, NULL);
         
     //Generic Task-creation template. Anything assigned a value BEFORE needs to be re-written.
-    taskParams.stackSize = TASKSTACKSIZE;
-    taskParams.priority = SUPERLOW_PRIORITY_TASK;
-    taskParams.stack = &task1Stack;
-    Task_construct(&task1Struct, (Task_FuncPtr)MotorMonitorTask, &taskParams, NULL);
+    // taskParams.stackSize = TASKSTACKSIZE;
+    // taskParams.priority = SUPERLOW_PRIORITY_TASK;
+    // taskParams.stack = &task1Stack;
+    // Task_construct(&task1Struct, (Task_FuncPtr)SomeKindaWeirdTask, &taskParams, NULL);
 
 
 
@@ -188,18 +196,6 @@ int main(void)
     Clock_construct(&clk0Struct, (Clock_FuncPtr)clk0_swi_clk_fxn,
                     50, &clkParams);
     clk0Handle = Clock_handle(&clk0Struct);
-
-
-    
-
-    Event_Params evtParams; //Declare params locally
-    Event_Params_init(&evtParams); //Initialise it with default values
-    //Event_create is DYNAMIC; even_construct is STATIC memory allocation-- PROTOTYPE: Event_Handle Event_create(Event_Params *__prms, xdc_runtime_Error_Block *__eb );
-    Event_construct(&evtStruct, &evtParams); //Construct an event according to params, populate a struct with the event's unique information
-    evtHandle = Event_handle(&evtStruct);// Pull the event handle out from the structure, for easy reference
-    if (evtHandle == NULL) {
-        //System_printf("Event creation failed :( ");
-    }
 
     /* Start BIOS */
     BIOS_start();

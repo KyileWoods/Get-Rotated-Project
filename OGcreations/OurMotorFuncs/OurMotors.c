@@ -17,6 +17,8 @@
 #include "motorlib.h"
 #include "OGcreations/OurMotorFuncs/OurMotors.h"
 #include "OGcreations/OurMessagingFuncs/OurMessaging.h"
+// THIS WAS INTENDED TO ONLY BE FOR MAIN.C, but is has a PRIORITY ENUM struct
+#include "OGcreations/MainInclude.h" 
 #include "shared_mem.h"
 #include <ti/drivers/GPIO.h>
 #include <ti/sysbios/hal/Hwi.h>
@@ -24,22 +26,43 @@
 
 
 
+/* EVENTS*/
+extern Event_Struct MotorEventStruct;
+extern Event_Handle MotorEventHandle;
+#define MonitorMailboxEventID Event_Id_03
+
+/* EVENTS*/
+extern Event_Struct evtStruct;
+extern Event_Handle MotorEventHandle;
+#define MonitorMailboxEventID Event_Id_03
+
 /* TASKS  */
-#define MOTORTASKSTACKSIZE   512
+#define MOTORMONITORTASKSTACKSIZE   512
+#define MAXMONITORMESSAGES 15
+#define MOTORMONITORTASKSTACKSIZE   512
+#define MAXMONITORMESSAGES 15
 Task_Struct MotorMonitorTask_Struct;
-Char MotorMonitorTask_Stack[MOTORTASKSTACKSIZE];
+Char MotorMonitorTask_Stack[MOTORMONITORTASKSTACKSIZE];
+Char MotorMonitorTask_Stack[MOTORMONITORTASKSTACKSIZE];
 
 /* QUEUE's*/
 Queue_Struct HallISR_Queue;
 Queue_Handle HallISR_QueueHandle;
 Queue_Params HallISR_QueueParams;
 
+/* MAILBOXES */
+
+/* Highly Muteable*/
+Task_Params taskParams;
+Event_Params eventParams;
+Clock_Params clkParams;
+Error_Block ErrorBlock;
+
+
 uint_fast16_t SpeedCounter;
 uint_fast16_t SpeedValue;
 
 GateHwi_Handle gateHwi;
-
-
 
 /* GLOBALS*/
 bool Hall_a=0;
@@ -204,6 +227,8 @@ void WriteAMessage(UArg arg0){
     System_printf("Writing QUIT...\n");
     System_flush();
     Mailbox_post(mbxHandle,&TheMessage,timeout);
+    System_printf("QUITted\n");
+    System_flush();
 }
 
 void CalcMotorSpeed(UArg arg0){
@@ -260,34 +285,43 @@ analysis for when the motor is in DRIVING mode
 
 }
 
-//NEEDS TO BE FIXED
-Task_Params taskParams;
-Event_Params eventParams;
-Clock_Params clkParams;
-Mailbox_Params mbxParams;
-void MotorsPrelude(void){
-
-
-    Error_Block m_eb;
-    Error_init(&m_eb);
-    bool MotorLibSuccess = initMotorLib(50, &m_eb);
+void MotorsPrelude(UArg arg0){
+    MotorArgStruct_t* FOOBAR = (MotorArgStruct_t*)arg0;
+    
+    ConfigureMotors();
+    
+    Error_init(&ErrorBlock);
+    bool MotorLibSuccess = initMotorLib(50, &ErrorBlock);
     if (!MotorLibSuccess) {
-        Error_print(&m_eb);
+        Error_print(&ErrorBlock);
         System_abort("Error Initializing Motor\n");
     }
     setDuty(30);
 
-//    taskParams.stack = &MotorMonitorTask_Stack;
-//    Task_construct(&MotorMonitorTask_Struct, (Task_FuncPtr)MotorMonitorTask, &taskParams, NULL);
+    // Creating the task
+    MotorArgStruct_t MotorMonitorArgs;
+    MotorMonitorArgs.mbxHandle = FOOBAR->mbxHandle;
+    Task_Params_init(&taskParams);
+    taskParams.arg0 = (UArg) &MotorMonitorArgs;
+    taskParams.stackSize = MOTORMONITORTASKSTACKSIZE;
+    taskParams.priority = MOTORMONITORTASK_PRIORITY;
+    taskParams.stack = &MotorMonitorTask_Stack;
+    System_printf("Tasking time\n");
+    System_flush();
+    Task_construct(&MotorMonitorTask_Struct, (Task_FuncPtr)MotorMonitorTask, &taskParams, NULL);
 }
 
 void MotorTask(UArg arg0, UArg arg1){
     /* A low-priority background system for determining some non-RTOS functionality*/
 
+    System_flush();
     /* P R E L U D E */
+    MotorsPrelude(arg0);
     WriteAMessage(arg0);
-    ConfigureMotors();
-    MotorsPrelude();
+    System_printf("Preluded\n");
+    System_flush();
+    System_printf("Preluded\n");
+    System_flush();
 
     /* B O D Y */
 

@@ -10,7 +10,20 @@
 
 #include <xdc/std.h>
 #include <stdbool.h>
+#include <ti/sysbios/knl/Task.h>
+#include "inc/hw_memmap.h"
+#include "driverlib/gpio.h"
+#include "driverlib/interrupt.h"
+#include "driverlib/pin_map.h"
+#include "driverlib/sysctl.h"
 
+
+// typedef struct MotorsComms{
+//     /* QUEUE's*/
+//     Queue_Struct HallISR_Queue;
+//     Queue_Handle HallISR_QueueHandle;
+//     Queue_Params HallISR_QueueParams;
+// } MotorComms_t;
 
 // SETUP
 void ConfigureMotorPins(void);
@@ -27,6 +40,7 @@ void HallSensorB_isr(void);
 void HallSensorC_isr(void);
 
 // OPERATIONS
+void MotorsPrelude(UArg arg0);
 void CalcMotorSpeed(UArg arg0);
 void DrivingModeTask(UArg arg0, UArg arg1);
 void kick_motors_on(void);
