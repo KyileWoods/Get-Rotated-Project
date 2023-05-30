@@ -160,6 +160,7 @@ int main(void)
     Mailbox_Params_init(&mbxParams);
     mbxParams.readerEvent = MotorEventHandle;
     mbxParams.readerEventId = MotorMailboxEventID;
+    
 //  Uncomment this when mailboxes are needed
    Mailbox_construct(&mbxStruct,sizeof(MsgObj), MAXMOTORMESSAGES, &mbxParams, NULL);
    mbxHandle = Mailbox_handle(&mbxStruct);

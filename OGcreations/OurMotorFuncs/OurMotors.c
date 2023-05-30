@@ -51,9 +51,6 @@ Queue_Handle HallISR_QueueHandle;
 Queue_Params HallISR_QueueParams;
 
 /* MAILBOXES */
-Mailbox_Struct MonitorMailStruct;
-Mailbox_Handle MonitorMailHandle;
-Mailbox_Params MotorMailParams;
 
 /* Highly Muteable*/
 Task_Params taskParams;
@@ -288,11 +285,12 @@ analysis for when the motor is in DRIVING mode
 
 }
 
-void MotorsPrelude(void){
+void MotorsPrelude(UArg arg0){
+    MotorArgStruct_t* FOOBAR = (MotorArgStruct_t*)arg0;
+    
     ConfigureMotors();
     
-
-    Error_init(&ErrorBlock);// Move this somewhere
+    Error_init(&ErrorBlock);
     bool MotorLibSuccess = initMotorLib(50, &ErrorBlock);
     if (!MotorLibSuccess) {
         Error_print(&ErrorBlock);
@@ -301,15 +299,13 @@ void MotorsPrelude(void){
     setDuty(30);
 
     // Creating the task
-    MotorArgStruct_t MotorFxnArgs;
-    MotorFxnArgs.mbxHandle = MonitorMailHandle;
+    MotorArgStruct_t MotorMonitorArgs;
+    MotorMonitorArgs.mbxHandle = FOOBAR->mbxHandle;
     Task_Params_init(&taskParams);
-    taskParams.arg0 = (UArg) &MotorFxnArgs;
+    taskParams.arg0 = (UArg) &MotorMonitorArgs;
     taskParams.stackSize = MOTORMONITORTASKSTACKSIZE;
     taskParams.priority = MOTORMONITORTASK_PRIORITY;
     taskParams.stack = &MotorMonitorTask_Stack;
-    System_printf("Tasking time\n");
-    System_flush();
     System_printf("Tasking time\n");
     System_flush();
     Task_construct(&MotorMonitorTask_Struct, (Task_FuncPtr)MotorMonitorTask, &taskParams, NULL);
@@ -320,8 +316,7 @@ void MotorTask(UArg arg0, UArg arg1){
 
     System_flush();
     /* P R E L U D E */
-    MotorsPrelude();
-    MotorsPrelude();
+    MotorsPrelude(arg0);
     WriteAMessage(arg0);
     System_printf("Preluded\n");
     System_flush();
