@@ -12,6 +12,7 @@
 #include <ti/sysbios/knl/Mailbox.h>
 #include <ti/sysbios/knl/Queue.h>
 
+
 typedef struct MailboxMessage {
     Int         id;             /* Writer task id */
     Char        val;            /* Message value */
@@ -35,6 +36,7 @@ typedef struct QueueMessageObject {
 void SendMailInteger(Mailbox_Handle MailboxHandle, int speed);
 void SendMailPointer(Mailbox_Handle MailboxHandle, void* PointerAsVoid);
 void SendMailBool(Mailbox_Handle MailboxHandle, bool PostBool);
+void ConfigureUART(void);
 
 
 

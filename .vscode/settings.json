@@ -27,6 +27,9 @@
         "ourmessaging.h": "c",
         "emacsnow.h": "c",
         "sdspitiva.h": "c",
-        "__locale": "c"
+        "__locale": "c",
+        "uartstdio.h": "c",
+        "uart.h": "c",
+        "cstdio": "c"
     }
 }

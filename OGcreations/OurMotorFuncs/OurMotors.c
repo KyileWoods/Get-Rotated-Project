@@ -1,18 +1,21 @@
 #include <stdbool.h>
+#include <stdio.h>
+
 #include <ti/drivers/GPIO.h>
 #include <ti/sysbios/knl/Mailbox.h>
 #include <ti/sysbios/knl/Task.h> // For Task_exit()
 #include <ti/sysbios/knl/Event.h>
 #include <ti/sysbios/knl/Clock.h>
 
-
 #include <xdc/runtime/System.h> //For printf'ing
+#include <ti/drivers/UART.h>  // For UART print
 
 #include "inc/hw_memmap.h"
 #include "driverlib/gpio.h"
 #include "driverlib/interrupt.h"
 #include "driverlib/pin_map.h"
 #include "driverlib/sysctl.h"
+
 
 
 //#include "Board.h"
@@ -28,11 +31,9 @@
 #include <ti/sysbios/BIOS.h>
 
 
-
-/* EVENTS*/
-extern Event_Struct MotorEventStruct;
-extern Event_Handle MotorEventHandle;
-#define MonitorMailboxEventID Event_Id_03
+/* HANDLES */
+UART_Handle uart;
+char    uartbuff[30];
 
 /* EVENTS*/
 extern Event_Struct evtStruct;
@@ -42,10 +43,7 @@ extern Event_Handle MotorEventHandle;
 /* TASKS  */
 #define MOTORMONITORTASKSTACKSIZE   512
 #define MAXMONITORMESSAGES 15
-#define MOTORMONITORTASKSTACKSIZE   512
-#define MAXMONITORMESSAGES 15
 Task_Struct MotorMonitorTask_Struct;
-Char MotorMonitorTask_Stack[MOTORMONITORTASKSTACKSIZE];
 Char MotorMonitorTask_Stack[MOTORMONITORTASKSTACKSIZE];
 
 /* QUEUE's*/
@@ -60,6 +58,8 @@ Task_Params taskParams;
 Event_Params eventParams;
 Clock_Params clkParams;
 Error_Block ErrorBlock;
+extern char    uartbuff[30];
+
 
 
 uint_fast16_t SpeedCounter;
@@ -240,7 +240,14 @@ void CalcMotorSpeed(UArg arg0){
               //(Counts/totalSegments)/frequency;
     SpeedValue = (1000*SpeedCounter/24)    /150;
     SpeedCounter = 0;
-    //printf("Speed: %i\n", SpeedValue);
+    int uartery = 0;
+    if(uartery){
+        snprintf(uartbuff, 20, "Speed: %i", SpeedValue);
+        if(uart == NULL || UART_ERROR == UART_write(uart, uartbuff, 20)){
+            printf("UART ERROR!\n");
+            System_flush();
+        }
+    }
 }
 
 void MotorMonitorTask(UArg arg0, UArg arg1){
@@ -296,10 +303,25 @@ analysis for when the motor is in DRIVING mode
 
 }
 
+void initUart(UART_Handle *uart){
+    UART_Params uart_Params;
+    /* Create a UART with data processing off. */
+    UART_Params_init(&uart_Params);
+    uart_Params.readMode = UART_MODE_BLOCKING;        // CALLBACK?
+    uart_Params.writeDataMode = UART_DATA_BINARY;
+    uart_Params.readDataMode = UART_DATA_BINARY;
+    uart_Params.readReturnMode = UART_RETURN_FULL;
+    uart_Params.readEcho = UART_ECHO_OFF;
+    uart_Params.readTimeout = 10;
+    uart_Params.baudRate = 9600;
+    *uart = UART_open(0, &uart_Params);
+}
+
 void MotorsPrelude(UArg arg0){
     MotorArgStruct_t* FOOBAR = (MotorArgStruct_t*)arg0;
     
     ConfigureMotors();
+    initUart(&uart);
     
     Error_init(&ErrorBlock);
     bool MotorLibSuccess = initMotorLib(50, &ErrorBlock);
@@ -329,6 +351,10 @@ void MotorTask(UArg arg0, UArg arg1){
     /* P R E L U D E */
     MotorsPrelude(arg0);
     WriteAMessage(arg0);
+
+    // // DEBUG TEST DEELETE SHORTLY
+    // UARTprintf("\033[2J\033[H");
+    // UARTprintf("OPT001 Example\n");
     
     /* B O D Y */
 

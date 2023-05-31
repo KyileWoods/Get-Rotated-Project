@@ -16,6 +16,7 @@
 #include "driverlib/interrupt.h"
 #include "driverlib/pin_map.h"
 #include "driverlib/sysctl.h"
+#include <ti/drivers/UART.h>  // For UART print
 
 
 // typedef struct MotorsComms{
@@ -47,5 +48,6 @@ void kick_motors_on(void);
 void kill_motors(void);
 void MotorMonitorTask(UArg arg0, UArg arg1);
 void MotorTask(UArg arg0, UArg arg1);
+void initUart(UART_Handle *uart);
 
 #endif /* OGCREATIONS_OURMOTORFUNCS_OURMOTORS_H_ */

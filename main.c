@@ -19,6 +19,7 @@
 #include <ti/sysbios/knl/Clock.h>
 #include <ti/sysbios/knl/Swi.h>
 #include <ti/sysbios/knl/Queue.h>
+#include <ti/drivers/UART.h>
 
 /* QUT driver files*/
 //#include "drivers/opt3001.h"
@@ -82,6 +83,8 @@ Mailbox_Handle mbxHandle;
 /* QUEUE's*/
 
 /* GLOBALS*/
+UART_Handle uart;
+char    uartbuff[30];
 
 void i2c_init(void) {
     // Enable I2C peripheral
@@ -98,6 +101,7 @@ void i2c_init(void) {
     // Initialize and configure I2C master
     I2CMasterInitExpClk(I2C0_BASE, SysCtlClockGet(), false);
 }
+
 
 void task_function_skeleton(void){
 
@@ -137,15 +141,18 @@ int main(void)
     Board_initGPIO();
     Board_initI2C();
     i2c_init();
+    //void ConfigureUART(void);
     // Board_initEMAC();
     // Board_initSDSPI();
     // Board_initSPI();
-    // Board_initUART();
+    Board_initUART();
     // Board_initUSB(Board_USBDEVICE);
     // Board_initUSBMSCHFatFs();
     // Board_initWatchdog();
     // Board_initWiFi();
     // sensorOpt3001Init();  // Initialize OPT3001 sensor
+    char TheText[20] = "UART PRINTING EXAMPLE JUST USE THIS\n";
+    UART_write(uart,&TheText, 14);
 
 
 

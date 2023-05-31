@@ -21,5 +21,4 @@ typedef enum {
 } TaskPriorityEnum;
 
 
-
 #endif /* OGCREATIONS_MAININCLUDE_H_ */
