@@ -248,6 +248,9 @@ OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/xdctools_3_32_00_06_core/packages
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/IInstance.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/gates/package/package.defs.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/IGateProvider.h
+OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/BIOS.h
+OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/package/BIOS_RtsGateProxy.h
+OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Task.h
 
 ../OGcreations/OurMotorFuncs/OurMotors.c:
 
@@ -744,4 +747,10 @@ C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/IInstance.h:
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/gates/package/package.defs.h:
 
 C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/IGateProvider.h:
+
+C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/BIOS.h:
+
+C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/package/BIOS_RtsGateProxy.h:
+
+C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Task.h:
 

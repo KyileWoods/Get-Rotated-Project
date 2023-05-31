@@ -4,6 +4,8 @@
 #include <ti/sysbios/knl/Task.h> // For Task_exit()
 #include <ti/sysbios/knl/Event.h>
 #include <ti/sysbios/knl/Clock.h>
+
+
 #include <xdc/runtime/System.h> //For printf'ing
 
 #include "inc/hw_memmap.h"
@@ -23,6 +25,7 @@
 #include <ti/drivers/GPIO.h>
 #include <ti/sysbios/hal/Hwi.h>
 #include <ti/sysbios/gates/GateHwi.h>
+#include <ti/sysbios/BIOS.h>
 
 
 
@@ -207,33 +210,36 @@ void WriteAMessage(UArg arg0){
     MailboxMessage TheMessage;
     int timeout = 50;
     
+    // Synchronize with the reader process: Pend for 1 failed wait by the MotorMonitor.
+    Mailbox_pend(mbxHandle, &TheMessage, BIOS_WAIT_FOREVER);
     //Write a message 
-    for (int i=0; i < mbxMaxMessages; i++) {
+    char TheText[20] = "The Message";
+    TheText[20-1] = NULL;
+    System_printf("SendString: %s\n", TheText);
+    System_flush();
+    int i=0;
+    bool MessageComplete = false;
+    while(MessageComplete == false){
+        MessageComplete = (TheText[i] == NULL);
         /* Fill in value */
-        TheMessage.id = i;
-        TheMessage.val = i + 'a';
-        TheMessage.valNumber = 20+i;
+        TheMessage.id = 1; //Basically a sender-ID #
+        TheMessage.val = TheText[i]; // A single letter at a time into the mailbox
+        TheMessage.valNumber = i; //Append the index position
 
-        System_printf("Writing message id = %d val = '%i' ...\n",
-        TheMessage.id, TheMessage.valNumber);
+        System_printf("'%c'", TheMessage.val);
         System_flush();
 
         /* Enqueue message */
-        Mailbox_post(mbxHandle,&TheMessage,timeout);
-        
+        Mailbox_post(mbxHandle,&TheMessage, BIOS_WAIT_FOREVER);
+        i++;
+
     }
-    
-    TheMessage.val = 'Q';
-    System_printf("Writing QUIT...\n");
-    System_flush();
-    Mailbox_post(mbxHandle,&TheMessage,timeout);
-    System_printf("QUITted\n");
-    System_flush();
 }
 
 void CalcMotorSpeed(UArg arg0){
               //(Counts/totalSegments)/frequency;
-    SpeedValue = (SpeedCounter/24)    /150;
+    SpeedValue = (1000*SpeedCounter/24)    /150;
+    SpeedCounter = 0;
     //printf("Speed: %i\n", SpeedValue);
 }
 
@@ -245,33 +251,38 @@ void MotorMonitorTask(UArg arg0, UArg arg1){
 
     int timeout = 50;
 
-    bool quitter = false;
-    while(quitter == false){
-        if( Mailbox_pend(mbxHandle, &TheMessage, 500)){
-            System_printf("Just received id = %d val = '%c' ...\n",
-            TheMessage.id, TheMessage.val);
-            System_flush();
-            
-            if(TheMessage.val == 'Q'){
-                System_printf("QUIT SIGNAL RECEIVED {IGNORING}\n");
-                System_flush();
-                //quitter = true;
+    bool MoreMessage = true;
+    char TheText[20];
+    int i=0;
+    int FailedWaits = 0;
+    while(MoreMessage == true){
+        if(Mailbox_pend(mbxHandle, &TheMessage, 500)){
+            if(TheMessage.id!=2){ // Ignore self-reports
+                FailedWaits = 0; // Resets this counter
+                TheText[TheMessage.valNumber] = TheMessage.val;
+                if(TheMessage.val == NULL){
+                    System_printf("Got string: %s\n", TheText);
+                    System_flush();
+                    MoreMessage = false;
+                }
             }
         }
         else{
-            System_printf("Speed: %i\n", SpeedValue);
+            FailedWaits++;
+            System_printf("Timeout %i\n", FailedWaits);
+            System_flush();
+            /* Fill in value */
+            TheMessage.id = 2; //Basically a sender-ID #
+            TheMessage.val = 'Q'; // An arbitrary letter to signify a recursive failure
+            TheMessage.valNumber = FailedWaits;
+            Mailbox_post(mbxHandle,&TheMessage, BIOS_WAIT_FOREVER);  //Could cause a dead-lock when the box is full. Fix with event pending
         }
     }
-    while(0){
-        //SysCtlDelay(50);
-
-        bool A_read = GPIOPinRead(GPIO_PORTM_BASE, GPIO_PIN_3);
-        bool B_read = GPIOPinRead(GPIO_PORTH_BASE, GPIO_PIN_2);
-        bool C_read = GPIOPinRead(GPIO_PORTN_BASE, GPIO_PIN_2);
-        
-        //int halls = Hall_a<<2|Hall_b<<1|Hall_c;
-        System_printf("Hall: %i%i%i\n", A_read, B_read, C_read);
-        System_flush();
+    System_printf("\nMotor Monitoring Begins NOW\n");
+    while(1){
+        Task_sleep(1000);
+        // System_printf("Speed: %i\n", SpeedValue);
+        // System_flush();
     }
 
 
@@ -318,11 +329,7 @@ void MotorTask(UArg arg0, UArg arg1){
     /* P R E L U D E */
     MotorsPrelude(arg0);
     WriteAMessage(arg0);
-    System_printf("Preluded\n");
-    System_flush();
-    System_printf("Preluded\n");
-    System_flush();
-
+    
     /* B O D Y */
 
     while(DRIVE_RULESET != DRIVE_EXPLOSION){
@@ -337,21 +344,26 @@ void MotorTask(UArg arg0, UArg arg1){
 
             break;
             case DRIVE_TRANSITION_STARTING:
-                // Create the conditions needed to ignite the motor
-                enableMotor(); //This is the key.
-                Hall_a = GPIOPinRead(GPIO_PORTM_BASE, GPIO_PIN_3);
-                Hall_b = GPIOPinRead(GPIO_PORTH_BASE, GPIO_PIN_2);
-                Hall_c = GPIOPinRead(GPIO_PORTN_BASE, GPIO_PIN_2);
-                // KICK IT!
-                updateMotor(Hall_a, Hall_b, Hall_c);
-                DRIVE_RULESET = DRIVE_RUNNING;
+                if(SpeedValue<1){ //Ensure A kick was good before transitioning to drivestate
+                    // Create the conditions needed to ignite the motor
+                    enableMotor(); //This is the key.
+                    Hall_a = GPIOPinRead(GPIO_PORTM_BASE, GPIO_PIN_3);
+                    Hall_b = GPIOPinRead(GPIO_PORTH_BASE, GPIO_PIN_2);
+                    Hall_c = GPIOPinRead(GPIO_PORTN_BASE, GPIO_PIN_2);
+                    // KICK IT!
+                    updateMotor(Hall_a, Hall_b, Hall_c);
+                }
+                else{
+                    DRIVE_RULESET = DRIVE_RUNNING;
+                }
+
                 break;
             case DRIVE_RUNNING:
                 //printf("Motor Speed = %i\n", SpeedCounter);
                 break;
         }
-
         
+
         //Determine whether a ruleset change is required
 
         // Modify the variables which are important to happen within this ruleset
@@ -368,3 +380,4 @@ void MotorTask(UArg arg0, UArg arg1){
 }
 
 
+#include <ti/sysbios/knl/Task.h>
