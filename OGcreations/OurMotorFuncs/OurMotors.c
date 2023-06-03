@@ -227,7 +227,8 @@ void WriteAMessage(UArg arg0){
         TheMessage.valNumber = i; //Append the index position
 
         System_printf("'%c'", TheMessage.val);
-        System_flush();
+        UART_write(uart, uartbuff,2);
+        //System_flush();
 
         /* Enqueue message */
         Mailbox_post(mbxHandle,&TheMessage, BIOS_WAIT_FOREVER);
