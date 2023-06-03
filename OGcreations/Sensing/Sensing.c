@@ -58,10 +58,15 @@ void rpmFxn(UArg arg0){
     Swi_post(SpeedSwi);
 }
 
-/*Clock Interrupt for current @ 200Hz*/
+/*Clock Interrupt for current @ 150Hz*/
 void currFxn(UArg arg0){
-    // Call Software Interrupt to get Power from ADCs
-    Swi_post(PowerSwi);
+
+    Event_post(evtHandle, Event_Id_01);
+        if (Mailbox_getNumPendingMsgs(mbxBmiHandle) == BUFFER_SIZE)
+        {
+            // Call Software Interrupt to get Power from ADCs
+            Swi_post(PowerSwi);
+        }
 }
 
 //void DistanceFxn(UArg arg0){
@@ -72,11 +77,13 @@ void currFxn(UArg arg0){
 /* ------------------                   ------------------ */
 /* Function Definitions */
 
+
+
 /* PowerBuffer(void)
     -----------------------------------------------------------
     Description:
     ------------
-    Filter readings with min buffer size of 5
+    Filter ADC current / power readings with min buffer size of 5
 
     Notes:
     ------
@@ -84,12 +91,31 @@ void currFxn(UArg arg0){
 */
 void PowerBuffer(UArg arg0, UArg arg1){
 
+    float avgCurrent;
+
+    // empty Mailbox Buffer if full
+    while (Mailbox_getNumPendingMsgs(mbxBmiHandle) > 0)
+        {
+            // Pend Mailbox
+            if (Mailbox_pend(mbxBmiHandle, &msg, BIOS_NO_WAIT))
+            {
+                // Grab all buffered Sensor Values
+                avgCurrent += Current;
+
+            } // Exit Mailbox.
+        }
+    // Average Buffer Sensor Values
+    avgCurrent = avgCurrent / BUFFER_SIZE;
+
+    // update current global
 }
+
+
 /* SpeedBuffer(void)
     -----------------------------------------------------------
     Description:
     ------------
-    Filter readings with min buffer size of 5
+    Filter Motor Hall readings with min buffer size of 5
 
     Notes:
     ------
@@ -123,13 +149,23 @@ void MainSense(void){
         Task_Params     taskParams;
         Event_Params    eventParams;
         Clock_Params    clkParams;
-//        Mailbox_Params  mbxParams;
+        Mailbox_Params  mbxParams;
         Swi_Params      swiParams;
 
         /*------------------------ INIT-EVENTS --------------------------*/
 
         Event_construct(&evtStruct, &eventParams); //Construct an event according to params, populate a struct with the event's unique information
         evtHandle = Event_handle(&evtStruct);// Pull the event handle out from the structure, for easy reference
+
+
+        /*------------------------ INIT-MAILBOX --------------------------*/
+        // Init mailbox for event & buffer handleing of sensor readings
+        // REQUIRES: mbxParams, MsgObj, mbxStruct
+
+        Mailbox_Params mbxParams;
+        Mailbox_Params_init(&mbxParams);
+        Mailbox_construct(&mbxStruct, sizeof(MsgObj), NUMMSGS, &mbxParams, NULL);
+        mbxOptHandle = Mailbox_handle(&mbxStruct);
 
         /*------------------------ INIT-SWIS --------------------------*/
 
@@ -258,7 +294,7 @@ uint32_t ReadADC(void) {
     ADCIntClear( ADC1_BASE, ADC_SEQ);
     // Read ADC FIFO buffer from sample sequence
     ADCSequenceDataGet(ADC1_BASE, ADC_SEQ, ui32ADC1_CurrentSense);
-    return ui32ADC1_CurrentSense; // return 2 list of current readings from ADC
+    return ui32ADC1_CurrentSense ; // return 2 list of current readings from ADC
 }
 
 /* getCurrent()
@@ -284,12 +320,15 @@ uint32_t ReadADC(void) {
         - ADC_Resolution = 4096   ADC sampling resolution
 */
 
-float getCurrent(uint32_t ui32ADC1_CurrentSense[2]){
+
+float getCurrent(uint32_t *ui32ADC1_CurrentSense){
+//    uint32_t dummy = 1;
 
     float Current[2];
     float avgCurrent;
-    float V_sox0 = ui32ADC1_CurrentSense[0] * ADC_voltage/ ADC_Resolution;
-    float V_sox1 = ui32ADC1_CurrentSense[1] * ADC_voltage/ ADC_Resolution;
+    float V_sox0 = ui32ADC1_CurrentSense[0]*ADC_voltage/ ADC_Resolution;
+    float V_sox1 = ui32ADC1_CurrentSense[1]*ADC_voltage/ ADC_Resolution;
+
 
     Current[0] = fabs( ((0.5*V_vref - V_sox0) / ( G_csa * R_Sense ) ));
     Current[1] = fabs( ((0.5*V_vref - V_sox1) / ( G_csa * R_Sense ) ));
@@ -297,6 +336,4 @@ float getCurrent(uint32_t ui32ADC1_CurrentSense[2]){
 
     return avgCurrent;
 }
-
-
 

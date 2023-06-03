@@ -24,11 +24,11 @@ extern "C" {
 #define WINDOW_SIZE 10
 
 /*   ADC current shunt stats   */
-#define R_Sense     0.007;        // Current resistance
-#define G_csa       10;           // Gain setting
-#define V_vref      24;           // Motor Voltage
-#define ADC_voltage 3.3;          // Logic voltage range for ADC
-#define ADC_Resolution 4096;   // Sampling resolution of ADC
+#define R_Sense         0.007  // Current resistance
+#define G_csa          10      // Gain setting
+#define V_vref         24      // Motor Voltage
+#define ADC_voltage     3.3    // Logic voltage range for ADC
+#define ADC_Resolution 4096    // Sampling resolution of ADC
 
 
 

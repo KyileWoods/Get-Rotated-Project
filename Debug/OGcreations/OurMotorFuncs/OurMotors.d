@@ -191,13 +191,13 @@ OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/interrupt.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/pin_map.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/sysctl.h
-OGcreations/OurMotorFuncs/OurMotors.obj: D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/drivers/motorlib.h
+OGcreations/OurMotorFuncs/OurMotors.obj: C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/drivers/motorlib.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Error.h
-OGcreations/OurMotorFuncs/OurMotors.obj: D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/OGcreations/OurMotorFuncs/OurMotors.h
-OGcreations/OurMotorFuncs/OurMotors.obj: D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/OGcreations/OurMessagingFuncs/OurMessaging.h
+OGcreations/OurMotorFuncs/OurMotors.obj: C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/OGcreations/OurMotorFuncs/OurMotors.h
+OGcreations/OurMotorFuncs/OurMotors.obj: C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/OGcreations/OurMessagingFuncs/OurMessaging.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Mailbox.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Queue.h
-OGcreations/OurMotorFuncs/OurMotors.obj: D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/shared_mem.h
+OGcreations/OurMotorFuncs/OurMotors.obj: C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/shared_mem.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Mailbox.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Queue.h
 OGcreations/OurMotorFuncs/OurMotors.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/hal/Hwi.h
@@ -629,19 +629,19 @@ C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/pin
 
 C:/ti/tirtos_tivac_2_16_01_14/products/TivaWare_C_Series-2.1.1.71b/driverlib/sysctl.h:
 
-D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/drivers/motorlib.h:
+C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/drivers/motorlib.h:
 
 C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/Error.h:
 
-D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/OGcreations/OurMotorFuncs/OurMotors.h:
+C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/OGcreations/OurMotorFuncs/OurMotors.h:
 
-D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/OGcreations/OurMessagingFuncs/OurMessaging.h:
+C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/OGcreations/OurMessagingFuncs/OurMessaging.h:
 
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Mailbox.h:
 
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Queue.h:
 
-D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/shared_mem.h:
+C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/shared_mem.h:
 
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Mailbox.h:
 

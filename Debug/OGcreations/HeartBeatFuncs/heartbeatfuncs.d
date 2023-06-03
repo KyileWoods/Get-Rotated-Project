@@ -17,8 +17,8 @@ OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/ccs1230/ccs/tools/compiler/
 OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/sys/stdint.h
 OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/machine/_stdint.h
 OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/sys/_stdint.h
-OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/Board.h
-OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/EK_TM4C1294XL.h
+OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/Board.h
+OGcreations/HeartBeatFuncs/heartbeatfuncs.obj: C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/EK_TM4C1294XL.h
 
 ../OGcreations/HeartBeatFuncs/heartbeatfuncs.c:
 
@@ -54,7 +54,7 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/machine/_stdint.h
 
 C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/sys/_stdint.h:
 
-D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/Board.h:
+C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/Board.h:
 
-D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/EK_TM4C1294XL.h:
+C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/EK_TM4C1294XL.h:
 

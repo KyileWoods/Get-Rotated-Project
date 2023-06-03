@@ -191,8 +191,8 @@ OGcreations/Sensing/Sensing.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_4
 OGcreations/Sensing/Sensing.obj: C:/ti/xdctools_3_32_00_06_core/packages/xdc/runtime/IModule.h
 OGcreations/Sensing/Sensing.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Event__epilogue.h
 OGcreations/Sensing/Sensing.obj: C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Event.h
-OGcreations/Sensing/Sensing.obj: D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/Board.h
-OGcreations/Sensing/Sensing.obj: D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/EK_TM4C1294XL.h
+OGcreations/Sensing/Sensing.obj: C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/Board.h
+OGcreations/Sensing/Sensing.obj: C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/EK_TM4C1294XL.h
 OGcreations/Sensing/Sensing.obj: C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdio.h
 OGcreations/Sensing/Sensing.obj: C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdbool.h
 OGcreations/Sensing/Sensing.obj: C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/math.h
@@ -588,9 +588,9 @@ C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/E
 
 C:/ti/tirtos_tivac_2_16_01_14/products/bios_6_45_02_31/packages/ti/sysbios/knl/Event.h:
 
-D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/Board.h:
+C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/Board.h:
 
-D:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/EK_TM4C1294XL.h:
+C:/Engineering/EmbeddedSystems/GroupProject/Get-Rotated-Project/EK_TM4C1294XL.h:
 
 C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdio.h:
 
