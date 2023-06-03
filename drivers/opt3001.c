@@ -108,9 +108,9 @@
  **************************************************************************************************/
 bool sensorOpt3001Init(void)
 {
-	sensorOpt3001Enable(false);
+    sensorOpt3001Enable(false);
 
-	return (true);
+    return (true);
 }
 
 
@@ -136,10 +136,10 @@ bool sensorOpt3001Init(void)
 
      bool success = writeI2C(OPT3001_I2C_ADDRESS, REG_CONFIGURATION, (uint8_t*)&val);
      if (!success) {
-         // Handle the error, e.g., by logging an error message or retrying the operation
-         //System_printf("sensorOpt fail!");
+         System_printf("Failed to write to the sensor\n");
      }
  }
+
 
 
 
@@ -152,68 +152,68 @@ bool sensorOpt3001Init(void)
  *
  * @return      TRUE if valid data
  **************************************************************************************************/
- bool sensorOpt3001Read(uint16_t *rawData)
- {
- //  bool success;
- //  uint16_t val;
- //
- //  success = readI2C(OPT3001_I2C_ADDRESS, REG_CONFIGURATION, (uint8_t *)&val);
- //
- //
- //  if (success)
- //  {
- //      success = ((val>>8 &0xFF) & DATA_RDY_BIT) == DATA_RDY_BIT;
- //  }
- //
- //  if (success)
- //  {
- //      success = readI2C(OPT3001_I2C_ADDRESS, REG_RESULT, (uint8_t *)&val);
- //  }
- //
- //  if (success)
- //  {
- //      // Swap bytes
- //      *rawData = (val << 8) | (val>>8 &0xFF);
- //  }
- //  else
- //  {
- //      //    sensorSetErrorData
- //  }
- //
- //  return (success);
+bool sensorOpt3001Read(uint16_t *rawData)
+{
+//  bool success;
+//  uint16_t val;
+//
+//  success = readI2C(OPT3001_I2C_ADDRESS, REG_CONFIGURATION, (uint8_t *)&val);
+//
+//
+//  if (success)
+//  {
+//      success = ((val>>8 &0xFF) & DATA_RDY_BIT) == DATA_RDY_BIT;
+//  }
+//
+//  if (success)
+//  {
+//      success = readI2C(OPT3001_I2C_ADDRESS, REG_RESULT, (uint8_t *)&val);
+//  }
+//
+//  if (success)
+//  {
+//      // Swap bytes
+//      *rawData = (val << 8) | (val>>8 &0xFF);
+//  }
+//  else
+//  {
+//      //    sensorSetErrorData
+//  }
+//
+//  return (success);
 
-     bool data_ready;
-         uint16_t val;
+    bool data_ready;
+        uint16_t val;
 
-         //Get status of configuration register
-         if (readI2C(OPT3001_I2C_ADDRESS, REG_CONFIGURATION, (uint8_t *)&val))
-         {
-             data_ready = ((val>>8 &0xFF) & DATA_RDY_BIT) == DATA_RDY_BIT;
-         }
-         else
-         {
-             return false;
-         }
+        //Get status of configuration register
+        if (readI2C(OPT3001_I2C_ADDRESS, REG_CONFIGURATION, (uint8_t *)&val))
+        {
+            data_ready = ((val>>8 &0xFF) & DATA_RDY_BIT) == DATA_RDY_BIT;
+        }
+        else
+        {
+            return false;
+        }
 
-         if (data_ready)
-         {
-             if (readI2C(OPT3001_I2C_ADDRESS, REG_RESULT, (uint8_t *)&val))
-             {
-                 // Swap bytes
-                 *rawData = (val << 8) | (val>>8 &0xFF);
-             }
-             else
-             {
-                 return false;
-             }
-         }
-         else
-         {
-             return false;
-         }
+        if (data_ready)
+        {
+            if (readI2C(OPT3001_I2C_ADDRESS, REG_RESULT, (uint8_t *)&val))
+            {
+                // Swap bytes
+                *rawData = (val << 8) | (val>>8 &0xFF);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
 
-         return true;
- }
+        return true;
+}
 
 /**************************************************************************************************
  * @fn          sensorOpt3001Test
@@ -224,31 +224,21 @@ bool sensorOpt3001Init(void)
  **************************************************************************************************/
 bool sensorOpt3001Test(void)
 {
-	uint16_t val;
-	
-	// Check manufacturer ID
-	readI2C(OPT3001_I2C_ADDRESS, REG_MANUFACTURER_ID, (uint8_t *)&val);
-	val = (val << 8) | (val>>8 &0xFF);
+    uint16_t val;
 
-	if (val != MANUFACTURER_ID)
-	{
-		return (false);
-	}
+    // Test write and read
+    uint16_t test_val = 0x1234;
+    writeI2C(OPT3001_I2C_ADDRESS, REG_CONFIGURATION, (uint8_t*)&test_val);
 
-	//System_printf("Manufacturer ID Correct: %c%c\n", val & 0x00FF, (val >> 8) & 0x00FF);
+    readI2C(OPT3001_I2C_ADDRESS, REG_CONFIGURATION, (uint8_t *)&val);
+    val = (val << 8) | (val>>8 &0xFF);
 
-	// Check device ID
-	readI2C(OPT3001_I2C_ADDRESS, REG_DEVICE_ID, (uint8_t *)&val);
-	val = (val << 8) | (val>>8 &0xFF);
+    if (val != test_val)
+    {
+        System_printf("Failed to write and read back test value\n");
+        return false;
+    }
 
-	if (val != DEVICE_ID)
-	{
-		return (false);
-	}
-
-	//System_printf("Device ID Correct: %c%c\n", val & 0x00FF, (val >> 8) & 0x00FF);
-
-	return (true);
 }
 
 /**************************************************************************************************

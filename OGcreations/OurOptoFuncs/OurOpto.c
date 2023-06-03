@@ -107,10 +107,12 @@ Void I2C_Opto3001Fxn(UArg arg0, UArg arg1)
             if (success) {
                 sensorOpt3001Convert(rawData, &convertedLux);
 
+                //System_printf("Raw data: %d\n", rawData);
                 // Construct Text
                 sprintf(tempStr, "Lux: %5.2f\n", convertedLux);
                 System_printf("%s\n", tempStr);
             }
+
             System_flush();
         }
 }

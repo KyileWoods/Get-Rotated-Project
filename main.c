@@ -181,36 +181,27 @@ int main(void)
     taskParams.stack = &task1Stack;
     Task_construct(&task1Struct, (Task_FuncPtr)MotorMonitorTask, &taskParams, NULL);
 
+    /* Construct OPT3001 Sensor Task thread */
+    Task_Params_init(&taskParams);
+    taskParams.arg0 = 1000;
+    taskParams.stackSize = TASKSTACKSIZE;
+    taskParams.priority = OPT3001_PRIORITY;
+    taskParams.stack = &taskOpt3001Stack;
+    Task_construct(&taskOpt3001Struct, (Task_FuncPtr)I2C_Opto3001Fxn, &taskParams, NULL);
 
+    System_printf("OPT3001 sensor task thread created successfully!\n");
 
-    // SORTA WORKS ON MY BOARD, BUT OPT3001 TASK THREAD NOT WOKRING WITH MOTOR STACK YET...
+    /* Create and Open I2C port*/
+    I2C_Params_init(&i2cParams);
+    i2cParams.bitRate = I2C_400kHz;
+    i2c = I2C_open(Board_I2C_OPT3001, &i2cParams);
 
-
-//    /* Construct OPT3001 Sensor Task thread */
-//    Task_Params_init(&taskParams);
-//    taskParams.arg0 = 1000;
-//    taskParams.stackSize = TASKSTACKSIZE;
-//    taskParams.priority = OPT3001_PRIORITY;
-//    taskParams.stack = &taskOpt3001Stack;
-//    Task_construct(&taskOpt3001Struct, (Task_FuncPtr)I2C_Opto3001Fxn, &taskParams, NULL);
-//
-//    System_printf("OPT3001 sensor task thread created successfully!\n");
-//
-//    /* Create and Open I2C port*/
-//    I2C_Params_init(&i2cParams);
-//    i2cParams.bitRate = I2C_400kHz;
-//    i2c = I2C_open(Board_I2C_OPT3001, &i2cParams);
-//
-//    if (i2c == NULL) {
-//    System_abort("Error Initializing I2C!\n");
-//    }
-//    if (i2c != NULL) {
-//    System_printf("OPT3001 I2C Initialized!\n");    // OPT3001 I2C INITIALISES CORRECTLY, HOWEVER NO SENSOR VALUES PRINTING TO CONSOLE (THEY WERE ORIGINALLY PRINTING WHEN I2C WASN'T INITIALISING CORRECTLY!!!
-//    }
-
-
-
-
+    if (i2c == NULL) {
+    System_abort("Error Initializing I2C!\n");
+    }
+    if (i2c != NULL) {
+    System_printf("OPT3001 I2C Initialized!\n");
+    }
 
     Clock_Params_init(&clkParams);
     clkParams.startFlag = TRUE;
@@ -233,9 +224,6 @@ int main(void)
     if (evtHandle == NULL) {
         //System_printf("Event creation failed :( ");
     }
-
-
-
 
     /* Start BIOS */
     BIOS_start();
